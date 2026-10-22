@@ -27,10 +27,10 @@
 
 ## Fase 1 — Fundação segura
 
-- [ ] **T-100** Inicializar repositório (git, `.gitignore` para .NET, `appsettings*.json` apenas com placeholders, sem segredos).
-- [ ] **T-101** Criar a solution `Infis.PareceresTributario.sln` com os projetos Domain, Application, Infrastructure, Contracts e Api (.NET 10) e as referências conforme a regra de dependência da Clean Architecture.
-- [ ] **T-102** Configurar padrões de build: `Directory.Build.props` (nullable, *warnings as errors*, analisadores), `.editorconfig`, `dotnet format` e gerenciamento central de pacotes (`Directory.Packages.props`).
-- [ ] **T-103** Criar os projetos de teste xUnit (Domain, Application, Infrastructure, Api, Architecture, Evaluation).
+- [x] **T-100** Inicializar repositório (git, `.gitignore` para .NET, `appsettings*.json` apenas com placeholders, sem segredos).
+- [x] **T-101** Criar a solution `Infis.PareceresTributario.sln` com os projetos Domain, Application, Infrastructure, Contracts e Api (.NET 10) e as referências conforme a regra de dependência da Clean Architecture.
+- [x] **T-102** Configurar padrões de build: `Directory.Build.props` (nullable, *warnings as errors*, analisadores), `.editorconfig`, `dotnet format` e gerenciamento central de pacotes (`Directory.Packages.props`).
+- [x] **T-103** Criar os projetos de teste xUnit (Domain, Application, Infrastructure, Api, Architecture, Evaluation).
 - [ ] **T-104** Configurar CI (`dotnet build`, `dotnet test`, `dotnet format --verify-no-changes`, varredura de segredos e de pacotes vulneráveis). — RNF-003
 - [ ] **T-105** Testes de arquitetura (NetArchTest) garantindo a regra de dependência entre camadas. — RNF-040
 - [ ] **T-106** Escrever JSON Schemas do envelope v1 em `contracts/` e os DTOs equivalentes no projeto `Contracts`. — RF-002, RF-040, RNF-042

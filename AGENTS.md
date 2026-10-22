@@ -11,7 +11,7 @@ Instruções para agentes de IA de codificação (Claude Code, Codex, Copilot et
 | Metodologia | Spec-Driven Development (SDD) |
 | Stack | .NET 10 · ASP.NET Core Web API · Semantic Kernel · OpenAI · PostgreSQL + pgvector · MongoDB · Swagger · xUnit |
 | Estilo arquitetural | Clean Architecture · DDD · SOLID |
-| Etapa atual | Fase 0 — Especificação (**não implementar código**) |
+| Etapa atual | Fase 1 — Fundação segura: estrutura da solution criada (T-100 a T-103), **sem funcionalidades implementadas** |
 
 ---
 
@@ -88,7 +88,11 @@ Se a especificação estiver ambígua ou em conflito com a constituição, **par
 ## 4. Estrutura do repositório
 
 ```
-Infis.PareceresTributario.sln                 Solution (futuro)
+Infis.PareceresTributario.sln                 Solution
+global.json                                   Versão do SDK .NET (10.0.401, rollForward latestFeature)
+Directory.Build.props                         Padrões de build (net10.0, nullable, warnings como erros, analisadores)
+Directory.Packages.props                      Versões centralizadas dos pacotes NuGet
+.editorconfig                                 Estilo e nomenclatura de código
 specs/                                        Especificações SDD (fonte da verdade)
 docs/                                         Documentação complementar e ADRs
 samples/                                      Exemplos com dados sintéticos
@@ -110,15 +114,16 @@ tests/
 - Código C#: convenções padrão do .NET (PascalCase para tipos e membros, `_camelCase` para campos privados, `I` para interfaces, `Async` em métodos assíncronos), `nullable` habilitado.
 - Termos de domínio em português, conforme a linguagem ubíqua de `specs/architecture.md` (ex.: `Parecer`, `Referencia`, `DecisaoHumana`); termos técnicos de padrão em inglês (ex.: `Repository`, `Controller`, `Handler`, `Plugin`).
 - Commits: `tipo(escopo): descrição [T-xxx]` — ex.: `feat(auditoria): grava registro encadeado [T-115]`.
-- Comandos previstos (válidos a partir da Fase 1):
+- Versões de pacotes NuGet ficam apenas em `Directory.Packages.props`; nos `.csproj` use `<PackageReference Include="..." />` sem `Version`.
+- Comandos:
   - `dotnet build` — compila a solution.
   - `dotnet test` — executa os testes xUnit.
   - `dotnet format --verify-no-changes` — verifica formatação.
-  - `docker compose up` — sobe API, PostgreSQL + pgvector e MongoDB localmente.
+  - `docker compose up` — sobe API, PostgreSQL + pgvector e MongoDB localmente (disponível após T-119).
 
 ## 6. O que NÃO fazer
 
-- Implementar código nesta etapa (Fase 0).
+- Implementar funcionalidade sem tarefa `T-xxx` correspondente aprovada pelo responsável.
 - Criar funcionalidades sem requisito e tarefa correspondentes.
 - Contornar autenticação, RBAC ou filtro de tenant, inclusive "temporariamente" ou em testes.
 - Desabilitar validação de citações ou auditoria.

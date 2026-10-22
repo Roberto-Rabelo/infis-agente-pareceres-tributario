@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="../../src/Infis.PareceresTributario.Api/Infis.PareceresTributario.Api.csproj" />
+    <ProjectReference Include="../../src/Infis.PareceresTributario.Application/Infis.PareceresTributario.Application.csproj" />
+    <ProjectReference Include="../../src/Infis.PareceresTributario.Contracts/Infis.PareceresTributario.Contracts.csproj" />
+    <ProjectReference Include="../../src/Infis.PareceresTributario.Domain/Infis.PareceresTributario.Domain.csproj" />
+    <ProjectReference Include="../../src/Infis.PareceresTributario.Infrastructure/Infis.PareceresTributario.Infrastructure.csproj" />
+  </ItemGroup>
+</Project>
