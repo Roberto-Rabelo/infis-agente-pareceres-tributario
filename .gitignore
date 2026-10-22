@@ -1,0 +1,48 @@
+# Build
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+[Ll]og/
+[Ll]ogs/
+artifacts/
+publish/
+
+# IDEs
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+*.rsuser
+*.userprefs
+
+# Testes e cobertura
+TestResults/
+[Tt]est[Rr]esult*/
+coverage*.json
+coverage*.xml
+*.coverage
+*.trx
+
+# NuGet
+*.nupkg
+*.snupkg
+**/packages/*
+!**/packages/build/
+
+# Segredos e configuração local (nunca versionar)
+.env
+.env.*
+!.env.example
+appsettings.*.local.json
+appsettings.Development.json
+secrets.json
+*.pfx
+*.pem
+*.key
+
+# Sistema operacional
+Thumbs.db
+Desktop.ini
+.DS_Store
