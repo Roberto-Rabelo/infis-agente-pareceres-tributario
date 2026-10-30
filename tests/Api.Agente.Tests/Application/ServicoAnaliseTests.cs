@@ -10,13 +10,13 @@ namespace Api.Agente.Tests.Application;
 public class ServicoAnaliseTests
 {
     [Fact]
-    public void SemRegrasDeCruzamentoAprovadas_Inconclusiva_ComRevisaoHumana()
+    public void NFeSemDadosDoEmitente_Parcial_ComRevisaoHumana()
     {
         var resultado = Analisar(Lote(EfdIcmsIpi(), NFe()));
 
-        Assert.Equal(StatusAnalise.Inconclusiva, resultado.Status);
+        Assert.Equal(StatusAnalise.ConcluidaParcial, resultado.Status);
         Assert.True(resultado.RevisaoHumana.Requerida);
-        Assert.Contains("Nenhum cruzamento foi executado.", resultado.RevisaoHumana.Motivos);
+        Assert.Contains("Há cruzamentos sem evidências suficientes.", resultado.RevisaoHumana.Motivos);
     }
 
     [Fact]

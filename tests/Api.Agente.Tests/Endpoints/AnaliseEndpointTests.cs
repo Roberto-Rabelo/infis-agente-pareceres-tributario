@@ -104,13 +104,13 @@ public class AnaliseEndpointTests(FabricaApi fabrica) : IClassFixture<FabricaApi
         Assert.Equal(32, raiz.GetProperty("execucaoId").GetString()!.Length);
         Assert.Equal("1.1.0", raiz.GetProperty("versaoEnvelope").GetString());
         Assert.Equal("1.0.0", raiz.GetProperty("versaoContratoEntrada").GetString());
-        Assert.Equal("0.1.0", raiz.GetProperty("versaoCatalogo").GetString());
+        Assert.Equal("0.2.0", raiz.GetProperty("versaoCatalogo").GetString());
         Assert.Equal("PROCESSADO", raiz.GetProperty("statusTecnico").GetString());
         Assert.Equal(JsonValueKind.Null, raiz.GetProperty("parecer").ValueKind);
         Assert.Equal(0, raiz.GetProperty("consumo").GetArrayLength());
 
         var resultado = raiz.GetProperty("resultado");
-        Assert.Equal("INCONCLUSIVA", resultado.GetProperty("status").GetString());
+        Assert.Equal("CONCLUIDA_PARCIAL", resultado.GetProperty("status").GetString());
         Assert.True(resultado.GetProperty("revisaoHumana").GetProperty("requerida").GetBoolean());
         Assert.Equal("EFD_ICMS_IPI", resultado.GetProperty("aptidao")[0].GetProperty("tipo").GetString());
     }

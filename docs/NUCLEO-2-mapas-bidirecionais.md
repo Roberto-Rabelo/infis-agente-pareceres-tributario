@@ -41,17 +41,17 @@ Evidência: salvo indicação, o de-para é **[DERIVADA]** da definição oficia
 | EFD `C100` | NF-e | Relação | Regra / exceção | Severidade |
 |---|---|---|---|---|
 | `CHV_NFE` | `infNFe/@Id` (sem prefixo "NFe") | IDT | Chave de junção | — |
-| `COD_MOD` / `SER` / `NUM_DOC` | `ide/mod` / `ide/serie` / `ide/nNF` | IDT | — | ESCRITURACAO_GRAVE |
-| `DT_DOC` | `ide/dhEmi` (data) | IDT | — | ALERTA |
+| M1-I01: `COD_MOD` / `SER` / `NUM_DOC` | `ide/mod` / `ide/serie` / `ide/nNF` | IDT | — | ESCRITURACAO_GRAVE |
+| M1-I01: `DT_DOC` | `ide/dhEmi` (data) | IDT | — | ALERTA |
 | `DT_E_S` | `ide/dhSaiEnt` (saída própria) / data efetiva de entrada (terceiros) | IDT (própria) / `DT_E_S ≥ dhEmi` (terceiros) | Entrada não pode ser anterior à emissão | ALERTA |
 | `COD_PART` → `0150.CNPJ/CPF` | `dest` (saída própria) / `emit` (entrada terceiros) | IDT | — | ESCRITURACAO_GRAVE |
-| `VL_DOC` | `total/ICMSTot/vNF` | IDT | — | ESCRITURACAO_GRAVE |
+| M1-I03: `VL_DOC` | `total/ICMSTot/vNF` | IDT | — | ESCRITURACAO_GRAVE |
 | `VL_MERC` | `vProd` | IDT | — | ALERTA |
 | `VL_DESC` | `vDesc` | IDT | — | ALERTA |
 | `VL_FRT` / `VL_SEG` / `VL_OUT_DA` | `vFrete` / `vSeg` / `vOutro` | IDT | — | ALERTA |
 | `IND_FRT` | `transp/modFrete` | IDT | Códigos alinhados (0,1,2,3,4,9) | INFO |
 | `IND_PGTO` | `pag/detPag/indPag` | IDT | — | INFO |
-| `VL_BC_ICMS` / `VL_ICMS` | `vBC` / `vICMS` | **Própria: IDT.** Terceiros: `LIM` (EFD ≤ XML) | Na entrada, o informante escritura o **crédito a que tem direito** (pode ser menor ou zero, ex.: uso e consumo) | Própria a menor: ESCRITURACAO_GRAVE; terceiros acima do XML: ESCRITURACAO_GRAVE |
+| M1-I05 (própria) e M1-I06 (terceiros): `VL_BC_ICMS` / `VL_ICMS` | `vBC` / `vICMS` | **Própria: IDT.** Terceiros: `LIM` (EFD ≤ XML) | Na entrada, o informante escritura o **crédito a que tem direito** (pode ser menor ou zero, ex.: uso e consumo) | Própria a menor: ESCRITURACAO_GRAVE; terceiros acima do XML: ESCRITURACAO_GRAVE |
 | `VL_BC_ICMS_ST` / `VL_ICMS_ST` | `vBCST` / `vST` | IDT (própria) | — | ESCRITURACAO_GRAVE |
 | `VL_IPI` | `vIPI` | IDT (própria); `LIM` (terceiros) | — | ESCRITURACAO_GRAVE |
 | `VL_PIS` / `VL_COFINS` | `vPIS` / `vCOFINS` | IDT (própria) | — | ALERTA (o PIS/COFINS é apurado na EFD-Contrib.) |

@@ -132,8 +132,9 @@ public sealed class MotorRegras
             return FalhaTecnica(regra, "Erro na execução do validador.");
         }
 
-        var situacao = achados.Any(a => a.Natureza == Natureza.InconsistenciaCruzamento)
-            ? SituacaoRegra.ComInconsistencia
+        // Evidência faltante em parte do universo mantém a regra pendente mesmo com inconsistência: a análise não pode ser declarada concluída (P4).
+        var situacao = achados.Any(a => a.Natureza == Natureza.AusenciaEvidencias) ? SituacaoRegra.AusenciaEvidencias
+            : achados.Any(a => a.Natureza == Natureza.InconsistenciaCruzamento) ? SituacaoRegra.ComInconsistencia
             : SituacaoRegra.Executada;
         return (new ResultadoRegra(regra.Id, situacao, null, true), achados);
     }

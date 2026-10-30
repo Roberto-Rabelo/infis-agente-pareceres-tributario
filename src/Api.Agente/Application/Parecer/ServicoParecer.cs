@@ -98,7 +98,7 @@ public sealed partial class ServicoParecer(
             {
                 RegistrarEmbeddings(contexto, consumo);
                 await PersistirAsync(consumo).ConfigureAwait(false);
-                return Aceitar(resultado, validacao.Parecer!, contexto, consumo);
+                return Aceitar(resultado, ConsolidadorParecer.Aplicar(validacao.Parecer!, resultado, dados), contexto, consumo);
             }
 
             ultimosErros = validacao.Erros;

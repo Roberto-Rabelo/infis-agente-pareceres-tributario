@@ -1,4 +1,5 @@
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using Api.Agente.Application.Analise;
 using Api.Agente.Domain;
 using Json.Schema;
@@ -13,7 +14,7 @@ public sealed record ResultadoValidacaoParecer(ParecerLlm? Parecer, IReadOnlyLis
 }
 
 /// <summary>Validação estrutural (schema) e semântica (P2, P3, P4, P9, P15) da resposta do LLM.</summary>
-public sealed class ValidadorParecer(JsonSchema schema)
+public sealed partial class ValidadorParecer(JsonSchema schema)
 {
     private static readonly JsonSerializerOptions Json = new(JsonSerializerDefaults.Web)
     {
@@ -102,10 +103,10 @@ public sealed class ValidadorParecer(JsonSchema schema)
                 erros.Add(new("ACHADO_RECLASSIFICADO", $"Achado {id}: regra, natureza e severidade devem ser {esperado.RegraId}, {MontadorDadosParecer.Codigo(esperado.Natureza)}, {severidade ?? "null"}."));
             }
 
-            var omitidas = esperado.HipotesesLegitimas.Except(recebido.HipotesesLegitimas, StringComparer.Ordinal).ToList();
-            if (omitidas.Count > 0)
+            var temTrecho = analise.Fundamentacao.Any(f => f.RegraId == esperado.RegraId && f.Referencias.Count > 0);
+            if (esperado.Natureza == Natureza.InconsistenciaCruzamento && temTrecho && recebido.Referencias.Count == 0)
             {
-                erros.Add(new("HIPOTESE_OMITIDA", $"Achado {id}: hipóteses legítimas não listadas: {string.Join("; ", omitidas)}."));
+                erros.Add(new("ACHADO_SEM_REFERENCIA", $"Achado {id}: cite ao menos um trecho recebido para {esperado.RegraId}."));
             }
         }
 
@@ -133,10 +134,25 @@ public sealed class ValidadorParecer(JsonSchema schema)
             erros.Add(new("REVISAO_HUMANA_OMITIDA", "A revisão humana é obrigatória nesta análise (P15)."));
         }
 
+        var textos = new[] { parecer.Identificacao, parecer.Sintese }
+            .Concat(parecer.Achados.Select(a => a.Analise))
+            .Concat(parecer.IndiciosIa.Select(i => i.Descricao))
+            .Concat(parecer.Limitacoes);
+        foreach (var termo in textos.SelectMany(t => AfirmacaoProibida().Matches(t)).Select(m => m.Value).Distinct(StringComparer.OrdinalIgnoreCase))
+        {
+            erros.Add(new("AFIRMACAO_PROIBIDA", $"Remova \"{termo}\": o parecer não declara conformidade, cobertura total nem consequência jurídica."));
+        }
+
         return erros;
     }
 
     private static string Resumo(string texto) => texto.Length <= 80 ? texto : texto[..80] + "…";
+
+    /// <summary>Conformidade (P4), cobertura e limitações são fatos do sistema; consequências jurídicas não constam dos dados (P1).</summary>
+    [GeneratedRegex(
+        @"\b(em conformidade|conformidade fiscal|est[aá] conforme|est[aã]o conformes|situa[cç][aã]o regular|regularidade fiscal|inadimpl\w*|penalidades?|multas?|san[cç][oõ]es|fraude|sonega[cç][aã]o|todas as regras|n[aã]o h[aá] limita[cç][oõ]es|sem limita[cç][oõ]es|nenhuma limita[cç][aã]o)\b",
+        RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)]
+    private static partial Regex AfirmacaoProibida();
 
     private static ResultadoValidacaoParecer Falha(string codigo, string mensagem) => new(null, [new(codigo, mensagem)]);
 }

@@ -38,6 +38,11 @@ builder.Services.AddSingleton(sp =>
     return new ParametrosComparacao(opcoes.Tolerancia, opcoes.Materialidade);
 });
 builder.Services.AddSingleton<VerificadorPreCondicoes>();
+foreach (var validador in ValidadoresNfeEfd.Todos())
+{
+    builder.Services.AddSingleton(validador);
+}
+
 builder.Services.AddSingleton<MotorRegras>();
 builder.Services.AddSingleton<ServicoAnalise>();
 

@@ -137,3 +137,26 @@ O lote declara `contribuinte.cnpj` (raiz de 8 posições ou CNPJ completo) e `pe
 - **Execução real:** `AvaliacaoParecerTests.Avaliacao_ComModeloReal`, com `OPENAI_API_KEY` e `PARECER_AVALIACAO_MODELO`.
 - **Critérios propostos (a aprovar):** 0 achados determinísticos alterados (SC-004, obrigatório); aceite ≥ 0,80 dos cenários; aceite na 1ª tentativa ≥ 0,60; cenário de injeção aceito sem reclassificação ou terminando em `FALHA_TECNICA` (nunca conformidade).
 - **Resultado 2026-10-29 (conjunto 1.0.0, prompt 1.0.0):** `gpt-4o-mini`. Aceite = 1,00 (5/5), aceite na 1ª tentativa = 1,00, **0 achados alterados (SC-004)**. O cenário de injeção (P004) foi aceito sem reclassificação. Nenhuma chamada de ferramenta; 11 774 tokens de entrada e 2 018 de saída. O custo não foi calculado porque não há tabela de preços aprovada. Atende aos critérios propostos. Limitação: 5 cenários e uma única execução, sem medir variação entre execuções nem a qualidade textual do parecer (que exige revisão humana).
+
+## 7. Incremento 4 – Primeiras regras de cruzamento NF-e × EFD ICMS/IPI (2026-10-30)
+
+**Objetivo:** executar de fato o cruzamento, a fundamentação por RAG e o parecer sobre achados reais.
+
+| Decisão | Escolha |
+|---|---|
+| Identificadores | IDs do NUCLEO-2 (`M1-*`), aceitos pelo `ValidadorCatalogo`. Os `CRZ-*` de `docs/03` são a versão anterior; a equivalência continua pendente (T002) |
+| Aprovação | Roberto, com `docs/NUCLEO-2` como fonte conferida do projeto. Os manuais oficiais citados nas regras seguem sem curadoria (T011) |
+| Validadores | `Domain/Motor/ValidadoresNfeEfd.cs`, uma função por regra, sem acesso a infraestrutura |
+| Evento da NF-e | Grupo `evento` em `registros`, com `tpEvento` (110111 = cancelamento); a acordar com os agentes de origem (T004) |
+| Ausência parcial | Validador que devolve ausência de evidências deixa a regra em `AusenciaEvidencias`, mesmo com inconsistência (P4) |
+| Tolerância | `Cruzamento:Tolerancia` = 0,00: `PARAM:TOL_VALOR_DOCUMENTO` segue sem valor (C5) |
+| Fatos no parecer | Hipóteses, escopo e limitações vêm do `ConsolidadorParecer`, não do modelo. `HIPOTESE_OMITIDA` deixa de existir: a cópia literal fazia análises válidas terminarem em `FALHA_TECNICA` |
+| Validação do texto | `AFIRMACAO_PROIBIDA` (conformidade, cobertura total, consequência jurídica) e `ACHADO_SEM_REFERENCIA` provocam retentativa. A lista de termos não detecta toda afirmação errada: a revisão humana continua obrigatória |
+| Prompt | `prompts/parecer/v1.1.0.md`; a versão 1.0.0 fica no repositório para reprodutibilidade (P9) |
+
+**Limitações conhecidas:**
+
+- `PAR-001`, `ENT-003` e os filtros `EXC` não estão no catálogo: a dependência de M1-P01 foi retirada e os filtros EXC-003 e EXC-005 estão embutidos no universo das regras. EXC-007 (NF-e só com IBS/CBS) não é aplicado.
+- NFC-e (modelo 65) e o C190 não são cruzados nesta entrega.
+- Sem M1-P05/P06: dependem de `PARAM:JANELA_MESES_ENTRADA`, sem valor. NF-e de terceiros ausente da EFD não gera achado.
+- Eventos de denegação e inutilização (M1-P03/P04) não têm contrato definido.
