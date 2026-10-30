@@ -1,0 +1,51 @@
+{
+  "versoes": [
+    {
+      "tipo": "NFE",
+      "versao": "4.00",
+      "vigenciaInicio": null,
+      "vigenciaFim": null,
+      "conferido": true,
+      "fonte": "MOC NF-e leiaute 4.00 (docs/README.md §2)"
+    },
+    {
+      "tipo": "NFCE",
+      "versao": "4.00",
+      "vigenciaInicio": null,
+      "vigenciaFim": null,
+      "conferido": true,
+      "fonte": "MOC NF-e/NFC-e leiaute 4.00 (docs/README.md §2)"
+    },
+    {
+      "tipo": "NFSE",
+      "versao": "1.01",
+      "vigenciaInicio": null,
+      "vigenciaFim": null,
+      "conferido": true,
+      "fonte": "NFS-e Padrão Nacional – XSD v1.01 (20260209), Anexo I v1.01 (docs/README.md §2)"
+    },
+    {
+      "tipo": "EFD_ICMS_IPI",
+      "versao": "020",
+      "vigenciaInicio": "2026-01-01",
+      "vigenciaFim": "2026-12-31",
+      "conferido": true,
+      "fonte": "NT 2025.001 v1.0 – Ato COTEPE/ICMS nº 79/2025; 0000.COD_VER (docs/README.md §2)"
+    },
+    {
+      "tipo": "ECD",
+      "versao": "9.00",
+      "vigenciaInicio": null,
+      "vigenciaFim": null,
+      "conferido": true,
+      "fonte": "Manual de Orientação do Leiaute 9 – ADE Cofis nº 1/2026; I010.COD_VER_LC (docs/README.md §2)"
+    }
+  ],
+  "pendencias": [
+    "EFD_CONTRIBUICOES: valor literal de 0000.COD_VER correspondente ao Guia Prático v1.35 não consta dos docs; obrigações deste tipo ficam não aptas até a curadoria (T011).",
+    "ECF: valor literal de 0000.COD_VER do Leiaute 12 não consta dos docs; idem.",
+    "DIMP: valor literal da Versão 10 (a partir de 2026-06-01) e da Versão 09 no arquivo não consta dos docs; idem.",
+    "EFD_ICMS_IPI: leiautes de anos anteriores a 2026 e o leiaute 2027 (Ato COTEPE/ICMS 69/2026) não foram cadastrados.",
+    "NFE/NFCE/NFSE/ECD: início de vigência das versões não consta dos docs; cadastradas sem limite de vigência."
+  ]
+}

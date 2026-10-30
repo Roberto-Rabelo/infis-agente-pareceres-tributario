@@ -1,0 +1,1217 @@
+{
+  "$schema": "./schema/regra.schema.json",
+  "versaoCatalogo": "1.0.0",
+  "grupo": "ESCRITURACOES",
+  "descricao": "Mapas M3 (EFD ICMS/IPI x EFD-Contribuições), M7 (EFD ICMS/IPI x ECD), M8 (EFD-Contribuições x ECD), M10 (EFD-Contribuições x ECF) e M11 (EFD ICMS/IPI x ECF).",
+  "documentoOrigem": "NUCLEO-2-mapas-bidirecionais.md",
+  "regras": [
+    {
+      "id": "M3-01",
+      "titulo": "Mesmo documento com atributos idênticos nas duas EFD",
+      "mapa": "M3.1",
+      "tipoRelacao": "IDT",
+      "origem": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "C100.DT_DOC, VL_DOC, COD_SIT, IND_OPER, IND_EMIT"
+      },
+      "destino": {
+        "obrigacao": "EFD_CONTRIB",
+        "elemento": "C100.DT_DOC, VL_DOC, COD_SIT, IND_OPER, IND_EMIT",
+        "filtro": "C010.IND_ESCRI=2"
+      },
+      "chaveJuncao": [
+        "CHV_NFE"
+      ],
+      "operador": "IGUAL",
+      "tolerancia": "PARAM:TOL_VALOR_DOCUMENTO",
+      "severidade": "ESCRITURACAO_GRAVE",
+      "severidadeAtenuada": {
+        "quando": "Somente DT_DOC divergente",
+        "severidade": "ALERTA"
+      },
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_ICMS_IPI",
+        "GP_EFD_CONTRIB"
+      ],
+      "hipotesesLegitimas": [
+        "Nenhuma hipótese legítima prevista nos leiautes para esta divergência – solicitar justificativa documental ao contribuinte"
+      ],
+      "dependeDe": [
+        "ENT-001"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "Documento {chave}: {campo} diverge entre EFD ICMS/IPI ({icms}) e EFD-Contribuições ({contrib})."
+    },
+    {
+      "id": "M3-02",
+      "titulo": "Situação do documento (cancelado/regular) coerente entre as EFD",
+      "mapa": "M3.1",
+      "tipoRelacao": "IDT",
+      "origem": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "C100.COD_SIT"
+      },
+      "destino": {
+        "obrigacao": "EFD_CONTRIB",
+        "elemento": "C100.COD_SIT"
+      },
+      "chaveJuncao": [
+        "CHV_NFE"
+      ],
+      "operador": "COMPATIVEL",
+      "tolerancia": null,
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_ICMS_IPI",
+        "GP_EFD_CONTRIB"
+      ],
+      "hipotesesLegitimas": [
+        "Nenhuma hipótese legítima prevista nos leiautes para esta divergência – solicitar justificativa documental ao contribuinte"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "Documento {chave} cancelado em uma EFD e regular na outra."
+    },
+    {
+      "id": "M3-03",
+      "titulo": "Saída com CFOP de receita na EFD ICMS/IPI presente na EFD-Contribuições",
+      "mapa": "M3.1",
+      "tipoRelacao": "PRE_DIRETA",
+      "origem": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "C100/C190",
+        "filtro": "IND_OPER=1; CFOP de receita (PARAM:TABELA_CFOP_RECEITA); COD_SIT regular"
+      },
+      "destino": {
+        "obrigacao": "EFD_CONTRIB",
+        "elemento": "C100.CHV_NFE | C180/C181 do item no período"
+      },
+      "chaveJuncao": [
+        "CHV_NFE | COD_ITEM+PERIODO"
+      ],
+      "operador": "EXISTE",
+      "tolerancia": null,
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_ICMS_IPI",
+        "GP_EFD_CONTRIB"
+      ],
+      "hipotesesLegitimas": [],
+      "filtrosExclusao": [
+        "EXC-001",
+        "EXC-002",
+        "EXC-006"
+      ],
+      "dependeDe": [
+        "ENT-001",
+        "PAR-005"
+      ],
+      "cadeias": [
+        "C1"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "Saída {chave} (CFOP {cfop}, R$ {valor}) escriturada na EFD ICMS/IPI e ausente na EFD-Contribuições."
+    },
+    {
+      "id": "M3-04",
+      "titulo": "Entrada com crédito de PIS/COFINS escriturada também na EFD ICMS/IPI",
+      "mapa": "M3.1",
+      "tipoRelacao": "PRE_REVERSA",
+      "origem": {
+        "obrigacao": "EFD_CONTRIB",
+        "elemento": "C100.CHV_NFE com C170 CST 50-66",
+        "filtro": "IND_OPER=0; COD_MOD 55"
+      },
+      "destino": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "C100.CHV_NFE (IND_OPER=0) de algum estabelecimento do 0140"
+      },
+      "chaveJuncao": [
+        "CHV_NFE"
+      ],
+      "operador": "EXISTE",
+      "tolerancia": "PARAM:JANELA_MESES_ENTRADA",
+      "severidade": "ALERTA",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_ICMS_IPI",
+        "GP_EFD_CONTRIB"
+      ],
+      "hipotesesLegitimas": [
+        "Estabelecimento sem inscrição estadual / dispensado de EFD ICMS/IPI"
+      ],
+      "cadeias": [
+        "C5"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "Crédito de PIS/COFINS sobre {chave} sem a entrada correspondente na EFD ICMS/IPI."
+    },
+    {
+      "id": "M3-06",
+      "titulo": "Agregado mensal de receita de mercadorias: EFD ICMS/IPI x EFD-Contribuições",
+      "mapa": "M3.1",
+      "tipoRelacao": "AGR",
+      "origem": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "Σ C190.VL_OPR (saídas, CFOP de receita) − ICMS-ST − IPI",
+        "filtro": "todos os estabelecimentos do 0140",
+        "agregacao": "MES"
+      },
+      "destino": {
+        "obrigacao": "EFD_CONTRIB",
+        "elemento": "Σ receitas de mercadorias (C170/C181, parcela em M210.VL_REC_BRT e M400)",
+        "agregacao": "MES"
+      },
+      "chaveJuncao": [
+        "CNPJ_BASE",
+        "MES"
+      ],
+      "operador": "SOMA_IGUAL",
+      "tolerancia": "PARAM:TOL_AGREGADO_PERCENTUAL",
+      "condicaoDescritiva": "Origem maior que destino além da tolerância = receita fora da apuração de PIS/COFINS.",
+      "severidade": "ESCRITURACAO_GRAVE",
+      "severidadeAtenuada": {
+        "quando": "Destino maior que origem, ou diferença abaixo de PARAM:MATERIALIDADE_RECEITA",
+        "severidade": "ALERTA"
+      },
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_ICMS_IPI",
+        "GP_EFD_CONTRIB",
+        "DECISAO_PROJETO"
+      ],
+      "hipotesesLegitimas": [
+        "Regime de caixa (presumido)",
+        "Devoluções tratadas como ajuste de receita em período distinto",
+        "Vendas de ativo imobilizado"
+      ],
+      "filtrosExclusao": [
+        "EXC-001",
+        "EXC-002",
+        "EXC-003"
+      ],
+      "dependeDe": [
+        "M3-03"
+      ],
+      "cadeias": [
+        "C1"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "Receita de mercadorias em {mes}: EFD ICMS/IPI R$ {icms} x EFD-Contribuições R$ {contrib} (diferença R$ {dif})."
+    },
+    {
+      "id": "M3-05",
+      "titulo": "Cadastro do item igual entre as EFD",
+      "mapa": "M3.1",
+      "tipoRelacao": "IDT",
+      "origem": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "0200"
+      },
+      "destino": {
+        "obrigacao": "EFD_CONTRIB",
+        "elemento": "0200"
+      },
+      "chaveJuncao": [
+        "COD_ITEM",
+        "MES"
+      ],
+      "operador": "IGUAL",
+      "tolerancia": null,
+      "severidade": "ALERTA",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_ICMS_IPI",
+        "GP_EFD_CONTRIB"
+      ],
+      "hipotesesLegitimas": [],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "Ver ENT-023: item {codItem} com cadastro divergente."
+    },
+    {
+      "id": "M3-07",
+      "titulo": "Bem do CIAP com crédito de PIS/COFINS correspondente (F120/F130)",
+      "mapa": "M3.1",
+      "tipoRelacao": "PRE_DIRETA",
+      "origem": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "0300 + G125 (entrada do bem)"
+      },
+      "destino": {
+        "obrigacao": "EFD_CONTRIB",
+        "elemento": "F120 | F130",
+        "filtro": "COD_INC_TRIB in (1,3)"
+      },
+      "chaveJuncao": [
+        "COD_CTA",
+        "IDENT_BEM"
+      ],
+      "operador": "EXISTE",
+      "tolerancia": null,
+      "severidade": "ALERTA",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_ICMS_IPI",
+        "GP_EFD_CONTRIB"
+      ],
+      "hipotesesLegitimas": [
+        "Bem sem direito a crédito de PIS/COFINS",
+        "Opção por não creditar"
+      ],
+      "cadeias": [
+        "C5",
+        "C7"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "Bem {bem} com crédito de ICMS no CIAP sem crédito correspondente de PIS/COFINS (verificar direito)."
+    },
+    {
+      "id": "M7-01",
+      "titulo": "Contas usadas na EFD ICMS/IPI existem na ECD como analíticas",
+      "mapa": "M7",
+      "tipoRelacao": "PRE_DIRETA",
+      "origem": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "0500.COD_CTA; COD_CTA em C170, H010, 0300",
+        "agregacao": "ANO"
+      },
+      "destino": {
+        "obrigacao": "ECD",
+        "elemento": "I050.COD_CTA (IND_CTA=A)"
+      },
+      "chaveJuncao": [
+        "COD_CTA",
+        "ANO"
+      ],
+      "operador": "EXISTE",
+      "tolerancia": null,
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_ICMS_IPI",
+        "MANUAL_ECD_L9"
+      ],
+      "hipotesesLegitimas": [
+        "Mudança de plano de contas (I157)"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "Conta {codCta} usada na EFD ICMS/IPI ({registro}) inexistente/sintética na ECD."
+    },
+    {
+      "id": "M7-02",
+      "titulo": "Inventário de 31/12 = saldo contábil de estoques",
+      "mapa": "M7",
+      "tipoRelacao": "IDT",
+      "origem": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "Σ H010.VL_ITEM (ou VL_ITEM_IR) da EFD de fevereiro/ano+1, MOT_INV=01",
+        "filtro": "IND_PROP in (0,1); todos os estabelecimentos",
+        "agregacao": "ANO"
+      },
+      "destino": {
+        "obrigacao": "ECD",
+        "elemento": "Σ I155.VL_SLD_FIN em 31/12 das contas de estoque (PARAM:TABELA_CONTAS_POR_FUNCAO / H010.COD_CTA)"
+      },
+      "chaveJuncao": [
+        "CNPJ_BASE",
+        "ANO"
+      ],
+      "operador": "IGUAL",
+      "tolerancia": "PARAM:TOL_AGREGADO_ABSOLUTO",
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_ICMS_IPI",
+        "MANUAL_ECD_L9"
+      ],
+      "hipotesesLegitimas": [
+        "Mercadorias em trânsito/importação em andamento contabilizadas em contas de estoque",
+        "Provisão para perdas em conta redutora",
+        "Critério de avaliação divergente (deve ser o mesmo)"
+      ],
+      "filtrosExclusao": [
+        "EXC-008"
+      ],
+      "cadeias": [
+        "C6"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "Inventário de 31/12/{ano} na EFD (R$ {inv}) x estoques na ECD (R$ {ecd}): diferença R$ {dif}."
+    },
+    {
+      "id": "M7-03",
+      "titulo": "Valor do inventário para fins de IR (VL_ITEM_IR) = saldo contábil de estoque",
+      "mapa": "M7",
+      "tipoRelacao": "IDT",
+      "origem": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "Σ H010.VL_ITEM_IR (quando informado)",
+        "filtro": "IND_PROP in (0,1); todos os estabelecimentos",
+        "agregacao": "ANO"
+      },
+      "destino": {
+        "obrigacao": "ECD",
+        "elemento": "Σ I155.VL_SLD_FIN (31/12) das contas de estoque"
+      },
+      "chaveJuncao": [
+        "CNPJ_BASE",
+        "ANO"
+      ],
+      "operador": "IGUAL",
+      "tolerancia": "PARAM:TOL_AGREGADO_ABSOLUTO",
+      "condicaoDescritiva": "Quando VL_ITEM_IR estiver informado, ele tem preferência sobre VL_ITEM na comparação com a contabilidade (M7-02).",
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_ICMS_IPI",
+        "MANUAL_ECD_L9"
+      ],
+      "hipotesesLegitimas": [
+        "Mesmas da M7-02"
+      ],
+      "filtrosExclusao": [
+        "EXC-008"
+      ],
+      "cadeias": [
+        "C6"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "conferirCampo": true,
+      "mensagemParecer": "Inventário (valor para IR) R$ {inv} x estoques na ECD R$ {ecd} em 31/12/{ano}."
+    },
+    {
+      "id": "M7-04",
+      "titulo": "Inventário por conta contábil = saldo da conta",
+      "mapa": "M7",
+      "tipoRelacao": "AGR",
+      "origem": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "Σ H010.VL_ITEM por COD_CTA",
+        "filtro": "IND_PROP in (0,1)",
+        "agregacao": "CONTA"
+      },
+      "destino": {
+        "obrigacao": "ECD",
+        "elemento": "I155.VL_SLD_FIN (31/12) do mesmo COD_CTA"
+      },
+      "chaveJuncao": [
+        "COD_CTA",
+        "ANO"
+      ],
+      "operador": "SOMA_IGUAL",
+      "tolerancia": "PARAM:TOL_AGREGADO_ABSOLUTO",
+      "severidade": "ALERTA",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_ICMS_IPI",
+        "MANUAL_ECD_L9"
+      ],
+      "hipotesesLegitimas": [
+        "Mesmas da M7-02"
+      ],
+      "filtrosExclusao": [
+        "EXC-008"
+      ],
+      "dependeDe": [
+        "M7-01"
+      ],
+      "cadeias": [
+        "C6"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "Conta {codCta}: inventário R$ {inv} x saldo contábil R$ {sld}."
+    },
+    {
+      "id": "M7-05",
+      "titulo": "ICMS a recolher no ano x passivo de ICMS",
+      "mapa": "M7",
+      "tipoRelacao": "AGR",
+      "origem": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "Σ E110.VL_ICMS_RECOLHER + DEB_ESP + E210 + E310",
+        "agregacao": "ANO"
+      },
+      "destino": {
+        "obrigacao": "ECD",
+        "elemento": "Movimento credor (I155.VL_CRED) das contas ICMS_RECOLHER (PARAM:TABELA_CONTAS_POR_FUNCAO)"
+      },
+      "chaveJuncao": [
+        "CNPJ_BASE",
+        "ANO"
+      ],
+      "operador": "SOMA_IGUAL",
+      "tolerancia": "PARAM:TOL_AGREGADO_PERCENTUAL",
+      "severidade": "ALERTA",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_ICMS_IPI",
+        "MANUAL_ECD_L9"
+      ],
+      "hipotesesLegitimas": [
+        "Parcelamentos e autuações lançados na mesma conta",
+        "Transferências de saldo credor entre estabelecimentos"
+      ],
+      "cadeias": [
+        "C2"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "ICMS a recolher apurado no ano R$ {efd} x movimento do passivo de ICMS R$ {ecd}."
+    },
+    {
+      "id": "M7-06",
+      "titulo": "Saldo credor de ICMS em dezembro x ICMS a recuperar",
+      "mapa": "M7",
+      "tipoRelacao": "IDT",
+      "origem": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "Σ E110.VL_SLD_CREDOR_TRANSPORTAR (dezembro, todos os estabelecimentos)"
+      },
+      "destino": {
+        "obrigacao": "ECD",
+        "elemento": "I155.VL_SLD_FIN (31/12) das contas ICMS_RECUPERAR"
+      },
+      "chaveJuncao": [
+        "CNPJ_BASE",
+        "ANO"
+      ],
+      "operador": "IGUAL",
+      "tolerancia": "PARAM:TOL_AGREGADO_ABSOLUTO",
+      "severidade": "ALERTA",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_ICMS_IPI",
+        "MANUAL_ECD_L9"
+      ],
+      "hipotesesLegitimas": [
+        "Crédito de CIAP em conta própria",
+        "Créditos acumulados em controle extra-apuração"
+      ],
+      "cadeias": [
+        "C2"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "Saldo credor de ICMS em 31/12 R$ {efd} x ICMS a recuperar contábil R$ {ecd}."
+    },
+    {
+      "id": "M7-07",
+      "titulo": "IPI a recolher no ano x passivo de IPI",
+      "mapa": "M7",
+      "tipoRelacao": "AGR",
+      "origem": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "Σ E520 (saldo devedor do período)",
+        "agregacao": "ANO"
+      },
+      "destino": {
+        "obrigacao": "ECD",
+        "elemento": "Movimento credor das contas IPI_RECOLHER"
+      },
+      "chaveJuncao": [
+        "CNPJ_BASE",
+        "ANO"
+      ],
+      "operador": "SOMA_IGUAL",
+      "tolerancia": "PARAM:TOL_AGREGADO_PERCENTUAL",
+      "severidade": "ALERTA",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_ICMS_IPI",
+        "MANUAL_ECD_L9"
+      ],
+      "hipotesesLegitimas": [],
+      "aplicavelSe": "EFD_ICMS_IPI 0000.IND_ATIV = 0",
+      "cadeias": [
+        "C3"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "conferirCampo": true,
+      "mensagemParecer": "IPI a recolher no ano R$ {efd} x passivo de IPI R$ {ecd}."
+    },
+    {
+      "id": "M7-08",
+      "titulo": "Receita de vendas (EFD ICMS/IPI) x receita bruta contábil",
+      "mapa": "M7",
+      "tipoRelacao": "AGR",
+      "origem": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "Σ C190.VL_OPR saídas com CFOP de receita − ICMS-ST − IPI",
+        "agregacao": "ANO"
+      },
+      "destino": {
+        "obrigacao": "ECD",
+        "elemento": "I355/I155 das contas RECEITA_BRUTA (vendas de mercadorias)"
+      },
+      "chaveJuncao": [
+        "CNPJ_BASE",
+        "ANO"
+      ],
+      "operador": "SOMA_IGUAL",
+      "tolerancia": "PARAM:TOL_AGREGADO_PERCENTUAL",
+      "severidade": "ESCRITURACAO_GRAVE",
+      "severidadeAtenuada": {
+        "quando": "ECD maior que EFD, ou diferença abaixo de PARAM:MATERIALIDADE_RECEITA",
+        "severidade": "ALERTA"
+      },
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_ICMS_IPI",
+        "MANUAL_ECD_L9",
+        "DECISAO_PROJETO"
+      ],
+      "hipotesesLegitimas": [
+        "Competência contábil x data de saída",
+        "Venda para entrega futura",
+        "Devoluções contabilizadas como redutora"
+      ],
+      "filtrosExclusao": [
+        "EXC-001",
+        "EXC-002",
+        "EXC-003"
+      ],
+      "cadeias": [
+        "C1"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "Receita de vendas no ano: EFD ICMS/IPI R$ {efd} x ECD R$ {ecd}."
+    },
+    {
+      "id": "M7-09",
+      "titulo": "Bens do CIAP x imobilizado contábil",
+      "mapa": "M7",
+      "tipoRelacao": "PRE_DIRETA",
+      "origem": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "0300.COD_CTA; G125"
+      },
+      "destino": {
+        "obrigacao": "ECD",
+        "elemento": "I050/I155 das contas IMOBILIZADO"
+      },
+      "chaveJuncao": [
+        "COD_CTA",
+        "ANO"
+      ],
+      "operador": "EXISTE",
+      "tolerancia": null,
+      "severidade": "ALERTA",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_ICMS_IPI",
+        "MANUAL_ECD_L9"
+      ],
+      "hipotesesLegitimas": [],
+      "cadeias": [
+        "C7"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "Bem {bem} do CIAP vinculado à conta {codCta} sem correspondente no imobilizado contábil."
+    },
+    {
+      "id": "M7-10",
+      "titulo": "Estoque do Bloco K em 31/12 = inventário do Bloco H (quantidades)",
+      "mapa": "M7",
+      "tipoRelacao": "IDT",
+      "origem": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "K200.QTD (DT_EST = 31/12), IND_EST"
+      },
+      "destino": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "H010.QTD (DT_INV = 31/12), IND_PROP"
+      },
+      "chaveJuncao": [
+        "CNPJ",
+        "COD_ITEM",
+        "POSSE"
+      ],
+      "operador": "IGUAL",
+      "tolerancia": null,
+      "severidade": "ALERTA",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_ICMS_IPI"
+      ],
+      "hipotesesLegitimas": [
+        "Estabelecimento não obrigado ao Bloco K ou obrigado em nível simplificado"
+      ],
+      "cadeias": [
+        "C6"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "Item {codItem}: K200 (31/12) {qtdK} x H010 {qtdH}."
+    },
+    {
+      "id": "M8-01",
+      "titulo": "Plano de contas da EFD-Contribuições existe na ECD",
+      "mapa": "M8",
+      "tipoRelacao": "PRE_DIRETA",
+      "origem": {
+        "obrigacao": "EFD_CONTRIB",
+        "elemento": "0500.COD_CTA, COD_NAT_CC, IND_CTA",
+        "agregacao": "ANO"
+      },
+      "destino": {
+        "obrigacao": "ECD",
+        "elemento": "I050"
+      },
+      "chaveJuncao": [
+        "COD_CTA",
+        "ANO"
+      ],
+      "operador": "EXISTE",
+      "tolerancia": null,
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_CONTRIB",
+        "MANUAL_ECD_L9"
+      ],
+      "hipotesesLegitimas": [
+        "Mudança de plano de contas (I157)"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "Ver ENT-030/031 – conta {codCta}."
+    },
+    {
+      "id": "M8-02",
+      "titulo": "Receitas por conta na EFD-Contribuições x contas de receita da ECD",
+      "mapa": "M8",
+      "tipoRelacao": "AGR",
+      "origem": {
+        "obrigacao": "EFD_CONTRIB",
+        "elemento": "Σ receitas por COD_CTA (C181, A170, F100, F500, F550, M410, M810)",
+        "agregacao": "CONTA"
+      },
+      "destino": {
+        "obrigacao": "ECD",
+        "elemento": "Movimento credor líquido das contas de receita (I155/I355)",
+        "agregacao": "CONTA"
+      },
+      "chaveJuncao": [
+        "COD_CTA",
+        "ANO"
+      ],
+      "operador": "SOMA_IGUAL",
+      "tolerancia": "PARAM:TOL_AGREGADO_PERCENTUAL",
+      "condicaoDescritiva": "ECD maior que EFD-Contribuições = receita contabilizada fora da apuração de PIS/COFINS.",
+      "severidade": "ESCRITURACAO_GRAVE",
+      "severidadeAtenuada": {
+        "quando": "EFD-Contribuições maior que ECD, ou diferença abaixo de PARAM:MATERIALIDADE_RECEITA",
+        "severidade": "ALERTA"
+      },
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_CONTRIB",
+        "MANUAL_ECD_L9"
+      ],
+      "hipotesesLegitimas": [
+        "Regime de caixa (presumido)",
+        "Receitas não operacionais/ganho de capital fora do campo das contribuições",
+        "Reversões de provisões"
+      ],
+      "dependeDe": [
+        "ENT-030",
+        "PAR-005"
+      ],
+      "cadeias": [
+        "C1"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "Conta de receita {codCta}: EFD-Contribuições R$ {efd} x ECD R$ {ecd} no ano."
+    },
+    {
+      "id": "M8-03",
+      "titulo": "Receitas não tributadas (M400/M800) com contas existentes e movimentadas",
+      "mapa": "M8",
+      "tipoRelacao": "PRE_DIRETA",
+      "origem": {
+        "obrigacao": "EFD_CONTRIB",
+        "elemento": "M400/M410.COD_CTA, M800/M810.COD_CTA"
+      },
+      "destino": {
+        "obrigacao": "ECD",
+        "elemento": "I050 + I155 com movimento"
+      },
+      "chaveJuncao": [
+        "COD_CTA",
+        "ANO"
+      ],
+      "operador": "EXISTE",
+      "tolerancia": null,
+      "severidade": "ALERTA",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_CONTRIB",
+        "MANUAL_ECD_L9"
+      ],
+      "hipotesesLegitimas": [],
+      "cadeias": [
+        "C4"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "Receita não tributada informada na conta {codCta} sem movimento na ECD."
+    },
+    {
+      "id": "M8-04",
+      "titulo": "Crédito sobre depreciação limitado à depreciação contabilizada",
+      "mapa": "M8",
+      "tipoRelacao": "LIM",
+      "origem": {
+        "obrigacao": "ECD",
+        "elemento": "Depreciação do período das contas dos bens",
+        "agregacao": "CONTA"
+      },
+      "destino": {
+        "obrigacao": "EFD_CONTRIB",
+        "elemento": "F120 (valor dos encargos de depreciação)",
+        "agregacao": "CONTA"
+      },
+      "chaveJuncao": [
+        "COD_CTA",
+        "MES"
+      ],
+      "operador": "MENOR_OU_IGUAL",
+      "tolerancia": "PARAM:TOL_AGREGADO_ABSOLUTO",
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_CONTRIB",
+        "MANUAL_ECD_L9"
+      ],
+      "hipotesesLegitimas": [
+        "Nenhuma hipótese legítima prevista nos leiautes para esta divergência – solicitar justificativa documental ao contribuinte"
+      ],
+      "cadeias": [
+        "C5",
+        "C7"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "conferirCampo": true,
+      "mensagemParecer": "Encargos de depreciação no F120 (R$ {f120}) superam a depreciação contabilizada (R$ {ecd}) em {mes}."
+    },
+    {
+      "id": "M8-05",
+      "titulo": "PIS/COFINS a recolher x passivo contábil",
+      "mapa": "M8",
+      "tipoRelacao": "AGR",
+      "origem": {
+        "obrigacao": "EFD_CONTRIB",
+        "elemento": "M200.VL_TOT_CONT_REC + M600 equivalente",
+        "agregacao": "MES"
+      },
+      "destino": {
+        "obrigacao": "ECD",
+        "elemento": "Movimento credor das contas PIS_COFINS_RECOLHER (I155 mensal)"
+      },
+      "chaveJuncao": [
+        "CNPJ_BASE",
+        "MES"
+      ],
+      "operador": "SOMA_IGUAL",
+      "tolerancia": "PARAM:TOL_AGREGADO_PERCENTUAL",
+      "severidade": "ALERTA",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_CONTRIB",
+        "MANUAL_ECD_L9"
+      ],
+      "hipotesesLegitimas": [],
+      "cadeias": [
+        "C4"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "conferirCampo": true,
+      "mensagemParecer": "PIS/COFINS a recolher em {mes}: EFD R$ {efd} x ECD R$ {ecd}."
+    },
+    {
+      "id": "M8-06",
+      "titulo": "Retenções sofridas (F600) x tributos retidos a compensar",
+      "mapa": "M8",
+      "tipoRelacao": "AGR",
+      "origem": {
+        "obrigacao": "EFD_CONTRIB",
+        "elemento": "Σ F600.VL_RET_PIS, VL_RET_COFINS",
+        "agregacao": "ANO"
+      },
+      "destino": {
+        "obrigacao": "ECD",
+        "elemento": "Movimento devedor das contas RETENCOES_COMPENSAR"
+      },
+      "chaveJuncao": [
+        "CNPJ_BASE",
+        "ANO"
+      ],
+      "operador": "SOMA_IGUAL",
+      "tolerancia": "PARAM:TOL_AGREGADO_PERCENTUAL",
+      "severidade": "ALERTA",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_CONTRIB",
+        "MANUAL_ECD_L9"
+      ],
+      "hipotesesLegitimas": [
+        "Conta única para CSRF (PIS/COFINS/CSLL) – comparar após segregação"
+      ],
+      "cadeias": [
+        "C8"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "Retenções de PIS/COFINS no F600 R$ {efd} x contabilizadas R$ {ecd}."
+    },
+    {
+      "id": "M8-07",
+      "titulo": "Créditos de PIS/COFINS x ativo a recuperar",
+      "mapa": "M8",
+      "tipoRelacao": "AGR",
+      "origem": {
+        "obrigacao": "EFD_CONTRIB",
+        "elemento": "M100/M500 (créditos apurados) e saldos 1100/1500",
+        "agregacao": "ANO"
+      },
+      "destino": {
+        "obrigacao": "ECD",
+        "elemento": "Contas PIS_COFINS_RECUPERAR (movimento e saldo em 31/12)"
+      },
+      "chaveJuncao": [
+        "CNPJ_BASE",
+        "ANO"
+      ],
+      "operador": "SOMA_IGUAL",
+      "tolerancia": "PARAM:TOL_AGREGADO_PERCENTUAL",
+      "severidade": "ALERTA",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_CONTRIB",
+        "MANUAL_ECD_L9"
+      ],
+      "hipotesesLegitimas": [
+        "Créditos registrados diretamente como redução de custo"
+      ],
+      "aplicavelSe": "COD_INC_TRIB in (1,3)",
+      "cadeias": [
+        "C5"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "Créditos de PIS/COFINS na EFD R$ {efd} x ativo a recuperar R$ {ecd}."
+    },
+    {
+      "id": "M10-02",
+      "titulo": "Presumido: receita da EFD-Contribuições no trimestre limitada à base do IRPJ/CSLL",
+      "mapa": "M10",
+      "tipoRelacao": "LIM",
+      "origem": {
+        "obrigacao": "EFD_CONTRIB",
+        "elemento": "Σ receitas (F500/F550, A100, C180/C181, M400)",
+        "agregacao": "TRIMESTRE"
+      },
+      "destino": {
+        "obrigacao": "ECF",
+        "elemento": "P200 (receita bruta por atividade) / P400",
+        "agregacao": "TRIMESTRE"
+      },
+      "chaveJuncao": [
+        "CNPJ_BASE",
+        "TRIMESTRE"
+      ],
+      "operador": "MENOR_OU_IGUAL",
+      "tolerancia": "PARAM:TOL_AGREGADO_PERCENTUAL",
+      "condicaoDescritiva": "Receita (sujeita ou não a PIS/COFINS) na EFD-Contribuições <= receita considerada na base presumida.",
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_CONTRIB",
+        "MANUAL_ECF_L12"
+      ],
+      "hipotesesLegitimas": [
+        "Receitas na EFD-Contribuições tratadas como ganho de capital/receita financeira em linhas próprias da ECF (somar antes de comparar)"
+      ],
+      "aplicavelSe": "ECF trimestre presumido",
+      "dependeDe": [
+        "PAR-003",
+        "PAR-005"
+      ],
+      "cadeias": [
+        "C1"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "Trimestre {t}: receitas na EFD-Contribuições R$ {efd} superam a receita base do presumido R$ {ecf}."
+    },
+    {
+      "id": "M10-03",
+      "titulo": "Real: receita bruta da DRE x receita bruta da EFD-Contribuições",
+      "mapa": "M10",
+      "tipoRelacao": "AGR",
+      "origem": {
+        "obrigacao": "EFD_CONTRIB",
+        "elemento": "Σ M210.VL_REC_BRT + receitas M400",
+        "agregacao": "ANO"
+      },
+      "destino": {
+        "obrigacao": "ECF",
+        "elemento": "L300 – receita bruta (contas referenciais)"
+      },
+      "chaveJuncao": [
+        "CNPJ_BASE",
+        "ANO"
+      ],
+      "operador": "SOMA_IGUAL",
+      "tolerancia": "PARAM:TOL_AGREGADO_PERCENTUAL",
+      "severidade": "ALERTA",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_CONTRIB",
+        "MANUAL_ECF_L12",
+        "DEC_8426_15"
+      ],
+      "hipotesesLegitimas": [
+        "Receitas financeiras e outras receitas compõem a EFD-Contribuições mas não a receita bruta",
+        "Vendas canceladas e devoluções"
+      ],
+      "aplicavelSe": "ECF lucro real",
+      "cadeias": [
+        "C1"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "Receita bruta {ano}: EFD-Contribuições R$ {efd} x ECF (L300) R$ {ecf}."
+    },
+    {
+      "id": "M10-04",
+      "titulo": "Fontes pagadoras com retenção de PIS/COFINS (F600) presentes no Y570",
+      "mapa": "M10",
+      "tipoRelacao": "PRE_DIRETA",
+      "origem": {
+        "obrigacao": "EFD_CONTRIB",
+        "elemento": "F600.CNPJ (fonte pagadora)",
+        "agregacao": "ANO"
+      },
+      "destino": {
+        "obrigacao": "ECF",
+        "elemento": "Y570.CNPJ_FON"
+      },
+      "chaveJuncao": [
+        "CNPJ_FONTE",
+        "ANO"
+      ],
+      "operador": "EXISTE",
+      "tolerancia": null,
+      "severidade": "ALERTA",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_CONTRIB",
+        "MANUAL_ECF_L12"
+      ],
+      "hipotesesLegitimas": [
+        "Fonte que retém apenas PIS/COFINS (sem IRRF/CSLL) por hipótese legal específica"
+      ],
+      "cadeias": [
+        "C8"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "Fonte pagadora {cnpj} reteve PIS/COFINS (F600) e não consta do Y570."
+    },
+    {
+      "id": "M10-05",
+      "titulo": "Receita por estabelecimento (Y540) x EFD-Contribuições",
+      "mapa": "M10",
+      "tipoRelacao": "AGR",
+      "origem": {
+        "obrigacao": "EFD_CONTRIB",
+        "elemento": "Receitas por estabelecimento (0140 + blocos A/C/F)",
+        "agregacao": "ESTABELECIMENTO"
+      },
+      "destino": {
+        "obrigacao": "ECF",
+        "elemento": "Y540.CNPJ_ESTAB, VL_REC_ESTAB"
+      },
+      "chaveJuncao": [
+        "CNPJ",
+        "ANO"
+      ],
+      "operador": "SOMA_IGUAL",
+      "tolerancia": "PARAM:TOL_AGREGADO_PERCENTUAL",
+      "severidade": "ALERTA",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_CONTRIB",
+        "MANUAL_ECF_L12"
+      ],
+      "hipotesesLegitimas": [],
+      "vigenciaInicio": "2025-01-01",
+      "conferirCampo": true,
+      "mensagemParecer": "Estabelecimento {cnpj}: receita EFD-Contribuições R$ {efd} x Y540 R$ {ecf}."
+    },
+    {
+      "id": "M10-06",
+      "titulo": "PIS/COFINS sobre receitas x deduções da receita na DRE",
+      "mapa": "M10",
+      "tipoRelacao": "AGR",
+      "origem": {
+        "obrigacao": "EFD_CONTRIB",
+        "elemento": "Σ M210/M610 contribuição sobre receita bruta",
+        "agregacao": "ANO"
+      },
+      "destino": {
+        "obrigacao": "ECF",
+        "elemento": "L300/P150 – deduções (PIS/COFINS)"
+      },
+      "chaveJuncao": [
+        "CNPJ_BASE",
+        "ANO"
+      ],
+      "operador": "SOMA_IGUAL",
+      "tolerancia": "PARAM:TOL_AGREGADO_PERCENTUAL",
+      "severidade": "ALERTA",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_CONTRIB",
+        "MANUAL_ECF_L12"
+      ],
+      "hipotesesLegitimas": [
+        "PIS/COFINS sobre receitas financeiras contabilizados como despesa financeira"
+      ],
+      "cadeias": [
+        "C4"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "PIS/COFINS sobre receitas R$ {efd} x deduções na DRE da ECF R$ {ecf}."
+    },
+    {
+      "id": "M11-01",
+      "titulo": "Inventário de 31/12 x estoque na ECF",
+      "mapa": "M11",
+      "tipoRelacao": "IDT",
+      "origem": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "Σ H010 (IND_PROP 0/1), todos os estabelecimentos"
+      },
+      "destino": {
+        "obrigacao": "ECF",
+        "elemento": "L100/P100 (estoques); presumido sem ECD: Y672.VL_EST"
+      },
+      "chaveJuncao": [
+        "CNPJ_BASE",
+        "ANO"
+      ],
+      "operador": "IGUAL",
+      "tolerancia": "PARAM:TOL_AGREGADO_ABSOLUTO",
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_ICMS_IPI",
+        "MANUAL_ECF_L12"
+      ],
+      "hipotesesLegitimas": [
+        "Mesmas da M7-02"
+      ],
+      "filtrosExclusao": [
+        "EXC-008"
+      ],
+      "cadeias": [
+        "C6"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "conferirCampo": true,
+      "mensagemParecer": "Inventário EFD R$ {efd} x estoque na ECF R$ {ecf} em 31/12/{ano}."
+    },
+    {
+      "id": "M11-02",
+      "titulo": "Compras de mercadorias x Y672 (presumido)",
+      "mapa": "M11",
+      "tipoRelacao": "AGR",
+      "origem": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "Σ entradas com CFOP de compra",
+        "agregacao": "ANO"
+      },
+      "destino": {
+        "obrigacao": "ECF",
+        "elemento": "Y672.VL_COMPRA_MERC"
+      },
+      "chaveJuncao": [
+        "CNPJ_BASE",
+        "ANO"
+      ],
+      "operador": "SOMA_IGUAL",
+      "tolerancia": "PARAM:TOL_AGREGADO_PERCENTUAL",
+      "severidade": "ALERTA",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_ICMS_IPI",
+        "MANUAL_ECF_L12"
+      ],
+      "hipotesesLegitimas": [],
+      "aplicavelSe": "ECF presumido",
+      "vigenciaInicio": "2025-01-01",
+      "conferirCampo": true,
+      "mensagemParecer": "Compras de mercadorias: EFD R$ {efd} x Y672 R$ {ecf}."
+    },
+    {
+      "id": "M11-03",
+      "titulo": "Aquisições de ativo x Y672 (presumido)",
+      "mapa": "M11",
+      "tipoRelacao": "AGR",
+      "origem": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "Σ entradas CFOP 1.551/2.551/3.551",
+        "agregacao": "ANO"
+      },
+      "destino": {
+        "obrigacao": "ECF",
+        "elemento": "Y672.VL_COMPRA_ATIVO"
+      },
+      "chaveJuncao": [
+        "CNPJ_BASE",
+        "ANO"
+      ],
+      "operador": "SOMA_IGUAL",
+      "tolerancia": "PARAM:TOL_AGREGADO_PERCENTUAL",
+      "severidade": "ALERTA",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_ICMS_IPI",
+        "MANUAL_ECF_L12"
+      ],
+      "hipotesesLegitimas": [],
+      "aplicavelSe": "ECF presumido",
+      "cadeias": [
+        "C7"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "conferirCampo": true,
+      "mensagemParecer": "Aquisições de ativo: EFD R$ {efd} x Y672 R$ {ecf}."
+    },
+    {
+      "id": "M11-04",
+      "titulo": "Atividade industrial coerente com custos de produção na ECF",
+      "mapa": "M11",
+      "tipoRelacao": "PAR",
+      "origem": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "0000.IND_ATIV = 0"
+      },
+      "destino": {
+        "obrigacao": "ECF",
+        "elemento": "L210 (custos) / atividade econômica"
+      },
+      "chaveJuncao": [
+        "CNPJ_BASE",
+        "ANO"
+      ],
+      "operador": "COMPATIVEL",
+      "tolerancia": null,
+      "severidade": "ALERTA",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_ICMS_IPI",
+        "MANUAL_ECF_L12"
+      ],
+      "hipotesesLegitimas": [
+        "L210 não exigido para a forma de tributação/porte"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "Estabelecimento industrial sem informação de custos de produção coerente na ECF."
+    }
+  ]
+}

@@ -1,0 +1,136 @@
+{
+  "versaoCatalogo": "1.0.0",
+  "descricao": "Cadeias de valor ponta a ponta (NUCLEO-3). Cada ponto de controle (CP) agrupa regras do catálogo. Se um CP quebra, os CPs seguintes da mesma cadeia são reportados como NAO_CONCLUSIVO (não como erros independentes).",
+  "ordemExecucao": [
+    { "passo": 1, "nome": "Compatibilidade de regime", "prefixos": ["PAR-"] },
+    { "passo": 2, "nome": "Filtros de exclusividade legítima", "prefixos": ["EXC-"] },
+    { "passo": 3, "nome": "Entidades compartilhadas", "prefixos": ["ENT-"] },
+    { "passo": 4, "nome": "Documentos x escriturações", "prefixos": ["M1-", "M2-", "M4-", "M5-"] },
+    { "passo": 5, "nome": "Escriturações entre si", "prefixos": ["M3-", "M7-", "M8-", "M10-", "M11-"] },
+    { "passo": 6, "nome": "Continuidade entre períodos", "prefixos": ["CNT-"] },
+    { "passo": 7, "nome": "Contabilidade x ECF", "prefixos": ["M9-", "M12-"] },
+    { "passo": 8, "nome": "Evidência externa (DIMP)", "prefixos": ["M6-"] },
+    { "passo": 9, "nome": "Consolidação por cadeia", "prefixos": [] }
+  ],
+  "regrasExternas": {
+    "descricao": "Regras executadas pelos agentes de origem (02-regras-intra-obrigacao.md). O agente de coesão apenas lê o resultado delas.",
+    "ids": ["INT-EFD-009", "INT-EFD-012", "INT-ECF-005", "INT-CTB-004", "INT-EFD-002"]
+  },
+  "politicaQuebra": {
+    "cpQuebrado": "Reportar a(s) regra(s) violada(s) com sua severidade.",
+    "cpsSeguintes": "Marcar como NAO_CONCLUSIVO, citando o CP de origem da quebra.",
+    "regraNaoExecutadaPorFaltaDeInsumo": "Marcar como SEM_EVIDENCIA (cobertura) – nunca como erro."
+  },
+  "cadeias": [
+    {
+      "id": "C1",
+      "nome": "Receita",
+      "pontosControle": [
+        { "cp": "CP-0", "descricao": "DIMP explicada por documentos e pelo 1601", "regras": ["M6-01", "M6-02", "M6-03"] },
+        { "cp": "CP-1", "descricao": "Documento de receita escriturado", "regras": ["M1-P01", "M1-R02", "M2-P01", "M4-P01", "M1-I03", "M1-I15"] },
+        { "cp": "CP-2", "descricao": "Receita EFD ICMS/IPI x EFD-Contribuições", "regras": ["M3-03", "M3-06", "M2-R03"] },
+        { "cp": "CP-3", "descricao": "Totalizadores de apuração (PVA, agente de origem)", "regras": ["INT-CTB-004"] },
+        { "cp": "CP-4", "descricao": "Receita escriturada x contabilidade", "regras": ["M8-02", "M7-08", "M12-01"] },
+        { "cp": "CP-5", "descricao": "ECF recupera a ECD vigente", "regras": ["M9-01", "M9-05", "M9-11"] },
+        { "cp": "CP-6", "descricao": "Receita base de IRPJ/CSLL", "regras": ["M10-02", "M10-03"] }
+      ]
+    },
+    {
+      "id": "C2",
+      "nome": "ICMS",
+      "pontosControle": [
+        { "cp": "CP-1", "descricao": "ICMS do documento = escriturado (própria) / crédito limitado (entrada)", "regras": ["M1-I05", "M1-I06", "M1-I07", "M1-R01", "M1-R04", "M1-P05", "INT-EFD-012"] },
+        { "cp": "CP-2", "descricao": "Totalizadores da apuração (PVA, agente de origem)", "regras": ["INT-EFD-002"] },
+        { "cp": "CP-3", "descricao": "Continuidade, ST e DIFAL", "regras": ["CNT-ICMS-001", "CNT-ICMS-002", "M1-I08", "M1-I11"] },
+        { "cp": "CP-4", "descricao": "Apuração x contabilidade", "regras": ["M7-05", "M7-06"] },
+        { "cp": "CP-5", "descricao": "Dedução na DRE", "regras": ["M9-11"] }
+      ]
+    },
+    {
+      "id": "C3",
+      "nome": "IPI",
+      "aplicavelSe": "EFD_ICMS_IPI 0000.IND_ATIV = 0",
+      "pontosControle": [
+        { "cp": "CP-1", "descricao": "IPI do documento = escriturado", "regras": ["M1-I09", "PAR-009"] },
+        { "cp": "CP-3", "descricao": "Continuidade do saldo credor", "regras": ["CNT-IPI-001"] },
+        { "cp": "CP-4", "descricao": "Apuração x contabilidade", "regras": ["M7-07"] }
+      ]
+    },
+    {
+      "id": "C4",
+      "nome": "PIS/COFINS – débito",
+      "pontosControle": [
+        { "cp": "CP-1", "descricao": "CST/base/valor da saída própria = documento", "regras": ["M2-I02", "M2-I03", "M4-I01", "M2-P01", "M4-P01", "M2-R03"] },
+        { "cp": "CP-1b", "descricao": "Receitas não tributadas com contas existentes", "regras": ["M8-03"] },
+        { "cp": "CP-4", "descricao": "Contribuição a recolher x passivo", "regras": ["M8-05"] },
+        { "cp": "CP-5", "descricao": "Deduções na DRE", "regras": ["M10-06"] }
+      ]
+    },
+    {
+      "id": "C5",
+      "nome": "PIS/COFINS – crédito",
+      "aplicavelSe": "EFD_CONTRIB 0110.COD_INC_TRIB in (1,3)",
+      "pontosControle": [
+        { "cp": "CP-1", "descricao": "Crédito com documento válido", "regras": ["M2-R01", "M2-R02", "M4-R02", "M3-04"] },
+        { "cp": "CP-2", "descricao": "Base sem ICMS da aquisição", "regras": ["M2-R04"] },
+        { "cp": "CP-3", "descricao": "Créditos sobre ativo com lastro contábil", "regras": ["M8-04", "M3-07"] },
+        { "cp": "CP-4", "descricao": "Continuidade e contabilidade", "regras": ["CNT-CTB-001", "M8-07"] },
+        { "cp": "CP-5", "descricao": "Regime cumulativo sem crédito", "regras": ["PAR-003"] }
+      ]
+    },
+    {
+      "id": "C6",
+      "nome": "Estoque",
+      "pontosControle": [
+        { "cp": "CP-1", "descricao": "Inventário de 31/12 informado (agente de origem)", "regras": ["INT-EFD-009"] },
+        { "cp": "CP-2", "descricao": "Bloco K x Bloco H", "regras": ["M7-10", "CNT-INV-001"] },
+        { "cp": "CP-3", "descricao": "Inventário x contabilidade", "regras": ["M7-02", "M7-03", "M7-04"] },
+        { "cp": "CP-4", "descricao": "Contabilidade x ECF", "regras": ["M9-16", "M11-01"] },
+        { "cp": "CP-5", "descricao": "Entradas refletidas", "regras": ["M1-P05", "M1-P06", "M12-05"] }
+      ]
+    },
+    {
+      "id": "C7",
+      "nome": "Ativo imobilizado",
+      "pontosControle": [
+        { "cp": "CP-1", "descricao": "NF-e de ativo escriturada", "regras": ["M1-P05"] },
+        { "cp": "CP-2", "descricao": "CIAP com NF-e válida", "regras": ["M1-R06"] },
+        { "cp": "CP-3", "descricao": "Crédito de PIS/COFINS sobre o bem", "regras": ["M3-07", "M8-04"] },
+        { "cp": "CP-4", "descricao": "Adições ao imobilizado", "regras": ["M12-02", "M7-09", "M11-03"] },
+        { "cp": "CP-5", "descricao": "Contas do ativo existentes", "regras": ["ENT-030", "ENT-032"] }
+      ]
+    },
+    {
+      "id": "C8",
+      "nome": "Retenções na fonte",
+      "pontosControle": [
+        { "cp": "CP-1", "descricao": "PIS/COFINS retidos: NFS-e x F600", "regras": ["M4-P03", "M4-R03", "M4-I01"] },
+        { "cp": "CP-2", "descricao": "IRRF/CSLL retidos: NFS-e x Y570", "regras": ["M12-03"] },
+        { "cp": "CP-3", "descricao": "Fontes pagadoras coerentes", "regras": ["M10-04"] },
+        { "cp": "CP-4", "descricao": "Contabilização e continuidade", "regras": ["M8-06", "M12-04", "CNT-CTB-002"] }
+      ]
+    },
+    {
+      "id": "C9",
+      "nome": "Recebimentos eletrônicos (DIMP)",
+      "pontosControle": [
+        { "cp": "CP-1", "descricao": "Instituições casadas", "regras": ["ENT-012", "M6-10", "M6-11", "M6-12"] },
+        { "cp": "CP-2", "descricao": "DIMP = 1601", "regras": ["M6-01", "M6-02"] },
+        { "cp": "CP-3", "descricao": "DIMP x documentos", "regras": ["M6-03", "M5-03"] },
+        { "cp": "CP-5", "descricao": "Presumido caixa", "regras": ["M6-05"] },
+        { "cp": "CP-6", "descricao": "DIMP x receita contábil", "regras": ["M6-04"] }
+      ]
+    },
+    {
+      "id": "C10",
+      "nome": "Resultado -> IRPJ/CSLL",
+      "pontosControle": [
+        { "cp": "CP-1", "descricao": "Recuperação da ECD", "regras": ["M9-01", "M9-02", "M9-03", "M9-04", "M9-05", "M9-06", "M9-10", "M9-11"] },
+        { "cp": "CP-2", "descricao": "Ajustes vinculados à contabilidade", "regras": ["M9-12", "M9-13", "M9-14", "ENT-033"] },
+        { "cp": "CP-3", "descricao": "Continuidade da Parte B e dos saldos", "regras": ["M9-20", "M9-21", "M9-22"] },
+        { "cp": "CP-4", "descricao": "Limite de compensação (agente de origem)", "regras": ["INT-ECF-005"] },
+        { "cp": "CP-5", "descricao": "Tributos apurados x contabilidade", "regras": ["M9-15"] }
+      ]
+    }
+  ]
+}

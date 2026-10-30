@@ -1,0 +1,1205 @@
+{
+  "$schema": "./schema/regra.schema.json",
+  "versaoCatalogo": "1.0.0",
+  "grupo": "FUNDACAO",
+  "descricao": "Regras executadas ANTES dos cruzamentos de valor: compatibilidade de regime (PAR), filtros de exclusividade legítima (EXC) e coesão de entidades compartilhadas (ENT).",
+  "documentoOrigem": "NUCLEO-1-principios-entidades-matriz.md",
+  "regras": [
+    {
+      "id": "PAR-001",
+      "titulo": "Regime normal (CRT=3) exige EFD-Contribuições e, se contribuinte de ICMS/IPI, EFD ICMS/IPI",
+      "mapa": "NUCLEO-1 §5",
+      "tipoRelacao": "PAR",
+      "origem": {
+        "obrigacao": "NFE",
+        "elemento": "emit/CRT",
+        "filtro": "NF-e emitidas pelo contribuinte no período",
+        "agregacao": "MES"
+      },
+      "destino": {
+        "obrigacao": "EFD_CONTRIB",
+        "elemento": "0000",
+        "agregacao": "MES"
+      },
+      "chaveJuncao": [
+        "CNPJ_BASE",
+        "PERIODO"
+      ],
+      "operador": "EXISTE",
+      "tolerancia": null,
+      "condicaoDescritiva": "Se existe NF-e com CRT=3 no mês, deve existir EFD-Contribuições do mês para o CNPJ base e EFD ICMS/IPI do estabelecimento emitente (se inscrito no ICMS).",
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "NORMA",
+      "fontes": [
+        "IN_RFB_1252_2012",
+        "AJUSTE_SINIEF_02_09",
+        "MOC_NFE"
+      ],
+      "hipotesesLegitimas": [
+        "Exclusão do Simples Nacional no curso do período",
+        "Escrituração do período ainda não recebida pelo agente (cobertura)"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "vigenciaFim": null,
+      "conferirCampo": false,
+      "executor": "AGENTE_COESAO",
+      "mensagemParecer": "Há NF-e emitidas em regime normal (CRT=3) em {periodo}, mas não foi recebida a {obrigacaoAusente} correspondente."
+    },
+    {
+      "id": "PAR-002",
+      "titulo": "Simples Nacional/MEI (CRT 1 ou 4) incompatível com EFD-Contribuições e ECF",
+      "mapa": "NUCLEO-1 §5",
+      "tipoRelacao": "PAR",
+      "origem": {
+        "obrigacao": "NFE",
+        "elemento": "emit/CRT",
+        "filtro": "CRT in (1,4)",
+        "agregacao": "MES"
+      },
+      "destino": {
+        "obrigacao": "EFD_CONTRIB",
+        "elemento": "0000; ECF 0000"
+      },
+      "chaveJuncao": [
+        "CNPJ_BASE",
+        "PERIODO"
+      ],
+      "operador": "NAO_EXISTE",
+      "tolerancia": null,
+      "condicaoDescritiva": "NF-e com CRT 1/4 no mesmo período em que existem EFD-Contribuições ou ECF de lucro real/presumido indica incoerência de enquadramento.",
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "NORMA",
+      "fontes": [
+        "LC_123_06",
+        "IN_RFB_1252_2012",
+        "IN_RFB_2004_2021"
+      ],
+      "hipotesesLegitimas": [
+        "Desenquadramento/exclusão do Simples no período com NF-e emitidas antes da data de efeito",
+        "Erro de parametrização do emissor (CRT informado errado)"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "vigenciaFim": null,
+      "mensagemParecer": "NF-e emitidas com CRT {crt} (Simples/MEI) coexistem com {obrigacao} de regime não simplificado em {periodo}. Enquadramento incoerente: os demais cruzamentos de valor ficam não conclusivos."
+    },
+    {
+      "id": "PAR-003",
+      "titulo": "Lucro presumido/arbitrado exige PIS/COFINS cumulativo",
+      "mapa": "NUCLEO-1 §5",
+      "tipoRelacao": "PAR",
+      "origem": {
+        "obrigacao": "ECF",
+        "elemento": "0010.FORMA_TRIB, 0010.FORMA_TRIB_PER",
+        "filtro": "FORMA_TRIB in (3,4,5,6,7) – trimestres P ou A"
+      },
+      "destino": {
+        "obrigacao": "EFD_CONTRIB",
+        "elemento": "0110.COD_INC_TRIB",
+        "agregacao": "MES"
+      },
+      "chaveJuncao": [
+        "CNPJ_BASE",
+        "MES_DO_TRIMESTRE"
+      ],
+      "operador": "COMPATIVEL",
+      "tolerancia": null,
+      "condicaoDescritiva": "Nos meses de trimestre tributado pelo presumido/arbitrado, COD_INC_TRIB deve ser 2 (cumulativo).",
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "NORMA",
+      "fontes": [
+        "LEI_10637_02",
+        "LEI_10833_03",
+        "GP_EFD_CONTRIB",
+        "MANUAL_ECF_L12"
+      ],
+      "hipotesesLegitimas": [],
+      "vigenciaInicio": "2025-01-01",
+      "vigenciaFim": null,
+      "mensagemParecer": "A ECF indica {formaTrib} no trimestre {trimestre}, mas a EFD-Contribuições de {mes} informa COD_INC_TRIB={codIncTrib} (esperado 2 – cumulativo).",
+      "cadeias": [
+        "C5"
+      ]
+    },
+    {
+      "id": "PAR-004",
+      "titulo": "Lucro real com PIS/COFINS exclusivamente cumulativo",
+      "mapa": "NUCLEO-1 §5",
+      "tipoRelacao": "PAR",
+      "origem": {
+        "obrigacao": "ECF",
+        "elemento": "0010.FORMA_TRIB, FORMA_TRIB_PER",
+        "filtro": "trimestres R (real)"
+      },
+      "destino": {
+        "obrigacao": "EFD_CONTRIB",
+        "elemento": "0110.COD_INC_TRIB",
+        "agregacao": "MES"
+      },
+      "chaveJuncao": [
+        "CNPJ_BASE",
+        "MES"
+      ],
+      "operador": "COMPATIVEL",
+      "tolerancia": null,
+      "condicaoDescritiva": "Lucro real espera COD_INC_TRIB 1 ou 3. Valor 2 só é admissível se todas as receitas estiverem nas exceções do art. 8º da Lei 10.637/02 e art. 10 da Lei 10.833/03.",
+      "severidade": "ALERTA",
+      "evidencia": "NORMA",
+      "fontes": [
+        "LEI_10637_02",
+        "LEI_10833_03"
+      ],
+      "hipotesesLegitimas": [
+        "Atividades integralmente listadas nas exceções legais à não cumulatividade"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "vigenciaFim": null,
+      "mensagemParecer": "Lucro real em {periodo} com EFD-Contribuições exclusivamente cumulativa (COD_INC_TRIB=2). Confirmar se todas as receitas estão nas exceções legais."
+    },
+    {
+      "id": "PAR-005",
+      "titulo": "Regime de caixa do presumido deve ser o mesmo para IRPJ/CSLL e PIS/COFINS",
+      "mapa": "NUCLEO-1 §5",
+      "tipoRelacao": "PAR",
+      "origem": {
+        "obrigacao": "ECF",
+        "elemento": "Indicador de regime de reconhecimento de receitas do presumido (ex.: Y672.IND_REG_APUR)"
+      },
+      "destino": {
+        "obrigacao": "EFD_CONTRIB",
+        "elemento": "0110.IND_REG_CUM",
+        "agregacao": "MES"
+      },
+      "chaveJuncao": [
+        "CNPJ_BASE",
+        "ANO"
+      ],
+      "operador": "COMPATIVEL",
+      "tolerancia": null,
+      "condicaoDescritiva": "ECF regime de caixa <=> IND_REG_CUM=1 em todos os meses; ECF competência <=> IND_REG_CUM in (2,9).",
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "NORMA",
+      "fontes": [
+        "IN_SRF_104_1998",
+        "GP_EFD_CONTRIB",
+        "MANUAL_ECF_L12"
+      ],
+      "hipotesesLegitimas": [],
+      "aplicavelSe": "ECF FORMA_TRIB presumido em algum trimestre",
+      "vigenciaInicio": "2025-01-01",
+      "vigenciaFim": null,
+      "conferirCampo": true,
+      "mensagemParecer": "Regime de reconhecimento de receitas divergente: ECF={regimeEcf}, EFD-Contribuições IND_REG_CUM={indRegCum} em {meses}."
+    },
+    {
+      "id": "PAR-006",
+      "titulo": "Lucro real exige ECD recuperada na ECF",
+      "mapa": "NUCLEO-1 §5",
+      "tipoRelacao": "PAR",
+      "origem": {
+        "obrigacao": "ECF",
+        "elemento": "0010.FORMA_TRIB",
+        "filtro": "FORMA_TRIB in (1,2)"
+      },
+      "destino": {
+        "obrigacao": "ECD",
+        "elemento": "0000 (ano); ECF C040"
+      },
+      "chaveJuncao": [
+        "CNPJ_BASE",
+        "ANO"
+      ],
+      "operador": "EXISTE",
+      "tolerancia": null,
+      "condicaoDescritiva": "Lucro real: deve existir ECD do período e a ECF deve conter Bloco C (C040) recuperando-a.",
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "NORMA",
+      "fontes": [
+        "IN_RFB_2003_2021",
+        "MANUAL_ECF_L12"
+      ],
+      "hipotesesLegitimas": [],
+      "vigenciaInicio": "2025-01-01",
+      "vigenciaFim": null,
+      "mensagemParecer": "ECF de lucro real em {ano} sem ECD correspondente recebida/recuperada."
+    },
+    {
+      "id": "PAR-007",
+      "titulo": "Presumido: forma de escrituração na ECF coerente com existência de ECD",
+      "mapa": "NUCLEO-1 §5",
+      "tipoRelacao": "PAR",
+      "origem": {
+        "obrigacao": "ECF",
+        "elemento": "0010.TIP_ESC_PRE, Bloco Q"
+      },
+      "destino": {
+        "obrigacao": "ECD",
+        "elemento": "0000 (ano)"
+      },
+      "chaveJuncao": [
+        "CNPJ_BASE",
+        "ANO"
+      ],
+      "operador": "COMPATIVEL",
+      "tolerancia": null,
+      "condicaoDescritiva": "TIP_ESC_PRE=C exige ECD do período; TIP_ESC_PRE=L exige Bloco Q (Livro Caixa) e ausência de ECD.",
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "MANUAL",
+      "fontes": [
+        "MANUAL_ECF_L12",
+        "IN_RFB_2003_2021"
+      ],
+      "hipotesesLegitimas": [],
+      "aplicavelSe": "ECF FORMA_TRIB presumido",
+      "vigenciaInicio": "2025-01-01",
+      "vigenciaFim": null,
+      "mensagemParecer": "ECF de lucro presumido com TIP_ESC_PRE={tipEscPre}, incompatível com {situacaoEcd}."
+    },
+    {
+      "id": "PAR-008",
+      "titulo": "Plano referencial da ECD compatível com forma de tributação e qualificação da PJ na ECF",
+      "mapa": "NUCLEO-1 §5",
+      "tipoRelacao": "PAR",
+      "origem": {
+        "obrigacao": "ECD",
+        "elemento": "0000.COD_PLAN_REF"
+      },
+      "destino": {
+        "obrigacao": "ECF",
+        "elemento": "0010.FORMA_TRIB, 0010.COD_QUALIF_PJ"
+      },
+      "chaveJuncao": [
+        "CNPJ_BASE",
+        "ANO"
+      ],
+      "operador": "COMPATIVEL",
+      "tolerancia": null,
+      "condicaoDescritiva": "Tabela de compatibilidade COD_PLAN_REF x (FORMA_TRIB, COD_QUALIF_PJ) conforme manuais ECD/ECF.",
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "MANUAL",
+      "fontes": [
+        "MANUAL_ECD_L9",
+        "MANUAL_ECF_L12"
+      ],
+      "hipotesesLegitimas": [],
+      "vigenciaInicio": "2025-01-01",
+      "vigenciaFim": null,
+      "conferirCampo": true,
+      "mensagemParecer": "Plano referencial da ECD ({codPlanRef}) incompatível com a tributação/qualificação da ECF ({formaTrib}/{codQualif})."
+    },
+    {
+      "id": "PAR-009",
+      "titulo": "Indicador de atividade industrial coerente com IPI nos documentos e na apuração",
+      "mapa": "NUCLEO-1 §5",
+      "tipoRelacao": "PAR",
+      "origem": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "0000.IND_ATIV"
+      },
+      "destino": {
+        "obrigacao": "NFE",
+        "elemento": "total/ICMSTot/vIPI (saídas próprias); EFD E520",
+        "agregacao": "MES"
+      },
+      "chaveJuncao": [
+        "CNPJ",
+        "MES"
+      ],
+      "operador": "COMPATIVEL",
+      "tolerancia": null,
+      "condicaoDescritiva": "IND_ATIV=1 com NF-e de saída própria com IPI destacado, ou IND_ATIV=0 com IPI destacado e sem E520, é incoerente.",
+      "severidade": "ALERTA",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_ICMS_IPI",
+        "MOC_NFE"
+      ],
+      "hipotesesLegitimas": [
+        "Equiparação a industrial (RIPI) não refletida no indicador"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "vigenciaFim": null,
+      "mensagemParecer": "Estabelecimento {cnpj} com IND_ATIV={indAtiv} e IPI destacado de R$ {vIPI} em {mes}.",
+      "cadeias": [
+        "C3"
+      ]
+    },
+    {
+      "id": "PAR-010",
+      "titulo": "Situação especial e período coerentes entre ECD, ECF e encerramento das EFDs",
+      "mapa": "NUCLEO-1 §5",
+      "tipoRelacao": "PAR",
+      "origem": {
+        "obrigacao": "ECD",
+        "elemento": "0000.IND_SIT_ESP, DT_INI, DT_FIN"
+      },
+      "destino": {
+        "obrigacao": "ECF",
+        "elemento": "0000.SIT_ESPECIAL, DT_SIT_ESP, DT_INI, DT_FIN"
+      },
+      "chaveJuncao": [
+        "CNPJ_BASE"
+      ],
+      "operador": "IGUAL",
+      "tolerancia": null,
+      "condicaoDescritiva": "Mesmo período e mesma situação especial (cisão, fusão, incorporação, extinção) nas duas escriturações; não deve haver EFD mensal após a data do evento de extinção/incorporação.",
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "MANUAL",
+      "fontes": [
+        "MANUAL_ECD_L9",
+        "MANUAL_ECF_L12"
+      ],
+      "hipotesesLegitimas": [],
+      "vigenciaInicio": "2025-01-01",
+      "vigenciaFim": null,
+      "mensagemParecer": "Período/situação especial divergente: ECD {ecdPeriodo}/{ecdSit} x ECF {ecfPeriodo}/{ecfSit}."
+    },
+    {
+      "id": "EXC-001",
+      "titulo": "Transferências entre estabelecimentos não compõem receita",
+      "mapa": "NUCLEO-1 §4.1",
+      "tipoRelacao": "EXC",
+      "origem": {
+        "obrigacao": "NFE",
+        "elemento": "det/prod/CFOP",
+        "filtro": "natureza TRANSFERENCIA (PARAM:TABELA_CFOP_RECEITA)"
+      },
+      "operador": "FILTRA",
+      "tolerancia": null,
+      "condicaoDescritiva": "Remove do universo de receita (EFD-Contribuições, ECD, ECF). Continuam exigidas nas EFD ICMS/IPI do remetente e do destinatário.",
+      "severidade": "INFO",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "CONV_SINIEF_SN_1970",
+        "DECISAO_PROJETO"
+      ],
+      "hipotesesLegitimas": [],
+      "vigenciaInicio": "2025-01-01",
+      "vigenciaFim": null,
+      "mensagemParecer": "Documento {chave} tratado como transferência (sem receita)."
+    },
+    {
+      "id": "EXC-002",
+      "titulo": "Remessas, retornos e bonificações sem receita",
+      "mapa": "NUCLEO-1 §4.1",
+      "tipoRelacao": "EXC",
+      "origem": {
+        "obrigacao": "NFE",
+        "elemento": "det/prod/CFOP",
+        "filtro": "natureza REMESSA, RETORNO, BONIFICACAO (PARAM:TABELA_CFOP_RECEITA)"
+      },
+      "operador": "FILTRA",
+      "tolerancia": null,
+      "condicaoDescritiva": "Remove do universo de presença exigida na EFD-Contribuições e do universo de receita contábil. Continuam exigidas na EFD ICMS/IPI.",
+      "severidade": "INFO",
+      "evidencia": "MANUAL",
+      "fontes": [
+        "GP_EFD_CONTRIB",
+        "DECISAO_PROJETO"
+      ],
+      "hipotesesLegitimas": [],
+      "vigenciaInicio": "2025-01-01",
+      "vigenciaFim": null,
+      "mensagemParecer": "Documento {chave} sem repercussão em receita/PIS/COFINS (CFOP {cfop})."
+    },
+    {
+      "id": "EXC-003",
+      "titulo": "NF-e cancelada ou denegada fora dos universos de receita e crédito",
+      "mapa": "NUCLEO-1 §4.1",
+      "tipoRelacao": "EXC",
+      "origem": {
+        "obrigacao": "NFE",
+        "elemento": "evento 110111 / protocolo de denegação"
+      },
+      "operador": "FILTRA",
+      "tolerancia": null,
+      "condicaoDescritiva": "Remove de receita/crédito. A presença exigida na EFD ICMS/IPI passa a ser como COD_SIT 02/03/04 (regras M1-P02/P03).",
+      "severidade": "INFO",
+      "evidencia": "MANUAL",
+      "fontes": [
+        "MOC_NFE",
+        "GP_EFD_ICMS_IPI"
+      ],
+      "hipotesesLegitimas": [],
+      "vigenciaInicio": "2025-01-01",
+      "vigenciaFim": null,
+      "mensagemParecer": "Documento {chave} cancelado/denegado."
+    },
+    {
+      "id": "EXC-004",
+      "titulo": "NF-e destinada com desconhecimento ou operação não realizada",
+      "mapa": "NUCLEO-2 M1.5",
+      "tipoRelacao": "EXC",
+      "origem": {
+        "obrigacao": "NFE",
+        "elemento": "eventos 210220, 210240",
+        "filtro": "dest/CNPJ = contribuinte"
+      },
+      "operador": "FILTRA",
+      "tolerancia": null,
+      "condicaoDescritiva": "Remove da exigência de escrituração como entrada (M1-P05).",
+      "severidade": "INFO",
+      "evidencia": "MANUAL",
+      "fontes": [
+        "NT_2020_001"
+      ],
+      "hipotesesLegitimas": [],
+      "vigenciaInicio": "2025-01-01",
+      "vigenciaFim": null,
+      "mensagemParecer": "NF-e {chave} com manifestação {evento}: não exigida como entrada."
+    },
+    {
+      "id": "EXC-005",
+      "titulo": "Documento de outro estabelecimento",
+      "mapa": "NUCLEO-2 M1.5",
+      "tipoRelacao": "EXC",
+      "origem": {
+        "obrigacao": "NFE",
+        "elemento": "emit/CNPJ, dest/CNPJ"
+      },
+      "operador": "FILTRA",
+      "tolerancia": null,
+      "condicaoDescritiva": "Na EFD ICMS/IPI (por estabelecimento), exige-se apenas documento cujo CNPJ completo do papel (emit/dest) seja o do 0000. Documentos de outras filiais vão para a EFD da filial.",
+      "severidade": "INFO",
+      "evidencia": "MANUAL",
+      "fontes": [
+        "GP_EFD_ICMS_IPI"
+      ],
+      "hipotesesLegitimas": [],
+      "vigenciaInicio": "2025-01-01",
+      "vigenciaFim": null,
+      "mensagemParecer": "Documento {chave} pertence ao estabelecimento {cnpj}."
+    },
+    {
+      "id": "EXC-006",
+      "titulo": "Presumido em regime de caixa: documento ainda não recebido",
+      "mapa": "NUCLEO-2 M2.4 / M4.4",
+      "tipoRelacao": "EXC",
+      "origem": {
+        "obrigacao": "NFE",
+        "elemento": "documentos de receita (NF-e/NFS-e)",
+        "filtro": "IND_REG_CUM=1"
+      },
+      "operador": "FILTRA",
+      "tolerancia": null,
+      "condicaoDescritiva": "Com IND_REG_CUM=1, a receita é exigida em F500/F510/F525 somente no período do recebimento; documentos não recebidos não geram omissão no mês de emissão.",
+      "severidade": "INFO",
+      "evidencia": "MANUAL",
+      "fontes": [
+        "GP_EFD_CONTRIB",
+        "IN_SRF_104_1998"
+      ],
+      "hipotesesLegitimas": [],
+      "aplicavelSe": "EFD_CONTRIB 0110.IND_REG_CUM = 1",
+      "vigenciaInicio": "2025-01-01",
+      "vigenciaFim": null,
+      "mensagemParecer": "Documento {chave}: receita reconhecida pelo regime de caixa."
+    },
+    {
+      "id": "EXC-007",
+      "titulo": "NF-e somente com IBS/CBS (sem ICMS/IPI)",
+      "mapa": "NUCLEO-2 M1.5; 04-reforma",
+      "tipoRelacao": "EXC",
+      "origem": {
+        "obrigacao": "NFE",
+        "elemento": "grupo IBS/CBS (NT 2025.002) sem ICMS/IPI"
+      },
+      "operador": "FILTRA",
+      "tolerancia": null,
+      "condicaoDescritiva": "Aplicar a exceção ao C100 prevista no Guia Prático EFD ICMS/IPI 3.2.x para documentos que contenham apenas tributos da Reforma Tributária do Consumo (conferir texto exato da exceção).",
+      "severidade": "INFO",
+      "evidencia": "MANUAL",
+      "fontes": [
+        "GP_EFD_ICMS_IPI",
+        "NT_2025_002"
+      ],
+      "hipotesesLegitimas": [],
+      "vigenciaInicio": "2026-01-01",
+      "vigenciaFim": null,
+      "conferirCampo": true,
+      "mensagemParecer": "Documento {chave} contém apenas IBS/CBS; exceção do Guia aplicada."
+    },
+    {
+      "id": "EXC-008",
+      "titulo": "Estoque de terceiros em poder do informante não compõe o ativo",
+      "mapa": "NUCLEO-1 §4.1; NUCLEO-3 C6",
+      "tipoRelacao": "EXC",
+      "origem": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "H010.IND_PROP",
+        "filtro": "IND_PROP = 2"
+      },
+      "operador": "FILTRA",
+      "tolerancia": null,
+      "condicaoDescritiva": "Remove do total de inventário comparado com ECD/ECF.",
+      "severidade": "INFO",
+      "evidencia": "MANUAL",
+      "fontes": [
+        "GP_EFD_ICMS_IPI"
+      ],
+      "hipotesesLegitimas": [],
+      "vigenciaInicio": "2025-01-01",
+      "vigenciaFim": null,
+      "mensagemParecer": "Itens de propriedade de terceiros excluídos do cruzamento de estoque."
+    },
+    {
+      "id": "EXC-009",
+      "titulo": "Aquisições sem direito/opção de crédito de PIS/COFINS",
+      "mapa": "NUCLEO-2 M2.4",
+      "tipoRelacao": "EXC",
+      "origem": {
+        "obrigacao": "NFE",
+        "elemento": "NF-e de entrada",
+        "filtro": "COD_INC_TRIB=2 ou aquisição sem crédito"
+      },
+      "operador": "FILTRA",
+      "tolerancia": null,
+      "condicaoDescritiva": "Aquisições sem crédito podem não constar da EFD-Contribuições; não gerar omissão.",
+      "severidade": "INFO",
+      "evidencia": "MANUAL",
+      "fontes": [
+        "GP_EFD_CONTRIB"
+      ],
+      "hipotesesLegitimas": [],
+      "vigenciaInicio": "2025-01-01",
+      "vigenciaFim": null,
+      "mensagemParecer": "Aquisição {chave} sem crédito: escrituração na EFD-Contribuições não exigida."
+    },
+    {
+      "id": "EXC-010",
+      "titulo": "NFS-e substituída ou cancelada",
+      "mapa": "NUCLEO-1 §4.2",
+      "tipoRelacao": "EXC",
+      "origem": {
+        "obrigacao": "NFSE",
+        "elemento": "eventos de cancelamento/substituição"
+      },
+      "operador": "FILTRA",
+      "tolerancia": null,
+      "condicaoDescritiva": "Somente a NFS-e substituta (vigente) compõe receita; a substituída e a cancelada saem do universo.",
+      "severidade": "INFO",
+      "evidencia": "MANUAL",
+      "fontes": [
+        "NFSE_ANEXO_II"
+      ],
+      "hipotesesLegitimas": [],
+      "vigenciaInicio": "2025-01-01",
+      "vigenciaFim": null,
+      "mensagemParecer": "NFS-e {chave} substituída/cancelada excluída."
+    },
+    {
+      "id": "EXC-011",
+      "titulo": "Receitas e créditos sem documento fiscal",
+      "mapa": "NUCLEO-1 §4.3",
+      "tipoRelacao": "EXC",
+      "origem": {
+        "obrigacao": "EFD_CONTRIB",
+        "elemento": "F100, F120, F130, F150, F200, F600, I, P"
+      },
+      "operador": "FILTRA",
+      "tolerancia": null,
+      "condicaoDescritiva": "Valores destes registros não exigem NF-e/NFS-e de lastro; o lastro é a contabilidade (ECD).",
+      "severidade": "INFO",
+      "evidencia": "MANUAL",
+      "fontes": [
+        "GP_EFD_CONTRIB"
+      ],
+      "hipotesesLegitimas": [],
+      "vigenciaInicio": "2025-01-01",
+      "vigenciaFim": null,
+      "mensagemParecer": "Registro {registro} não exige documento fiscal eletrônico."
+    },
+    {
+      "id": "EXC-012",
+      "titulo": "Serviço com documento municipal fora do padrão nacional",
+      "mapa": "NUCLEO-2 M4.4",
+      "tipoRelacao": "EXC",
+      "origem": {
+        "obrigacao": "EFD_CONTRIB",
+        "elemento": "A100",
+        "filtro": "CHV_NFSE vazio"
+      },
+      "operador": "FILTRA",
+      "tolerancia": null,
+      "condicaoDescritiva": "A100 sem chave nacional não é buscado no universo de NFS-e nacional; reportar como lacuna de cobertura (INFO).",
+      "severidade": "INFO",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_CONTRIB",
+        "NFSE_ANEXO_I"
+      ],
+      "hipotesesLegitimas": [],
+      "vigenciaInicio": "2025-01-01",
+      "vigenciaFim": null,
+      "mensagemParecer": "A100 {numDoc} sem chave de NFS-e nacional: lastro não verificável neste agente."
+    },
+    {
+      "id": "EXC-013",
+      "titulo": "Entrada ainda dentro da janela de escrituração",
+      "mapa": "NUCLEO-2 M1.1",
+      "tipoRelacao": "EXC",
+      "origem": {
+        "obrigacao": "NFE",
+        "elemento": "ide/dhEmi",
+        "filtro": "dest = contribuinte; mês de análise < mês(dhEmi) + PARAM:JANELA_MESES_ENTRADA"
+      },
+      "operador": "FILTRA",
+      "tolerancia": "PARAM:JANELA_MESES_ENTRADA",
+      "condicaoDescritiva": "Não acusar omissão de entrada enquanto a janela não terminou ou enquanto as EFD dos meses seguintes não foram recebidas.",
+      "severidade": "INFO",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_ICMS_IPI",
+        "DECISAO_PROJETO"
+      ],
+      "hipotesesLegitimas": [],
+      "vigenciaInicio": "2025-01-01",
+      "vigenciaFim": null,
+      "mensagemParecer": "NF-e {chave} ainda dentro da janela de escrituração de entrada."
+    },
+    {
+      "id": "ENT-001",
+      "titulo": "Estabelecimento com EFD ICMS/IPI consta do 0140 da EFD-Contribuições",
+      "mapa": "NUCLEO-1 §3.1",
+      "tipoRelacao": "PRE_DIRETA",
+      "origem": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "0000.CNPJ",
+        "agregacao": "MES"
+      },
+      "destino": {
+        "obrigacao": "EFD_CONTRIB",
+        "elemento": "0140.CNPJ",
+        "agregacao": "MES"
+      },
+      "chaveJuncao": [
+        "CNPJ",
+        "MES"
+      ],
+      "operador": "EXISTE",
+      "tolerancia": null,
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_ICMS_IPI",
+        "GP_EFD_CONTRIB"
+      ],
+      "hipotesesLegitimas": [
+        "Nenhuma hipótese legítima prevista nos leiautes para esta divergência – solicitar justificativa documental ao contribuinte"
+      ],
+      "dependeDe": [
+        "PAR-001"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "vigenciaFim": null,
+      "mensagemParecer": "Estabelecimento {cnpj} possui EFD ICMS/IPI em {mes}, mas não consta do registro 0140 da EFD-Contribuições."
+    },
+    {
+      "id": "ENT-002",
+      "titulo": "Estabelecimento do 0140 com mercadorias e IE possui EFD ICMS/IPI",
+      "mapa": "NUCLEO-1 §3.1",
+      "tipoRelacao": "PRE_REVERSA",
+      "origem": {
+        "obrigacao": "EFD_CONTRIB",
+        "elemento": "0140 (com IE) + Bloco C com movimento",
+        "agregacao": "MES"
+      },
+      "destino": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "0000",
+        "agregacao": "MES"
+      },
+      "chaveJuncao": [
+        "CNPJ",
+        "MES"
+      ],
+      "operador": "EXISTE",
+      "tolerancia": null,
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "AJUSTE_SINIEF_02_09",
+        "GP_EFD_CONTRIB"
+      ],
+      "hipotesesLegitimas": [
+        "Dispensa da UF",
+        "Escrituração do estabelecimento não fornecida ao agente (cobertura)"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "vigenciaFim": null,
+      "mensagemParecer": "Estabelecimento {cnpj} com movimento de mercadorias na EFD-Contribuições em {mes} sem EFD ICMS/IPI correspondente."
+    },
+    {
+      "id": "ENT-003",
+      "titulo": "Emitente de NF-e de saída possui EFD ICMS/IPI no mês",
+      "mapa": "NUCLEO-1 §3.1",
+      "tipoRelacao": "PRE_DIRETA",
+      "origem": {
+        "obrigacao": "NFE",
+        "elemento": "emit/CNPJ",
+        "filtro": "estabelecimentos do grupo, CRT=3",
+        "agregacao": "MES"
+      },
+      "destino": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "0000.CNPJ",
+        "agregacao": "MES"
+      },
+      "chaveJuncao": [
+        "CNPJ",
+        "MES"
+      ],
+      "operador": "EXISTE",
+      "tolerancia": null,
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "AJUSTE_SINIEF_02_09"
+      ],
+      "hipotesesLegitimas": [
+        "Dispensa da UF",
+        "Cobertura incompleta de insumos"
+      ],
+      "dependeDe": [
+        "PAR-001"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "vigenciaFim": null,
+      "mensagemParecer": "Estabelecimento {cnpj} emitiu {qtd} NF-e em {mes} sem EFD ICMS/IPI do período."
+    },
+    {
+      "id": "ENT-004",
+      "titulo": "Raiz do CNPJ igual em todas as escriturações analisadas",
+      "mapa": "NUCLEO-1 §3.1",
+      "tipoRelacao": "IDT",
+      "origem": {
+        "obrigacao": "ECD",
+        "elemento": "0000.CNPJ"
+      },
+      "destino": {
+        "obrigacao": "ECF",
+        "elemento": "0000.CNPJ; EFD_CONTRIB 0000.CNPJ; EFD_ICMS_IPI 0000.CNPJ"
+      },
+      "chaveJuncao": [
+        "CNPJ_BASE"
+      ],
+      "operador": "IGUAL",
+      "tolerancia": null,
+      "severidade": "ESTRUTURA_GRAVE",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "MANUAL_ECD_L9",
+        "MANUAL_ECF_L12",
+        "GP_EFD_CONTRIB",
+        "GP_EFD_ICMS_IPI"
+      ],
+      "hipotesesLegitimas": [
+        "SCP (TIP_ECD/TIP_ECF = 2) com CNPJ próprio"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "vigenciaFim": null,
+      "mensagemParecer": "Escriturações de raízes de CNPJ diferentes no mesmo lote: {lista}. Lote inconsistente."
+    },
+    {
+      "id": "ENT-005",
+      "titulo": "Inscrição estadual coerente entre EFD, NF-e e 0140",
+      "mapa": "NUCLEO-1 §3.1",
+      "tipoRelacao": "IDT",
+      "origem": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "0000.IE"
+      },
+      "destino": {
+        "obrigacao": "NFE",
+        "elemento": "emit/IE (próprias do estabelecimento); EFD_CONTRIB 0140.IE"
+      },
+      "chaveJuncao": [
+        "CNPJ",
+        "MES"
+      ],
+      "operador": "IGUAL",
+      "tolerancia": null,
+      "severidade": "ALERTA",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_ICMS_IPI",
+        "MOC_NFE",
+        "GP_EFD_CONTRIB"
+      ],
+      "hipotesesLegitimas": [
+        "Alteração cadastral no mês"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "vigenciaFim": null,
+      "mensagemParecer": "IE divergente para {cnpj}: EFD={ieEfd}, NF-e={ieNfe}, 0140={ie0140}."
+    },
+    {
+      "id": "ENT-010",
+      "titulo": "Participante do C100 = emitente/destinatário do XML",
+      "mapa": "NUCLEO-1 §3.2",
+      "tipoRelacao": "IDT",
+      "origem": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "C100.COD_PART -> 0150.CNPJ/CPF"
+      },
+      "destino": {
+        "obrigacao": "NFE",
+        "elemento": "dest/CNPJ|CPF (saída própria) ou emit/CNPJ (entrada de terceiros)"
+      },
+      "chaveJuncao": [
+        "CHV_NFE"
+      ],
+      "operador": "IGUAL",
+      "tolerancia": null,
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_ICMS_IPI",
+        "MOC_NFE"
+      ],
+      "hipotesesLegitimas": [
+        "Nenhuma hipótese legítima prevista nos leiautes para esta divergência – solicitar justificativa documental ao contribuinte"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "vigenciaFim": null,
+      "mensagemParecer": "NF-e {chave}: participante escriturado {cnpjEfd} difere do XML {cnpjXml}."
+    },
+    {
+      "id": "ENT-011",
+      "titulo": "Mesmo documento com mesmo participante nas duas EFD",
+      "mapa": "NUCLEO-1 §3.2",
+      "tipoRelacao": "IDT",
+      "origem": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "C100.COD_PART -> 0150.CNPJ"
+      },
+      "destino": {
+        "obrigacao": "EFD_CONTRIB",
+        "elemento": "C100.COD_PART -> 0150.CNPJ"
+      },
+      "chaveJuncao": [
+        "CHV_NFE"
+      ],
+      "operador": "IGUAL",
+      "tolerancia": null,
+      "severidade": "ALERTA",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_ICMS_IPI",
+        "GP_EFD_CONTRIB"
+      ],
+      "hipotesesLegitimas": [],
+      "vigenciaInicio": "2025-01-01",
+      "vigenciaFim": null,
+      "mensagemParecer": "Documento {chave} com participantes diferentes nas EFD ({cnpjIcms} x {cnpjContrib})."
+    },
+    {
+      "id": "ENT-012",
+      "titulo": "Instituição de pagamento/intermediador do 1601 = declarante da DIMP",
+      "mapa": "NUCLEO-1 §3.2",
+      "tipoRelacao": "IDT",
+      "origem": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "1601.COD_PART_IP, 1601.COD_PART_IT -> 0150.CNPJ"
+      },
+      "destino": {
+        "obrigacao": "DIMP",
+        "elemento": "CNPJ do declarante"
+      },
+      "chaveJuncao": [
+        "CNPJ_INSTITUICAO",
+        "MES",
+        "CNPJ_ESTABELECIMENTO"
+      ],
+      "operador": "IGUAL",
+      "tolerancia": null,
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_ICMS_IPI",
+        "ATO_COTEPE_65_18"
+      ],
+      "hipotesesLegitimas": [
+        "Nenhuma hipótese legítima prevista nos leiautes para esta divergência – solicitar justificativa documental ao contribuinte"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "vigenciaFim": null,
+      "conferirCampo": true,
+      "mensagemParecer": "Instituição {cnpjInst} não casa entre DIMP e registro 1601 de {cnpj} em {mes}.",
+      "cadeias": [
+        "C9"
+      ]
+    },
+    {
+      "id": "ENT-020",
+      "titulo": "Cadastro do item (saída própria) coerente com o XML",
+      "mapa": "NUCLEO-1 §3.3",
+      "tipoRelacao": "IDT",
+      "origem": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "0200.COD_ITEM, COD_NCM, COD_BARRA, CEST, EX_IPI"
+      },
+      "destino": {
+        "obrigacao": "NFE",
+        "elemento": "det/prod/cProd, NCM, cEAN, CEST, EXTIPI",
+        "filtro": "saídas próprias"
+      },
+      "chaveJuncao": [
+        "COD_ITEM=cProd"
+      ],
+      "operador": "IGUAL",
+      "tolerancia": null,
+      "severidade": "ALERTA",
+      "severidadeAtenuada": {
+        "quando": "Divergência apenas de descrição ou código de barras",
+        "severidade": "INFO"
+      },
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_ICMS_IPI",
+        "MOC_NFE"
+      ],
+      "hipotesesLegitimas": [
+        "Reclassificação de NCM no período (0205 – alteração do item)"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "vigenciaFim": null,
+      "mensagemParecer": "Item {codItem}: NCM no cadastro {ncmEfd} x NCM no XML {ncmXml}."
+    },
+    {
+      "id": "ENT-021",
+      "titulo": "Item de entrada de terceiros: NCM do fornecedor coerente com o cadastro do informante",
+      "mapa": "NUCLEO-1 §3.3",
+      "tipoRelacao": "IDT",
+      "origem": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "C170.NUM_ITEM, C170.COD_ITEM -> 0200.COD_NCM"
+      },
+      "destino": {
+        "obrigacao": "NFE",
+        "elemento": "det/@nItem, prod/NCM",
+        "filtro": "entradas de terceiros"
+      },
+      "chaveJuncao": [
+        "CHV_NFE",
+        "NUM_ITEM=nItem"
+      ],
+      "operador": "IGUAL",
+      "tolerancia": null,
+      "severidade": "ALERTA",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_ICMS_IPI",
+        "MOC_NFE"
+      ],
+      "hipotesesLegitimas": [
+        "Item recebido com classificação diferente do cadastro interno (verificar destinação)"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "vigenciaFim": null,
+      "mensagemParecer": "NF-e {chave} item {nItem}: NCM do fornecedor {ncmXml} x cadastro do informante {ncmEfd}."
+    },
+    {
+      "id": "ENT-022",
+      "titulo": "Unidade diferente da de estoque exige fator de conversão",
+      "mapa": "NUCLEO-1 §3.3",
+      "tipoRelacao": "PRE_DIRETA",
+      "origem": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "C170.UNID <> 0200.UNID_INV"
+      },
+      "destino": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "0220 (UNID_CONV, FAT_CONV)"
+      },
+      "chaveJuncao": [
+        "COD_ITEM",
+        "UNID"
+      ],
+      "operador": "EXISTE",
+      "tolerancia": null,
+      "condicaoDescritiva": "Além da existência do 0220, QTD convertida deve ser coerente com qCom/qTrib do XML.",
+      "severidade": "ALERTA",
+      "evidencia": "MANUAL",
+      "fontes": [
+        "GP_EFD_ICMS_IPI"
+      ],
+      "hipotesesLegitimas": [],
+      "vigenciaInicio": "2025-01-01",
+      "vigenciaFim": null,
+      "mensagemParecer": "Item {codItem} movimentado em {unid} sem fator de conversão para {unidInv}."
+    },
+    {
+      "id": "ENT-023",
+      "titulo": "Mesmo item com mesmo NCM/descrição nas duas EFD",
+      "mapa": "NUCLEO-1 §3.3",
+      "tipoRelacao": "IDT",
+      "origem": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "0200.COD_ITEM, COD_NCM, DESCR_ITEM, TIPO_ITEM"
+      },
+      "destino": {
+        "obrigacao": "EFD_CONTRIB",
+        "elemento": "0200.COD_ITEM, COD_NCM, DESCR_ITEM, TIPO_ITEM"
+      },
+      "chaveJuncao": [
+        "COD_ITEM",
+        "MES"
+      ],
+      "operador": "IGUAL",
+      "tolerancia": null,
+      "severidade": "ALERTA",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_ICMS_IPI",
+        "GP_EFD_CONTRIB"
+      ],
+      "hipotesesLegitimas": [],
+      "vigenciaInicio": "2025-01-01",
+      "vigenciaFim": null,
+      "mensagemParecer": "Item {codItem} com cadastro divergente entre EFD ICMS/IPI e EFD-Contribuições ({campo})."
+    },
+    {
+      "id": "ENT-030",
+      "titulo": "Contas do 0500 das EFD existem no plano de contas da ECD",
+      "mapa": "NUCLEO-1 §3.4",
+      "tipoRelacao": "PRE_DIRETA",
+      "origem": {
+        "obrigacao": "EFD_CONTRIB",
+        "elemento": "0500.COD_CTA (e EFD_ICMS_IPI 0500.COD_CTA)",
+        "agregacao": "ANO"
+      },
+      "destino": {
+        "obrigacao": "ECD",
+        "elemento": "I050.COD_CTA",
+        "agregacao": "ANO"
+      },
+      "chaveJuncao": [
+        "COD_CTA",
+        "ANO"
+      ],
+      "operador": "EXISTE",
+      "tolerancia": null,
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_CONTRIB",
+        "GP_EFD_ICMS_IPI",
+        "MANUAL_ECD_L9"
+      ],
+      "hipotesesLegitimas": [
+        "Mudança de plano de contas no ano (ECD 0000.IND_MUDANC_PC + I157) – aceitar código antigo mapeado"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "vigenciaFim": null,
+      "mensagemParecer": "Conta {codCta} usada na {obrigacao} não existe no plano de contas da ECD de {ano}.",
+      "cadeias": [
+        "C7"
+      ]
+    },
+    {
+      "id": "ENT-031",
+      "titulo": "Natureza e tipo da conta iguais entre 0500 e I050 (conta analítica)",
+      "mapa": "NUCLEO-1 §3.4",
+      "tipoRelacao": "IDT",
+      "origem": {
+        "obrigacao": "EFD_CONTRIB",
+        "elemento": "0500.COD_NAT_CC, 0500.IND_CTA"
+      },
+      "destino": {
+        "obrigacao": "ECD",
+        "elemento": "I050.COD_NAT, I050.IND_CTA"
+      },
+      "chaveJuncao": [
+        "COD_CTA"
+      ],
+      "operador": "IGUAL",
+      "tolerancia": null,
+      "condicaoDescritiva": "Contas referenciadas em registros de movimento devem ser analíticas (IND_CTA = A).",
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_CONTRIB",
+        "MANUAL_ECD_L9"
+      ],
+      "hipotesesLegitimas": [
+        "Nenhuma hipótese legítima prevista nos leiautes para esta divergência – solicitar justificativa documental ao contribuinte"
+      ],
+      "dependeDe": [
+        "ENT-030"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "vigenciaFim": null,
+      "mensagemParecer": "Conta {codCta}: natureza/tipo na EFD ({natEfd}/{indEfd}) difere da ECD ({natEcd}/{indEcd})."
+    },
+    {
+      "id": "ENT-032",
+      "titulo": "Natureza da conta coerente com o uso no registro",
+      "mapa": "NUCLEO-1 §3.4",
+      "tipoRelacao": "PAR",
+      "origem": {
+        "obrigacao": "EFD_CONTRIB",
+        "elemento": "COD_CTA em C181/A170/F500 (receita), F120/F130 (ativo); EFD_ICMS_IPI H010 (estoque), 0300 (ativo)"
+      },
+      "destino": {
+        "obrigacao": "ECD",
+        "elemento": "I050.COD_NAT"
+      },
+      "chaveJuncao": [
+        "COD_CTA"
+      ],
+      "operador": "COMPATIVEL",
+      "tolerancia": null,
+      "condicaoDescritiva": "Receita -> COD_NAT 04; estoque e ativo imobilizado -> COD_NAT 01.",
+      "severidade": "ALERTA",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_CONTRIB",
+        "GP_EFD_ICMS_IPI",
+        "MANUAL_ECD_L9"
+      ],
+      "hipotesesLegitimas": [],
+      "dependeDe": [
+        "ENT-030"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "vigenciaFim": null,
+      "mensagemParecer": "Conta {codCta} (natureza {codNat}) usada em {registro}, que espera natureza {esperada}.",
+      "cadeias": [
+        "C7"
+      ]
+    },
+    {
+      "id": "ENT-033",
+      "titulo": "Contas vinculadas a ajustes do e-Lalur existem e movimentaram na ECD",
+      "mapa": "NUCLEO-1 §3.4",
+      "tipoRelacao": "PRE_REVERSA",
+      "origem": {
+        "obrigacao": "ECF",
+        "elemento": "M310.COD_CTA"
+      },
+      "destino": {
+        "obrigacao": "ECD",
+        "elemento": "I050.COD_CTA, I155/I355 com movimento"
+      },
+      "chaveJuncao": [
+        "COD_CTA",
+        "ANO"
+      ],
+      "operador": "EXISTE",
+      "tolerancia": null,
+      "severidade": "ALERTA",
+      "evidencia": "MANUAL",
+      "fontes": [
+        "MANUAL_ECF_L12",
+        "MANUAL_ECD_L9"
+      ],
+      "hipotesesLegitimas": [],
+      "vigenciaInicio": "2025-01-01",
+      "vigenciaFim": null,
+      "mensagemParecer": "Ajuste do e-Lalur/e-Lacs vinculado à conta {codCta}, sem saldo/movimento na ECD.",
+      "cadeias": [
+        "C10"
+      ]
+    }
+  ]
+}

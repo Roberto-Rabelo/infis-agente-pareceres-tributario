@@ -1,0 +1,782 @@
+{
+  "$schema": "./schema/regra.schema.json",
+  "versaoCatalogo": "1.0.0",
+  "grupo": "CONTABIL_ECF",
+  "descricao": "Mapas M9 (ECD x ECF) e M12 (documentos x ECD/ECF).",
+  "documentoOrigem": "NUCLEO-2-mapas-bidirecionais.md",
+  "regras": [
+    {
+      "id": "M9-01",
+      "titulo": "ECF recupera a última ECD válida do período",
+      "mapa": "M9.1",
+      "tipoRelacao": "IDT",
+      "origem": {
+        "obrigacao": "ECD",
+        "elemento": "hash da última ECD válida (original ou substituta – IND_FIN_ESC/COD_HASH_SUB)"
+      },
+      "destino": {
+        "obrigacao": "ECF",
+        "elemento": "C040.HASH_ECD"
+      },
+      "chaveJuncao": [
+        "CNPJ_BASE",
+        "PERIODO"
+      ],
+      "operador": "IGUAL",
+      "tolerancia": null,
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "MANUAL",
+      "fontes": [
+        "MANUAL_ECF_L12",
+        "MANUAL_ECD_L9"
+      ],
+      "hipotesesLegitimas": [],
+      "dependeDe": [
+        "PAR-006",
+        "PAR-007"
+      ],
+      "cadeias": [
+        "C1",
+        "C10"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "A ECF recuperou a ECD de hash {hashEcf}, mas a ECD vigente do período é {hashEcd}. A ECF deve ser retificada."
+    },
+    {
+      "id": "M9-02",
+      "titulo": "Período e situação especial iguais (ECD x ECF)",
+      "mapa": "M9.1",
+      "tipoRelacao": "IDT",
+      "origem": {
+        "obrigacao": "ECD",
+        "elemento": "0000.DT_INI, DT_FIN, IND_SIT_ESP"
+      },
+      "destino": {
+        "obrigacao": "ECF",
+        "elemento": "C040.DT_INI, DT_FIN, IND_SIT_ESP; 0000"
+      },
+      "chaveJuncao": [
+        "CNPJ_BASE"
+      ],
+      "operador": "IGUAL",
+      "tolerancia": null,
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "MANUAL",
+      "fontes": [
+        "MANUAL_ECF_L12",
+        "MANUAL_ECD_L9"
+      ],
+      "hipotesesLegitimas": [],
+      "dependeDe": [
+        "PAR-010"
+      ],
+      "cadeias": [
+        "C10"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "Período/situação especial da ECD ({ecd}) diferente do recuperado na ECF ({ecf})."
+    },
+    {
+      "id": "M9-03",
+      "titulo": "Plano de contas e mapeamento referencial iguais",
+      "mapa": "M9.1",
+      "tipoRelacao": "IDT",
+      "origem": {
+        "obrigacao": "ECD",
+        "elemento": "I050, I051"
+      },
+      "destino": {
+        "obrigacao": "ECF",
+        "elemento": "C050, C051"
+      },
+      "chaveJuncao": [
+        "COD_CTA"
+      ],
+      "operador": "IGUAL",
+      "tolerancia": null,
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "MANUAL",
+      "fontes": [
+        "MANUAL_ECF_L12",
+        "MANUAL_ECD_L9"
+      ],
+      "hipotesesLegitimas": [],
+      "dependeDe": [
+        "M9-01"
+      ],
+      "cadeias": [
+        "C10"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "Conta {codCta}: plano/mapeamento referencial diverge entre ECD e ECF."
+    },
+    {
+      "id": "M9-04",
+      "titulo": "Saldos patrimoniais da ECD = K155 da ECF",
+      "mapa": "M9.1",
+      "tipoRelacao": "IDT",
+      "origem": {
+        "obrigacao": "ECD",
+        "elemento": "I155 (VL_SLD_INI, VL_DEB, VL_CRED, VL_SLD_FIN)"
+      },
+      "destino": {
+        "obrigacao": "ECF",
+        "elemento": "C155 -> K155"
+      },
+      "chaveJuncao": [
+        "COD_CTA",
+        "COD_CCUS",
+        "PERIODO"
+      ],
+      "operador": "IGUAL",
+      "tolerancia": null,
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "PVA",
+      "fontes": [
+        "MANUAL_ECF_L12"
+      ],
+      "hipotesesLegitimas": [],
+      "dependeDe": [
+        "M9-01"
+      ],
+      "cadeias": [
+        "C10"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "Conta {codCta} período {periodo}: saldo ECD {ecd} x K155 {ecf}."
+    },
+    {
+      "id": "M9-05",
+      "titulo": "Saldos de resultado antes do encerramento = K355 da ECF",
+      "mapa": "M9.1",
+      "tipoRelacao": "IDT",
+      "origem": {
+        "obrigacao": "ECD",
+        "elemento": "I355 (VL_CTA, IND_DC)"
+      },
+      "destino": {
+        "obrigacao": "ECF",
+        "elemento": "C355 -> K355"
+      },
+      "chaveJuncao": [
+        "COD_CTA",
+        "COD_CCUS",
+        "DT_RES"
+      ],
+      "operador": "IGUAL",
+      "tolerancia": null,
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "PVA",
+      "fontes": [
+        "MANUAL_ECF_L12"
+      ],
+      "hipotesesLegitimas": [],
+      "dependeDe": [
+        "M9-01"
+      ],
+      "cadeias": [
+        "C1",
+        "C10"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "Conta de resultado {codCta}: ECD {ecd} x K355 {ecf}."
+    },
+    {
+      "id": "M9-06",
+      "titulo": "Saldos por conta referencial (K156/K356) = agregação do mapeamento",
+      "mapa": "M9.1",
+      "tipoRelacao": "AGR",
+      "origem": {
+        "obrigacao": "ECD",
+        "elemento": "I155/I355 agregados via I051",
+        "agregacao": "CONTA"
+      },
+      "destino": {
+        "obrigacao": "ECF",
+        "elemento": "K156 / K356 (COD_CTA_REF)"
+      },
+      "chaveJuncao": [
+        "COD_CTA_REF",
+        "PERIODO"
+      ],
+      "operador": "SOMA_IGUAL",
+      "tolerancia": null,
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "MANUAL",
+      "fontes": [
+        "MANUAL_ECF_L12",
+        "MANUAL_ECD_L9"
+      ],
+      "hipotesesLegitimas": [],
+      "dependeDe": [
+        "M9-03"
+      ],
+      "cadeias": [
+        "C10"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "Conta referencial {codRef}: soma do mapeamento {ecd} x ECF {ecf}."
+    },
+    {
+      "id": "M9-10",
+      "titulo": "Balanço da ECD x balanço referencial da ECF",
+      "mapa": "M9.2",
+      "tipoRelacao": "AGR",
+      "origem": {
+        "obrigacao": "ECD",
+        "elemento": "J100 / saldos I155 mapeados"
+      },
+      "destino": {
+        "obrigacao": "ECF",
+        "elemento": "L100 (real) | P100 (presumido)"
+      },
+      "chaveJuncao": [
+        "COD_CTA_REF",
+        "ANO"
+      ],
+      "operador": "SOMA_IGUAL",
+      "tolerancia": "PARAM:TOL_AGREGADO_ABSOLUTO",
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "MANUAL_ECF_L12",
+        "MANUAL_ECD_L9"
+      ],
+      "hipotesesLegitimas": [
+        "Nenhuma hipótese legítima prevista nos leiautes para esta divergência – solicitar justificativa documental ao contribuinte"
+      ],
+      "dependeDe": [
+        "M9-06"
+      ],
+      "cadeias": [
+        "C10"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "Balanço: grupo {grupo} na ECD {ecd} x ECF {ecf}."
+    },
+    {
+      "id": "M9-11",
+      "titulo": "DRE da ECD x DRE referencial da ECF",
+      "mapa": "M9.2",
+      "tipoRelacao": "IDT",
+      "origem": {
+        "obrigacao": "ECD",
+        "elemento": "J150 (resultado antes do IRPJ/CSLL)"
+      },
+      "destino": {
+        "obrigacao": "ECF",
+        "elemento": "L300 (real) | P150 (presumido)"
+      },
+      "chaveJuncao": [
+        "CNPJ_BASE",
+        "PERIODO"
+      ],
+      "operador": "IGUAL",
+      "tolerancia": "PARAM:TOL_AGREGADO_ABSOLUTO",
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "MANUAL_ECF_L12",
+        "MANUAL_ECD_L9"
+      ],
+      "hipotesesLegitimas": [
+        "Nenhuma hipótese legítima prevista nos leiautes para esta divergência – solicitar justificativa documental ao contribuinte"
+      ],
+      "dependeDe": [
+        "M9-05"
+      ],
+      "cadeias": [
+        "C1",
+        "C2",
+        "C10"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "Resultado antes do IRPJ/CSLL: ECD {ecd} x ECF {ecf}."
+    },
+    {
+      "id": "M9-12",
+      "titulo": "Lucro líquido contábil = ponto de partida do e-Lalur/e-Lacs",
+      "mapa": "M9.2",
+      "tipoRelacao": "IDT",
+      "origem": {
+        "obrigacao": "ECD",
+        "elemento": "Lucro líquido antes do IRPJ/CSLL (J150)"
+      },
+      "destino": {
+        "obrigacao": "ECF",
+        "elemento": "M300 / M350 (lucro líquido antes do IRPJ/CSLL)"
+      },
+      "chaveJuncao": [
+        "CNPJ_BASE",
+        "PERIODO"
+      ],
+      "operador": "IGUAL",
+      "tolerancia": "PARAM:TOL_AGREGADO_ABSOLUTO",
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "MANUAL_ECF_L12"
+      ],
+      "hipotesesLegitimas": [
+        "Nenhuma hipótese legítima prevista nos leiautes para esta divergência – solicitar justificativa documental ao contribuinte"
+      ],
+      "aplicavelSe": "ECF lucro real",
+      "dependeDe": [
+        "M9-11"
+      ],
+      "cadeias": [
+        "C10"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "conferirCampo": true,
+      "mensagemParecer": "Lucro líquido da ECD {ecd} x ponto de partida do e-Lalur/e-Lacs {ecf} ({periodo})."
+    },
+    {
+      "id": "M9-13",
+      "titulo": "Ajuste do e-Lalur vinculado a lançamento existente na ECD",
+      "mapa": "M9.2",
+      "tipoRelacao": "PRE_REVERSA",
+      "origem": {
+        "obrigacao": "ECF",
+        "elemento": "M310.COD_CTA + M312.NUM_LCTO"
+      },
+      "destino": {
+        "obrigacao": "ECD",
+        "elemento": "I200.NUM_LCTO / I250.COD_CTA"
+      },
+      "chaveJuncao": [
+        "NUM_LCTO",
+        "COD_CTA"
+      ],
+      "operador": "EXISTE",
+      "tolerancia": null,
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "MANUAL",
+      "fontes": [
+        "MANUAL_ECF_L12",
+        "MANUAL_ECD_L9"
+      ],
+      "hipotesesLegitimas": [],
+      "aplicavelSe": "ECF lucro real",
+      "dependeDe": [
+        "ENT-033"
+      ],
+      "cadeias": [
+        "C10"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "conferirCampo": true,
+      "mensagemParecer": "Ajuste {codigoAjuste} referencia o lançamento {numLcto}/conta {codCta}, inexistente na ECD."
+    },
+    {
+      "id": "M9-14",
+      "titulo": "Valor do ajuste vinculado limitado ao movimento da conta",
+      "mapa": "M9.2",
+      "tipoRelacao": "LIM",
+      "origem": {
+        "obrigacao": "ECD",
+        "elemento": "Movimento/saldo da conta vinculada (I155/I355)"
+      },
+      "destino": {
+        "obrigacao": "ECF",
+        "elemento": "M310.VALOR"
+      },
+      "chaveJuncao": [
+        "COD_CTA",
+        "PERIODO"
+      ],
+      "operador": "MENOR_OU_IGUAL",
+      "tolerancia": "PARAM:TOL_AGREGADO_ABSOLUTO",
+      "severidade": "ALERTA",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "MANUAL_ECF_L12"
+      ],
+      "hipotesesLegitimas": [
+        "Ajuste que considera parcela de movimentos de períodos anteriores"
+      ],
+      "aplicavelSe": "ECF lucro real",
+      "cadeias": [
+        "C10"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "Ajuste vinculado à conta {codCta} (R$ {ajuste}) supera o movimento contábil (R$ {mov})."
+    },
+    {
+      "id": "M9-15",
+      "titulo": "IRPJ/CSLL apurados x contas contábeis de IRPJ/CSLL",
+      "mapa": "M9.2",
+      "tipoRelacao": "IDT",
+      "origem": {
+        "obrigacao": "ECF",
+        "elemento": "N630/N670 (real) | P300/P500 (presumido)"
+      },
+      "destino": {
+        "obrigacao": "ECD",
+        "elemento": "Contas IRPJ_CSLL (despesa e passivo) – PARAM:TABELA_CONTAS_POR_FUNCAO"
+      },
+      "chaveJuncao": [
+        "CNPJ_BASE",
+        "PERIODO"
+      ],
+      "operador": "IGUAL",
+      "tolerancia": "PARAM:TOL_AGREGADO_PERCENTUAL",
+      "severidade": "ALERTA",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "MANUAL_ECF_L12",
+        "MANUAL_ECD_L9"
+      ],
+      "hipotesesLegitimas": [
+        "Tributos diferidos (IR/CS diferidos) contabilizados",
+        "Ajustes de exercícios anteriores"
+      ],
+      "cadeias": [
+        "C10"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "conferirCampo": true,
+      "mensagemParecer": "IRPJ/CSLL devidos na ECF R$ {ecf} x contabilizados R$ {ecd}."
+    },
+    {
+      "id": "M9-16",
+      "titulo": "Estoque contábil = estoque na ECF",
+      "mapa": "M9.2",
+      "tipoRelacao": "IDT",
+      "origem": {
+        "obrigacao": "ECD",
+        "elemento": "I155 (31/12) contas de estoque"
+      },
+      "destino": {
+        "obrigacao": "ECF",
+        "elemento": "L100/P100 estoques"
+      },
+      "chaveJuncao": [
+        "CNPJ_BASE",
+        "ANO"
+      ],
+      "operador": "IGUAL",
+      "tolerancia": "PARAM:TOL_AGREGADO_ABSOLUTO",
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "MANUAL_ECF_L12",
+        "MANUAL_ECD_L9"
+      ],
+      "hipotesesLegitimas": [
+        "Nenhuma hipótese legítima prevista nos leiautes para esta divergência – solicitar justificativa documental ao contribuinte"
+      ],
+      "dependeDe": [
+        "M9-06"
+      ],
+      "cadeias": [
+        "C6"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "Estoque em 31/12: ECD R$ {ecd} x ECF R$ {ecf}."
+    },
+    {
+      "id": "M9-20",
+      "titulo": "Saldo inicial do ano (ECD) = saldo final da ECD anterior",
+      "mapa": "M9.3",
+      "tipoRelacao": "CNT",
+      "origem": {
+        "obrigacao": "ECD",
+        "elemento": "I155.VL_SLD_FIN (último período do ano anterior), contas patrimoniais"
+      },
+      "destino": {
+        "obrigacao": "ECD",
+        "elemento": "I155.VL_SLD_INI (primeiro período do ano)"
+      },
+      "chaveJuncao": [
+        "COD_CTA",
+        "COD_CCUS"
+      ],
+      "operador": "SALDO_FINAL_IGUAL_INICIAL",
+      "tolerancia": null,
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "MANUAL_ECD_L9"
+      ],
+      "hipotesesLegitimas": [
+        "Mudança de plano de contas com I157 (transferência de saldos)"
+      ],
+      "aplicavelSe": "ECD do ano anterior disponível",
+      "cadeias": [
+        "C10"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "Conta {codCta}: saldo final {anoAnt} {fim} x saldo inicial {ano} {ini}."
+    },
+    {
+      "id": "M9-21",
+      "titulo": "Saldos recuperados da ECF anterior (E010/E015) = saldos iniciais",
+      "mapa": "M9.3",
+      "tipoRelacao": "CNT",
+      "origem": {
+        "obrigacao": "ECF",
+        "elemento": "ECF anterior – saldos finais"
+      },
+      "destino": {
+        "obrigacao": "ECF",
+        "elemento": "E010/E015 (ECF atual)"
+      },
+      "chaveJuncao": [
+        "COD_CTA"
+      ],
+      "operador": "SALDO_FINAL_IGUAL_INICIAL",
+      "tolerancia": null,
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "MANUAL",
+      "fontes": [
+        "MANUAL_ECF_L12"
+      ],
+      "hipotesesLegitimas": [],
+      "aplicavelSe": "ECF do ano anterior disponível",
+      "cadeias": [
+        "C10"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "conferirCampo": true,
+      "mensagemParecer": "Saldo recuperado da ECF anterior para {codCta} diverge do saldo final daquela ECF."
+    },
+    {
+      "id": "M9-22",
+      "titulo": "Parte B: saldo inicial = saldo final da ECF anterior",
+      "mapa": "M9.3",
+      "tipoRelacao": "CNT",
+      "origem": {
+        "obrigacao": "ECF",
+        "elemento": "ECF anterior M500.SD_FIM_LAL (via E020)"
+      },
+      "destino": {
+        "obrigacao": "ECF",
+        "elemento": "M010/M500.SD_INI_LAL (ECF atual)"
+      },
+      "chaveJuncao": [
+        "COD_CTA_B",
+        "COD_TRIBUTO"
+      ],
+      "operador": "SALDO_FINAL_IGUAL_INICIAL",
+      "tolerancia": null,
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "MANUAL",
+      "fontes": [
+        "MANUAL_ECF_L12"
+      ],
+      "hipotesesLegitimas": [
+        "Conta da Parte B originada no ano (sem saldo anterior)"
+      ],
+      "aplicavelSe": "ECF lucro real",
+      "cadeias": [
+        "C10"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "conferirCampo": true,
+      "mensagemParecer": "Conta da Parte B {conta} ({tributo}): saldo inicial {ini} x saldo final da ECF anterior {fim}. Prejuízo/base negativa/adições sem origem."
+    },
+    {
+      "id": "M12-01",
+      "titulo": "Documentos de receita do ano x receita bruta contábil",
+      "mapa": "M12",
+      "tipoRelacao": "AGR",
+      "origem": {
+        "obrigacao": "NFE",
+        "elemento": "Σ NF-e de saída com CFOP de receita + Σ NFS-e emitidas (vigentes)",
+        "agregacao": "ANO"
+      },
+      "destino": {
+        "obrigacao": "ECD",
+        "elemento": "Contas RECEITA_BRUTA (I355) / ECF L300 | P150"
+      },
+      "chaveJuncao": [
+        "CNPJ_BASE",
+        "ANO"
+      ],
+      "operador": "SOMA_IGUAL",
+      "tolerancia": "PARAM:TOL_AGREGADO_PERCENTUAL",
+      "severidade": "ESCRITURACAO_GRAVE",
+      "severidadeAtenuada": {
+        "quando": "ECD maior que documentos, ou diferença abaixo de PARAM:MATERIALIDADE_RECEITA",
+        "severidade": "ALERTA"
+      },
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "MOC_NFE",
+        "NFSE_ANEXO_I",
+        "MANUAL_ECD_L9",
+        "DECISAO_PROJETO"
+      ],
+      "hipotesesLegitimas": [
+        "Competência contábil x emissão",
+        "Entrega futura",
+        "Vendas canceladas em outro período",
+        "Receitas sem documento eletrônico (exportação com outro modelo, documentos municipais pré-adesão)"
+      ],
+      "filtrosExclusao": [
+        "EXC-001",
+        "EXC-002",
+        "EXC-003",
+        "EXC-010"
+      ],
+      "cadeias": [
+        "C1"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "Documentos de receita {ano} R$ {docs} x receita bruta contábil R$ {ecd}."
+    },
+    {
+      "id": "M12-02",
+      "titulo": "Aquisições de ativo (NF-e x.551) x adições ao imobilizado",
+      "mapa": "M12",
+      "tipoRelacao": "LIM",
+      "origem": {
+        "obrigacao": "NFE",
+        "elemento": "Σ vNF de NF-e de entrada com CFOP 1.551/2.551/3.551",
+        "agregacao": "ANO"
+      },
+      "destino": {
+        "obrigacao": "ECD",
+        "elemento": "I155.VL_DEB das contas IMOBILIZADO"
+      },
+      "chaveJuncao": [
+        "CNPJ_BASE",
+        "ANO"
+      ],
+      "operador": "MENOR_OU_IGUAL",
+      "tolerancia": "PARAM:TOL_AGREGADO_PERCENTUAL",
+      "severidade": "ALERTA",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "MOC_NFE",
+        "MANUAL_ECD_L9"
+      ],
+      "hipotesesLegitimas": [
+        "Bens registrados em intangível/imobilizado em andamento",
+        "Créditos de impostos recuperáveis excluídos do custo"
+      ],
+      "filtrosExclusao": [
+        "EXC-003",
+        "EXC-004"
+      ],
+      "cadeias": [
+        "C7"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "NF-e de aquisição de ativo R$ {docs} x adições ao imobilizado R$ {ecd}."
+    },
+    {
+      "id": "M12-03",
+      "titulo": "IRRF/CSLL retidos nas NFS-e x Y570 por fonte pagadora",
+      "mapa": "M12",
+      "tipoRelacao": "AGR",
+      "origem": {
+        "obrigacao": "NFSE",
+        "elemento": "Σ vRetIRRF, vRetCSLL por tomador",
+        "filtro": "prest = contribuinte; vigentes",
+        "agregacao": "PARTICIPANTE"
+      },
+      "destino": {
+        "obrigacao": "ECF",
+        "elemento": "Y570.CNPJ_FON, IR_RET, CSLL_RET"
+      },
+      "chaveJuncao": [
+        "CNPJ_TOMADOR=CNPJ_FON",
+        "ANO"
+      ],
+      "operador": "SOMA_IGUAL",
+      "tolerancia": "PARAM:TOL_AGREGADO_ABSOLUTO",
+      "severidade": "ALERTA",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "NFSE_ANEXO_I",
+        "MANUAL_ECF_L12"
+      ],
+      "hipotesesLegitimas": [
+        "Retenção destacada mas não efetuada",
+        "Retenções sobre outros rendimentos (aplicações financeiras) no mesmo Y570"
+      ],
+      "filtrosExclusao": [
+        "EXC-010"
+      ],
+      "cadeias": [
+        "C8"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "conferirCampo": true,
+      "mensagemParecer": "Tomador {cnpj}: IRRF/CSLL retidos nas NFS-e R$ {nfse} x Y570 R$ {ecf}."
+    },
+    {
+      "id": "M12-04",
+      "titulo": "Retenção previdenciária nas NFS-e x conta de INSS a compensar",
+      "mapa": "M12",
+      "tipoRelacao": "AGR",
+      "origem": {
+        "obrigacao": "NFSE",
+        "elemento": "Σ vRetCP",
+        "agregacao": "ANO"
+      },
+      "destino": {
+        "obrigacao": "ECD",
+        "elemento": "Contas RETENCOES_COMPENSAR (INSS)"
+      },
+      "chaveJuncao": [
+        "CNPJ_BASE",
+        "ANO"
+      ],
+      "operador": "SOMA_IGUAL",
+      "tolerancia": "PARAM:TOL_AGREGADO_PERCENTUAL",
+      "severidade": "ALERTA",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "NFSE_ANEXO_I",
+        "MANUAL_ECD_L9"
+      ],
+      "hipotesesLegitimas": [
+        "Compensação na própria folha no mês (conta zerada)"
+      ],
+      "cadeias": [
+        "C8"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "conferirCampo": true,
+      "mensagemParecer": "Retenção previdenciária nas NFS-e R$ {nfse} x contabilizada R$ {ecd}."
+    },
+    {
+      "id": "M12-05",
+      "titulo": "Entradas confirmadas (210200) refletidas na contabilidade",
+      "mapa": "M12",
+      "tipoRelacao": "AGR",
+      "origem": {
+        "obrigacao": "NFE",
+        "elemento": "Σ vNF de NF-e com evento 210200",
+        "agregacao": "ANO"
+      },
+      "destino": {
+        "obrigacao": "ECD",
+        "elemento": "Movimento credor de fornecedores / devedor de estoque, custo e despesa"
+      },
+      "chaveJuncao": [
+        "CNPJ_BASE",
+        "ANO"
+      ],
+      "operador": "MENOR_OU_IGUAL",
+      "tolerancia": "PARAM:TOL_AGREGADO_PERCENTUAL",
+      "severidade": "ALERTA",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "NT_2020_001",
+        "MANUAL_ECD_L9"
+      ],
+      "hipotesesLegitimas": [
+        "Compras pagas à vista sem passar por fornecedores"
+      ],
+      "cadeias": [
+        "C6"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "Entradas confirmadas no ano R$ {docs} sem reflexo proporcional na contabilidade (R$ {ecd})."
+    }
+  ]
+}
