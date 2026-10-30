@@ -1,0 +1,1768 @@
+{
+  "$schema": "./schema/regra.schema.json",
+  "versaoCatalogo": "1.0.0",
+  "grupo": "DOCUMENTOS",
+  "descricao": "Mapas M1 (NF-e x EFD ICMS/IPI), M2 (NF-e x EFD-Contribuições), M4 (NFS-e x EFD-Contribuições) e M5 (NFS-e x EFD ICMS/IPI).",
+  "documentoOrigem": "NUCLEO-2-mapas-bidirecionais.md",
+  "regras": [
+    {
+      "id": "M1-P01",
+      "titulo": "NF-e própria autorizada escriturada na EFD ICMS/IPI",
+      "mapa": "M1.1",
+      "tipoRelacao": "PRE_DIRETA",
+      "origem": {
+        "obrigacao": "NFE",
+        "elemento": "infNFe/@Id",
+        "filtro": "emit/CNPJ = 0000.CNPJ; autorizada; sem evento 110111",
+        "agregacao": "DOCUMENTO"
+      },
+      "destino": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "C100.CHV_NFE",
+        "filtro": "IND_EMIT=0; COD_SIT in (00,01,06,07,08)"
+      },
+      "chaveJuncao": [
+        "CHV_NFE"
+      ],
+      "operador": "EXISTE",
+      "tolerancia": null,
+      "condicaoDescritiva": "Período de alocação: mês de dhEmi.",
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "MANUAL",
+      "fontes": [
+        "GP_EFD_ICMS_IPI",
+        "MOC_NFE"
+      ],
+      "hipotesesLegitimas": [
+        "NF-e emitida no último dia do mês com saída no mês seguinte – conferir se escriturada no mês seguinte com COD_SIT 01 (extemporâneo)"
+      ],
+      "filtrosExclusao": [
+        "EXC-003",
+        "EXC-005",
+        "EXC-007"
+      ],
+      "dependeDe": [
+        "PAR-001",
+        "ENT-003"
+      ],
+      "cadeias": [
+        "C1"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "NF-e {chave} emitida em {dhEmi} (R$ {vNF}) não está escriturada na EFD ICMS/IPI de {cnpj}/{mes}. Indício de omissão de saída."
+    },
+    {
+      "id": "M1-P02",
+      "titulo": "NF-e própria cancelada escriturada com COD_SIT 02/03",
+      "mapa": "M1.1",
+      "tipoRelacao": "PRE_DIRETA",
+      "origem": {
+        "obrigacao": "NFE",
+        "elemento": "infNFe/@Id",
+        "filtro": "emit/CNPJ = 0000.CNPJ; evento 110111 homologado"
+      },
+      "destino": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "C100.CHV_NFE",
+        "filtro": "COD_SIT in (02,03)"
+      },
+      "chaveJuncao": [
+        "CHV_NFE"
+      ],
+      "operador": "EXISTE",
+      "tolerancia": null,
+      "severidade": "ALERTA",
+      "evidencia": "MANUAL",
+      "fontes": [
+        "GP_EFD_ICMS_IPI"
+      ],
+      "hipotesesLegitimas": [],
+      "filtrosExclusao": [
+        "EXC-005"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "NF-e cancelada {chave} não informada como cancelada na EFD ICMS/IPI de {mes}."
+    },
+    {
+      "id": "M1-P03",
+      "titulo": "NF-e própria denegada escriturada com COD_SIT 04",
+      "mapa": "M1.1",
+      "tipoRelacao": "PRE_DIRETA",
+      "origem": {
+        "obrigacao": "NFE",
+        "elemento": "infNFe/@Id",
+        "filtro": "emit/CNPJ = 0000.CNPJ; protocolo de denegação"
+      },
+      "destino": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "C100.CHV_NFE",
+        "filtro": "COD_SIT = 04"
+      },
+      "chaveJuncao": [
+        "CHV_NFE"
+      ],
+      "operador": "EXISTE",
+      "tolerancia": null,
+      "severidade": "ALERTA",
+      "evidencia": "MANUAL",
+      "fontes": [
+        "GP_EFD_ICMS_IPI"
+      ],
+      "hipotesesLegitimas": [],
+      "filtrosExclusao": [
+        "EXC-005"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "NF-e denegada {chave} não informada com COD_SIT 04 em {mes}."
+    },
+    {
+      "id": "M1-P04",
+      "titulo": "Numeração inutilizada escriturada com COD_SIT 05",
+      "mapa": "M1.1",
+      "tipoRelacao": "PRE_DIRETA",
+      "origem": {
+        "obrigacao": "NFE",
+        "elemento": "protocolo de inutilização (faixa mod/série/números)"
+      },
+      "destino": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "C100 (COD_MOD, SER, NUM_DOC)",
+        "filtro": "COD_SIT = 05"
+      },
+      "chaveJuncao": [
+        "CNPJ",
+        "COD_MOD",
+        "SER",
+        "NUM_DOC"
+      ],
+      "operador": "EXISTE",
+      "tolerancia": null,
+      "severidade": "ALERTA",
+      "evidencia": "MANUAL",
+      "fontes": [
+        "GP_EFD_ICMS_IPI",
+        "NT_2023_002"
+      ],
+      "hipotesesLegitimas": [],
+      "aplicavelSe": "data da inutilização < PARAM:DATA_VIGENCIA_NT_2023_002",
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "Faixa inutilizada {serie}/{ini}-{fim} não informada na EFD de {mes}."
+    },
+    {
+      "id": "M1-P05",
+      "titulo": "NF-e destinada ao estabelecimento escriturada como entrada",
+      "mapa": "M1.1",
+      "tipoRelacao": "PRE_DIRETA",
+      "origem": {
+        "obrigacao": "NFE",
+        "elemento": "infNFe/@Id",
+        "filtro": "dest/CNPJ = 0000.CNPJ; autorizada; sem 110111"
+      },
+      "destino": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "C100.CHV_NFE",
+        "filtro": "IND_EMIT=1; IND_OPER=0"
+      },
+      "chaveJuncao": [
+        "CHV_NFE"
+      ],
+      "operador": "EXISTE",
+      "tolerancia": "PARAM:JANELA_MESES_ENTRADA",
+      "condicaoDescritiva": "Procurar no mês de dhEmi e nos meses da janela (DT_E_S).",
+      "severidade": "ESCRITURACAO_GRAVE",
+      "severidadeAtenuada": {
+        "quando": "Encontrada em mês posterior dentro da janela (apenas deslocamento)",
+        "severidade": "ALERTA"
+      },
+      "evidencia": "MANUAL",
+      "fontes": [
+        "GP_EFD_ICMS_IPI",
+        "NT_2020_001"
+      ],
+      "hipotesesLegitimas": [
+        "Mercadoria ainda não recebida",
+        "Operação desconhecida pelo destinatário sem manifestação registrada"
+      ],
+      "filtrosExclusao": [
+        "EXC-003",
+        "EXC-004",
+        "EXC-005",
+        "EXC-013"
+      ],
+      "cadeias": [
+        "C2",
+        "C6",
+        "C7"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "NF-e {chave} de {emitente} (R$ {vNF}) destinada a {cnpj} não foi escriturada como entrada até {mesLimite}. Indício de omissão de entrada."
+    },
+    {
+      "id": "M1-P06",
+      "titulo": "NF-e com Confirmação da Operação (210200) escriturada como entrada",
+      "mapa": "M1.1",
+      "tipoRelacao": "PRE_DIRETA",
+      "origem": {
+        "obrigacao": "NFE",
+        "elemento": "evento 210200",
+        "filtro": "dest/CNPJ = 0000.CNPJ"
+      },
+      "destino": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "C100.CHV_NFE",
+        "filtro": "IND_EMIT=1; IND_OPER=0"
+      },
+      "chaveJuncao": [
+        "CHV_NFE"
+      ],
+      "operador": "EXISTE",
+      "tolerancia": "PARAM:JANELA_MESES_ENTRADA",
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "NT_2020_001",
+        "GP_EFD_ICMS_IPI"
+      ],
+      "hipotesesLegitimas": [],
+      "filtrosExclusao": [
+        "EXC-003",
+        "EXC-013"
+      ],
+      "cadeias": [
+        "C6"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "O contribuinte confirmou a operação da NF-e {chave} (evento 210200), mas não a escriturou como entrada."
+    },
+    {
+      "id": "M1-R01",
+      "titulo": "C100 regular de NF-e tem XML autorizado e não cancelado",
+      "mapa": "M1.2",
+      "tipoRelacao": "PRE_REVERSA",
+      "origem": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "C100.CHV_NFE",
+        "filtro": "COD_MOD in (55,65); COD_SIT in (00,01,06,07,08)"
+      },
+      "destino": {
+        "obrigacao": "NFE",
+        "elemento": "infNFe/@Id + protocolo",
+        "filtro": "autorizada; sem 110111"
+      },
+      "chaveJuncao": [
+        "CHV_NFE"
+      ],
+      "operador": "EXISTE",
+      "tolerancia": null,
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_ICMS_IPI",
+        "AJUSTE_SINIEF_07_05"
+      ],
+      "hipotesesLegitimas": [
+        "XML não fornecido ao agente (cobertura) – reportar como não verificável, não como erro"
+      ],
+      "cadeias": [
+        "C2"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "C100 {chave} escriturado como regular, mas a NF-e {situacao} (inexistente/cancelada/denegada)."
+    },
+    {
+      "id": "M1-R02",
+      "titulo": "C100 cancelado tem evento de cancelamento homologado",
+      "mapa": "M1.2",
+      "tipoRelacao": "PRE_REVERSA",
+      "origem": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "C100.CHV_NFE",
+        "filtro": "COD_SIT in (02,03); IND_EMIT=0"
+      },
+      "destino": {
+        "obrigacao": "NFE",
+        "elemento": "evento 110111"
+      },
+      "chaveJuncao": [
+        "CHV_NFE"
+      ],
+      "operador": "EXISTE",
+      "tolerancia": null,
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_ICMS_IPI",
+        "MOC_NFE"
+      ],
+      "hipotesesLegitimas": [
+        "Nenhuma hipótese legítima prevista nos leiautes para esta divergência – solicitar justificativa documental ao contribuinte"
+      ],
+      "cadeias": [
+        "C1"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "NF-e {chave} informada como cancelada na EFD, mas está autorizada sem evento de cancelamento. Débito de ICMS de R$ {vICMS} omitido."
+    },
+    {
+      "id": "M1-R03",
+      "titulo": "C100 de emissão própria pertence ao estabelecimento",
+      "mapa": "M1.2",
+      "tipoRelacao": "IDT",
+      "origem": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "0000.CNPJ",
+        "filtro": "C100.IND_EMIT=0"
+      },
+      "destino": {
+        "obrigacao": "NFE",
+        "elemento": "emit/CNPJ"
+      },
+      "chaveJuncao": [
+        "CHV_NFE"
+      ],
+      "operador": "IGUAL",
+      "tolerancia": null,
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_ICMS_IPI"
+      ],
+      "hipotesesLegitimas": [
+        "Nenhuma hipótese legítima prevista nos leiautes para esta divergência – solicitar justificativa documental ao contribuinte"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "NF-e {chave} escriturada como emissão própria de {cnpjEfd}, mas o emitente é {cnpjXml}."
+    },
+    {
+      "id": "M1-R04",
+      "titulo": "C100 de entrada de terceiros é destinado ao estabelecimento",
+      "mapa": "M1.2",
+      "tipoRelacao": "IDT",
+      "origem": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "0000.CNPJ",
+        "filtro": "C100.IND_EMIT=1; IND_OPER=0"
+      },
+      "destino": {
+        "obrigacao": "NFE",
+        "elemento": "dest/CNPJ"
+      },
+      "chaveJuncao": [
+        "CHV_NFE"
+      ],
+      "operador": "IGUAL",
+      "tolerancia": null,
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_ICMS_IPI",
+        "LC_87_96"
+      ],
+      "hipotesesLegitimas": [
+        "Nenhuma hipótese legítima prevista nos leiautes para esta divergência – solicitar justificativa documental ao contribuinte"
+      ],
+      "cadeias": [
+        "C2"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "Entrada {chave} escriturada por {cnpjEfd}, mas a NF-e é destinada a {cnpjDest}. Crédito sem lastro."
+    },
+    {
+      "id": "M1-R05",
+      "titulo": "Documento referenciado (C113) coerente com NFref",
+      "mapa": "M1.2",
+      "tipoRelacao": "IDT",
+      "origem": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "C113.CHV_DOCe"
+      },
+      "destino": {
+        "obrigacao": "NFE",
+        "elemento": "ide/NFref/refNFe"
+      },
+      "chaveJuncao": [
+        "CHV_NFE"
+      ],
+      "operador": "IGUAL",
+      "tolerancia": null,
+      "severidade": "ALERTA",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_ICMS_IPI",
+        "MOC_NFE"
+      ],
+      "hipotesesLegitimas": [],
+      "vigenciaInicio": "2025-01-01",
+      "conferirCampo": true,
+      "mensagemParecer": "NF-e {chave}: documento referenciado no C113 ({refEfd}) difere do XML ({refXml})."
+    },
+    {
+      "id": "M1-R06",
+      "titulo": "Bem do CIAP com NF-e de aquisição válida",
+      "mapa": "M1.2",
+      "tipoRelacao": "PRE_REVERSA",
+      "origem": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "G130.CHV_NFE_CTA"
+      },
+      "destino": {
+        "obrigacao": "NFE",
+        "elemento": "infNFe/@Id",
+        "filtro": "autorizada; sem 110111; dest = estabelecimento"
+      },
+      "chaveJuncao": [
+        "CHV_NFE"
+      ],
+      "operador": "EXISTE",
+      "tolerancia": null,
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_ICMS_IPI",
+        "LC_87_96"
+      ],
+      "hipotesesLegitimas": [
+        "Nenhuma hipótese legítima prevista nos leiautes para esta divergência – solicitar justificativa documental ao contribuinte"
+      ],
+      "cadeias": [
+        "C7"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "conferirCampo": true,
+      "mensagemParecer": "Crédito de CIAP baseado na NF-e {chave}, que {situacao}."
+    },
+    {
+      "id": "M1-I01",
+      "titulo": "Identificação do documento igual (modelo/série/número/data)",
+      "mapa": "M1.3",
+      "tipoRelacao": "IDT",
+      "origem": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "C100.COD_MOD, SER, NUM_DOC, DT_DOC"
+      },
+      "destino": {
+        "obrigacao": "NFE",
+        "elemento": "ide/mod, serie, nNF, dhEmi(data)"
+      },
+      "chaveJuncao": [
+        "CHV_NFE"
+      ],
+      "operador": "IGUAL",
+      "tolerancia": null,
+      "severidade": "ESCRITURACAO_GRAVE",
+      "severidadeAtenuada": {
+        "quando": "Divergência apenas em DT_DOC",
+        "severidade": "ALERTA"
+      },
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_ICMS_IPI",
+        "MOC_NFE"
+      ],
+      "hipotesesLegitimas": [
+        "Nenhuma hipótese legítima prevista nos leiautes para esta divergência – solicitar justificativa documental ao contribuinte"
+      ],
+      "dependeDe": [
+        "M1-P01"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "NF-e {chave}: {campo} escriturado {valorEfd} x XML {valorXml}."
+    },
+    {
+      "id": "M1-I02",
+      "titulo": "Data de entrada não anterior à emissão",
+      "mapa": "M1.3",
+      "tipoRelacao": "LIM",
+      "origem": {
+        "obrigacao": "NFE",
+        "elemento": "ide/dhEmi"
+      },
+      "destino": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "C100.DT_E_S",
+        "filtro": "IND_OPER=0"
+      },
+      "chaveJuncao": [
+        "CHV_NFE"
+      ],
+      "operador": "MAIOR_OU_IGUAL",
+      "tolerancia": null,
+      "condicaoDescritiva": "DT_E_S >= data(dhEmi). Para saída própria, DT_E_S = data(dhSaiEnt) quando informado.",
+      "severidade": "ALERTA",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_ICMS_IPI",
+        "MOC_NFE"
+      ],
+      "hipotesesLegitimas": [],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "NF-e {chave}: data de entrada {dtES} anterior à emissão {dhEmi}."
+    },
+    {
+      "id": "M1-I03",
+      "titulo": "Valor total do documento igual",
+      "mapa": "M1.3",
+      "tipoRelacao": "IDT",
+      "origem": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "C100.VL_DOC"
+      },
+      "destino": {
+        "obrigacao": "NFE",
+        "elemento": "total/ICMSTot/vNF"
+      },
+      "chaveJuncao": [
+        "CHV_NFE"
+      ],
+      "operador": "IGUAL",
+      "tolerancia": "PARAM:TOL_VALOR_DOCUMENTO",
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_ICMS_IPI",
+        "MOC_NFE"
+      ],
+      "hipotesesLegitimas": [
+        "Nenhuma hipótese legítima prevista nos leiautes para esta divergência – solicitar justificativa documental ao contribuinte"
+      ],
+      "cadeias": [
+        "C1"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "NF-e {chave}: VL_DOC escriturado R$ {vlDoc} x vNF R$ {vNF} (diferença R$ {dif})."
+    },
+    {
+      "id": "M1-I04",
+      "titulo": "Componentes do valor (mercadorias, desconto, frete, seguro, outras) iguais",
+      "mapa": "M1.3",
+      "tipoRelacao": "IDT",
+      "origem": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "C100.VL_MERC, VL_DESC, VL_FRT, VL_SEG, VL_OUT_DA, IND_FRT, IND_PGTO"
+      },
+      "destino": {
+        "obrigacao": "NFE",
+        "elemento": "vProd, vDesc, vFrete, vSeg, vOutro, transp/modFrete, detPag/indPag"
+      },
+      "chaveJuncao": [
+        "CHV_NFE"
+      ],
+      "operador": "IGUAL",
+      "tolerancia": "PARAM:TOL_VALOR_DOCUMENTO",
+      "severidade": "ALERTA",
+      "severidadeAtenuada": {
+        "quando": "Somente IND_FRT ou IND_PGTO divergentes",
+        "severidade": "INFO"
+      },
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_ICMS_IPI",
+        "MOC_NFE"
+      ],
+      "hipotesesLegitimas": [],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "NF-e {chave}: {campo} escriturado {valorEfd} x XML {valorXml}."
+    },
+    {
+      "id": "M1-I05",
+      "titulo": "ICMS próprio da saída própria igual ao destacado",
+      "mapa": "M1.3",
+      "tipoRelacao": "IDT",
+      "origem": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "C100.VL_BC_ICMS, VL_ICMS",
+        "filtro": "IND_EMIT=0"
+      },
+      "destino": {
+        "obrigacao": "NFE",
+        "elemento": "ICMSTot/vBC, vICMS"
+      },
+      "chaveJuncao": [
+        "CHV_NFE"
+      ],
+      "operador": "IGUAL",
+      "tolerancia": "PARAM:TOL_VALOR_DOCUMENTO",
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_ICMS_IPI",
+        "MOC_NFE"
+      ],
+      "hipotesesLegitimas": [
+        "Nenhuma hipótese legítima prevista nos leiautes para esta divergência – solicitar justificativa documental ao contribuinte"
+      ],
+      "cadeias": [
+        "C2"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "NF-e {chave}: ICMS escriturado R$ {vlIcms} x destacado R$ {vICMS}."
+    },
+    {
+      "id": "M1-I06",
+      "titulo": "Crédito de ICMS na entrada não excede o destacado",
+      "mapa": "M1.3",
+      "tipoRelacao": "LIM",
+      "origem": {
+        "obrigacao": "NFE",
+        "elemento": "ICMSTot/vBC, vICMS"
+      },
+      "destino": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "C100.VL_BC_ICMS, VL_ICMS",
+        "filtro": "IND_EMIT=1; IND_OPER=0"
+      },
+      "chaveJuncao": [
+        "CHV_NFE"
+      ],
+      "operador": "MENOR_OU_IGUAL",
+      "tolerancia": "PARAM:TOL_VALOR_DOCUMENTO",
+      "condicaoDescritiva": "Valor escriturado <= valor do XML. Valor menor ou zero é legítimo (uso e consumo, ativo via CIAP, vedação).",
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "NORMA",
+      "fontes": [
+        "LC_87_96",
+        "GP_EFD_ICMS_IPI"
+      ],
+      "hipotesesLegitimas": [
+        "Ajuste de crédito por documento em C197 com fundamento legal"
+      ],
+      "cadeias": [
+        "C2"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "Entrada {chave}: crédito escriturado R$ {vlIcms} supera o ICMS destacado R$ {vICMS}."
+    },
+    {
+      "id": "M1-I07",
+      "titulo": "ICMS-ST da saída própria igual ao retido",
+      "mapa": "M1.3",
+      "tipoRelacao": "IDT",
+      "origem": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "C100.VL_BC_ICMS_ST, VL_ICMS_ST",
+        "filtro": "IND_EMIT=0"
+      },
+      "destino": {
+        "obrigacao": "NFE",
+        "elemento": "ICMSTot/vBCST, vST"
+      },
+      "chaveJuncao": [
+        "CHV_NFE"
+      ],
+      "operador": "IGUAL",
+      "tolerancia": "PARAM:TOL_VALOR_DOCUMENTO",
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_ICMS_IPI",
+        "MOC_NFE"
+      ],
+      "hipotesesLegitimas": [
+        "Nenhuma hipótese legítima prevista nos leiautes para esta divergência – solicitar justificativa documental ao contribuinte"
+      ],
+      "cadeias": [
+        "C2"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "NF-e {chave}: ICMS-ST escriturado R$ {vlSt} x retido R$ {vST}."
+    },
+    {
+      "id": "M1-I08",
+      "titulo": "ICMS-ST retido pelo substituto apurado no E200/E210 da UF de destino",
+      "mapa": "M1.3; NUCLEO-3 C2 CP-3b",
+      "tipoRelacao": "PRE_DIRETA",
+      "origem": {
+        "obrigacao": "NFE",
+        "elemento": "vST > 0; dest/enderDest/UF",
+        "filtro": "emissão própria",
+        "agregacao": "MES"
+      },
+      "destino": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "E200.UF, E210"
+      },
+      "chaveJuncao": [
+        "CNPJ",
+        "MES",
+        "UF_DESTINO"
+      ],
+      "operador": "EXISTE",
+      "tolerancia": null,
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "MANUAL",
+      "fontes": [
+        "GP_EFD_ICMS_IPI"
+      ],
+      "hipotesesLegitimas": [],
+      "cadeias": [
+        "C2"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "Há ICMS-ST retido para {uf} em {mes} (R$ {vST}) sem apuração E200/E210 dessa UF."
+    },
+    {
+      "id": "M1-I09",
+      "titulo": "IPI escriturado igual ao destacado (própria) e limitado (terceiros)",
+      "mapa": "M1.3",
+      "tipoRelacao": "IDT",
+      "origem": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "C100.VL_IPI"
+      },
+      "destino": {
+        "obrigacao": "NFE",
+        "elemento": "ICMSTot/vIPI"
+      },
+      "chaveJuncao": [
+        "CHV_NFE"
+      ],
+      "operador": "IGUAL",
+      "tolerancia": "PARAM:TOL_VALOR_DOCUMENTO",
+      "condicaoDescritiva": "Própria: igualdade. Terceiros: escriturado <= destacado.",
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_ICMS_IPI",
+        "MOC_NFE"
+      ],
+      "hipotesesLegitimas": [
+        "Entrada sem direito a crédito de IPI (valor menor legítimo)"
+      ],
+      "cadeias": [
+        "C3"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "NF-e {chave}: IPI escriturado R$ {vlIpi} x destacado R$ {vIPI}."
+    },
+    {
+      "id": "M1-I10",
+      "titulo": "PIS/COFINS do C100 da EFD ICMS/IPI iguais ao XML (própria)",
+      "mapa": "M1.3",
+      "tipoRelacao": "IDT",
+      "origem": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "C100.VL_PIS, VL_COFINS",
+        "filtro": "IND_EMIT=0"
+      },
+      "destino": {
+        "obrigacao": "NFE",
+        "elemento": "ICMSTot/vPIS, vCOFINS"
+      },
+      "chaveJuncao": [
+        "CHV_NFE"
+      ],
+      "operador": "IGUAL",
+      "tolerancia": "PARAM:TOL_VALOR_DOCUMENTO",
+      "severidade": "ALERTA",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_ICMS_IPI",
+        "MOC_NFE"
+      ],
+      "hipotesesLegitimas": [
+        "Campos informativos na EFD ICMS/IPI; a apuração é feita na EFD-Contribuições"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "NF-e {chave}: PIS/COFINS na EFD ICMS/IPI divergentes do XML."
+    },
+    {
+      "id": "M1-I11",
+      "titulo": "DIFAL/FCP da NF-e refletidos no C101 e na apuração E300/E310",
+      "mapa": "M1.3",
+      "tipoRelacao": "IDT",
+      "origem": {
+        "obrigacao": "NFE",
+        "elemento": "ICMSTot/vFCPUFDest, vICMSUFDest, vICMSUFRemet"
+      },
+      "destino": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "C101.VL_FCP_UF_DEST, VL_ICMS_UF_DEST, VL_ICMS_UF_REM; E300/E310 da UF de destino"
+      },
+      "chaveJuncao": [
+        "CHV_NFE"
+      ],
+      "operador": "IGUAL",
+      "tolerancia": "PARAM:TOL_VALOR_DOCUMENTO",
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "MANUAL",
+      "fontes": [
+        "GP_EFD_ICMS_IPI",
+        "MOC_NFE"
+      ],
+      "hipotesesLegitimas": [],
+      "cadeias": [
+        "C2"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "NF-e {chave}: DIFAL/FCP do XML não refletido no C101/E310 ({detalhe})."
+    },
+    {
+      "id": "M1-I12",
+      "titulo": "COD_SIT coerente com a situação e a finalidade da NF-e",
+      "mapa": "M1.3",
+      "tipoRelacao": "IDT",
+      "origem": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "C100.COD_SIT"
+      },
+      "destino": {
+        "obrigacao": "NFE",
+        "elemento": "protocolo, eventos, ide/finNFe"
+      },
+      "chaveJuncao": [
+        "CHV_NFE"
+      ],
+      "operador": "COMPATIVEL",
+      "tolerancia": null,
+      "condicaoDescritiva": "Autorizada -> 00/01; complementar (finNFe=2) -> 06/07; cancelada -> 02/03; denegada -> 04.",
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "MANUAL",
+      "fontes": [
+        "GP_EFD_ICMS_IPI",
+        "MOC_NFE"
+      ],
+      "hipotesesLegitimas": [
+        "COD_SIT 08 (regime especial ou norma específica)"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "NF-e {chave}: COD_SIT {codSit} incompatível com a situação {situacaoXml}."
+    },
+    {
+      "id": "M1-I13",
+      "titulo": "Itens do C170 coerentes com os itens do XML",
+      "mapa": "M1.4",
+      "tipoRelacao": "IDT",
+      "origem": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "C170.NUM_ITEM, QTD, UNID, VL_ITEM, VL_DESC"
+      },
+      "destino": {
+        "obrigacao": "NFE",
+        "elemento": "det/@nItem, qCom/qTrib, uCom/uTrib, vProd, vDesc"
+      },
+      "chaveJuncao": [
+        "CHV_NFE",
+        "NUM_ITEM=nItem"
+      ],
+      "operador": "IGUAL",
+      "tolerancia": "PARAM:TOL_VALOR_DOCUMENTO",
+      "condicaoDescritiva": "Quantidade comparada após aplicação do fator 0220 quando a unidade diferir.",
+      "severidade": "ALERTA",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_ICMS_IPI",
+        "MOC_NFE"
+      ],
+      "hipotesesLegitimas": [
+        "Saída própria por NF-e: C170 dispensado pelo Guia (salvo exceções) – não exigir"
+      ],
+      "dependeDe": [
+        "ENT-022"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "NF-e {chave} item {nItem}: {campo} escriturado {valorEfd} x XML {valorXml}."
+    },
+    {
+      "id": "M1-I14",
+      "titulo": "CFOP e CST de ICMS dos itens coerentes",
+      "mapa": "M1.4",
+      "tipoRelacao": "IDT",
+      "origem": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "C170.CFOP, CST_ICMS / C190.CFOP, CST_ICMS"
+      },
+      "destino": {
+        "obrigacao": "NFE",
+        "elemento": "prod/CFOP, ICMS/orig+CST (ou CSOSN)"
+      },
+      "chaveJuncao": [
+        "CHV_NFE",
+        "NUM_ITEM=nItem"
+      ],
+      "operador": "COMPATIVEL",
+      "tolerancia": null,
+      "condicaoDescritiva": "Própria: igualdade. Terceiros: CFOP convertido (5->1, 6->2, 7->3) ajustado à destinação; CST do ponto de vista do informante.",
+      "severidade": "ALERTA",
+      "evidencia": "MANUAL",
+      "fontes": [
+        "GP_EFD_ICMS_IPI",
+        "CONV_SINIEF_SN_1970"
+      ],
+      "hipotesesLegitimas": [
+        "Destinação diferente da presumida pelo fornecedor (revenda x consumo x ativo)"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "NF-e {chave} item {nItem}: CFOP/CST escriturado {efd} incompatível com o XML {xml}."
+    },
+    {
+      "id": "M1-I15",
+      "titulo": "Analítico C190 = agregação dos itens do XML (saída própria)",
+      "mapa": "M1.4",
+      "tipoRelacao": "AGR",
+      "origem": {
+        "obrigacao": "NFE",
+        "elemento": "itens: vProd, vFrete, vSeg, vOutro, vDesc, vBC, vICMS, vBCST, vST, vIPI",
+        "agregacao": "GRUPO_CST_CFOP_ALIQ"
+      },
+      "destino": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "C190.VL_OPR, VL_BC_ICMS, VL_ICMS, VL_BC_ICMS_ST, VL_ICMS_ST, VL_IPI",
+        "filtro": "IND_EMIT=0"
+      },
+      "chaveJuncao": [
+        "CHV_NFE",
+        "CST_ICMS",
+        "CFOP",
+        "ALIQ_ICMS"
+      ],
+      "operador": "SOMA_IGUAL",
+      "tolerancia": "PARAM:TOL_VALOR_DOCUMENTO",
+      "condicaoDescritiva": "Composição de VL_OPR conforme definição do campo no Guia vigente (conferir inclusão de FCP-ST).",
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_ICMS_IPI",
+        "MOC_NFE"
+      ],
+      "hipotesesLegitimas": [
+        "Nenhuma hipótese legítima prevista nos leiautes para esta divergência – solicitar justificativa documental ao contribuinte"
+      ],
+      "cadeias": [
+        "C1"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "conferirCampo": true,
+      "mensagemParecer": "NF-e {chave}: analítico C190 ({cst}/{cfop}/{aliq}) não corresponde aos itens do XML ({campo}: {efd} x {xml})."
+    },
+    {
+      "id": "M1-I16",
+      "titulo": "Benefício fiscal (cBenef) com ajuste correspondente na escrituração",
+      "mapa": "M1.4",
+      "tipoRelacao": "PRE_DIRETA",
+      "origem": {
+        "obrigacao": "NFE",
+        "elemento": "det/prod/cBenef",
+        "filtro": "UF exige cBenef e benefício afeta apuração"
+      },
+      "destino": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "C197 / E111 (código de ajuste da tabela 5.3 da UF)"
+      },
+      "chaveJuncao": [
+        "CHV_NFE"
+      ],
+      "operador": "EXISTE",
+      "tolerancia": null,
+      "severidade": "ALERTA",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_ICMS_IPI",
+        "MOC_NFE"
+      ],
+      "hipotesesLegitimas": [
+        "Benefício sem reflexo em ajuste de apuração (ex.: isenção com CST próprio)"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "NF-e {chave} com cBenef {cBenef} sem ajuste correspondente na EFD."
+    },
+    {
+      "id": "M1-I17",
+      "titulo": "Devolução (finNFe=4) com documento referenciado e CFOP de devolução",
+      "mapa": "M1.3",
+      "tipoRelacao": "PRE_DIRETA",
+      "origem": {
+        "obrigacao": "NFE",
+        "elemento": "ide/finNFe = 4"
+      },
+      "destino": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "C113 + CFOP de devolução no C190"
+      },
+      "chaveJuncao": [
+        "CHV_NFE"
+      ],
+      "operador": "EXISTE",
+      "tolerancia": null,
+      "severidade": "ALERTA",
+      "evidencia": "MANUAL",
+      "fontes": [
+        "GP_EFD_ICMS_IPI",
+        "MOC_NFE"
+      ],
+      "hipotesesLegitimas": [],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "Devolução {chave} sem C113 e/ou CFOP de devolução na EFD."
+    },
+    {
+      "id": "M2-P01",
+      "titulo": "NF-e de saída com receita presente na EFD-Contribuições",
+      "mapa": "M2.1",
+      "tipoRelacao": "PRE_DIRETA",
+      "origem": {
+        "obrigacao": "NFE",
+        "elemento": "infNFe/@Id; itens",
+        "filtro": "emit = estabelecimento do 0140; autorizada; CFOP de receita (PARAM:TABELA_CFOP_RECEITA)"
+      },
+      "destino": {
+        "obrigacao": "EFD_CONTRIB",
+        "elemento": "C100.CHV_NFE (IND_ESCRI=2) | C180/C181/C185 por item (IND_ESCRI=1)"
+      },
+      "chaveJuncao": [
+        "CHV_NFE | COD_ITEM+PERIODO"
+      ],
+      "operador": "EXISTE",
+      "tolerancia": null,
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "MANUAL",
+      "fontes": [
+        "GP_EFD_CONTRIB"
+      ],
+      "hipotesesLegitimas": [],
+      "filtrosExclusao": [
+        "EXC-001",
+        "EXC-002",
+        "EXC-003",
+        "EXC-006"
+      ],
+      "dependeDe": [
+        "PAR-001",
+        "PAR-003",
+        "PAR-005"
+      ],
+      "cadeias": [
+        "C1",
+        "C4"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "NF-e de venda {chave} (R$ {vNF}) não está na EFD-Contribuições de {mes}. Indício de receita fora da apuração de PIS/COFINS."
+    },
+    {
+      "id": "M2-P02",
+      "titulo": "Aquisições com direito a crédito não aproveitadas",
+      "mapa": "M2.1",
+      "tipoRelacao": "PRE_DIRETA",
+      "origem": {
+        "obrigacao": "NFE",
+        "elemento": "NF-e de entrada",
+        "filtro": "dest = estabelecimento; COD_INC_TRIB in (1,3)"
+      },
+      "destino": {
+        "obrigacao": "EFD_CONTRIB",
+        "elemento": "C100/C170 (CST 50-66) | C190/C191/C195"
+      },
+      "chaveJuncao": [
+        "CHV_NFE"
+      ],
+      "operador": "EXISTE",
+      "tolerancia": null,
+      "severidade": "INFO",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_CONTRIB"
+      ],
+      "hipotesesLegitimas": [
+        "Aquisição sem direito a crédito",
+        "Opção por não creditar"
+      ],
+      "filtrosExclusao": [
+        "EXC-003",
+        "EXC-009"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "NF-e de aquisição {chave} não consta da EFD-Contribuições (possível crédito não aproveitado)."
+    },
+    {
+      "id": "M2-P03",
+      "titulo": "Devolução de venda refletida na EFD-Contribuições",
+      "mapa": "M2.1",
+      "tipoRelacao": "PRE_DIRETA",
+      "origem": {
+        "obrigacao": "NFE",
+        "elemento": "finNFe=4",
+        "filtro": "contribuinte = dest (devolução recebida)"
+      },
+      "destino": {
+        "obrigacao": "EFD_CONTRIB",
+        "elemento": "C100/C170 com CST de crédito sobre devolução | C190/C191/C195 | ajuste de receita"
+      },
+      "chaveJuncao": [
+        "CHV_NFE"
+      ],
+      "operador": "EXISTE",
+      "tolerancia": null,
+      "severidade": "ALERTA",
+      "evidencia": "MANUAL",
+      "fontes": [
+        "GP_EFD_CONTRIB"
+      ],
+      "hipotesesLegitimas": [],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "Devolução de venda {chave} sem reflexo na EFD-Contribuições."
+    },
+    {
+      "id": "M2-R01",
+      "titulo": "Crédito por NF-e com documento válido destinado à PJ",
+      "mapa": "M2.2",
+      "tipoRelacao": "PRE_REVERSA",
+      "origem": {
+        "obrigacao": "EFD_CONTRIB",
+        "elemento": "C100.CHV_NFE + C170 (CST 50-66)",
+        "filtro": "IND_OPER=0"
+      },
+      "destino": {
+        "obrigacao": "NFE",
+        "elemento": "infNFe/@Id",
+        "filtro": "autorizada; sem 110111; dest/CNPJ in 0140"
+      },
+      "chaveJuncao": [
+        "CHV_NFE"
+      ],
+      "operador": "EXISTE",
+      "tolerancia": null,
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_CONTRIB",
+        "LEI_10637_02",
+        "LEI_10833_03"
+      ],
+      "hipotesesLegitimas": [
+        "XML não fornecido ao agente (cobertura)"
+      ],
+      "cadeias": [
+        "C5"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "Crédito de PIS/COFINS sobre a NF-e {chave}, que {situacao}."
+    },
+    {
+      "id": "M2-R02",
+      "titulo": "Consolidado de aquisições não excede as NF-e do período",
+      "mapa": "M2.2",
+      "tipoRelacao": "LIM",
+      "origem": {
+        "obrigacao": "NFE",
+        "elemento": "itens vProd",
+        "filtro": "entradas do fornecedor/item no período",
+        "agregacao": "PARTICIPANTE"
+      },
+      "destino": {
+        "obrigacao": "EFD_CONTRIB",
+        "elemento": "C191/C195.VL_ITEM (CNPJ_CPF_PART)"
+      },
+      "chaveJuncao": [
+        "CNPJ_CPF_PART",
+        "COD_ITEM",
+        "PERIODO"
+      ],
+      "operador": "MENOR_OU_IGUAL",
+      "tolerancia": "PARAM:TOL_AGREGADO_ABSOLUTO",
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_CONTRIB"
+      ],
+      "hipotesesLegitimas": [
+        "Nenhuma hipótese legítima prevista nos leiautes para esta divergência – solicitar justificativa documental ao contribuinte"
+      ],
+      "cadeias": [
+        "C5"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "Aquisições consolidadas de {fornecedor} (R$ {vlEfd}) superam as NF-e do período (R$ {vlXml})."
+    },
+    {
+      "id": "M2-R03",
+      "titulo": "Consolidado de vendas = soma das NF-e de saída do item",
+      "mapa": "M2.2",
+      "tipoRelacao": "AGR",
+      "origem": {
+        "obrigacao": "NFE",
+        "elemento": "itens vProd (líquido de descontos)",
+        "filtro": "saídas próprias com receita no período",
+        "agregacao": "ITEM"
+      },
+      "destino": {
+        "obrigacao": "EFD_CONTRIB",
+        "elemento": "C181/C185.VL_ITEM (por COD_ITEM, CST, CFOP)"
+      },
+      "chaveJuncao": [
+        "COD_ITEM",
+        "CST",
+        "CFOP",
+        "DT_DOC_INI..DT_DOC_FIN"
+      ],
+      "operador": "SOMA_IGUAL",
+      "tolerancia": "PARAM:TOL_AGREGADO_ABSOLUTO",
+      "severidade": "ESCRITURACAO_GRAVE",
+      "severidadeAtenuada": {
+        "quando": "Consolidado maior que as NF-e",
+        "severidade": "ALERTA"
+      },
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_CONTRIB"
+      ],
+      "hipotesesLegitimas": [],
+      "filtrosExclusao": [
+        "EXC-001",
+        "EXC-002",
+        "EXC-003"
+      ],
+      "cadeias": [
+        "C1",
+        "C4"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "Item {codItem}: vendas consolidadas R$ {vlEfd} x NF-e R$ {vlXml} em {mes}."
+    },
+    {
+      "id": "M2-R04",
+      "titulo": "Base de crédito sem o ICMS incidente na aquisição",
+      "mapa": "M2.2",
+      "tipoRelacao": "LIM",
+      "origem": {
+        "obrigacao": "NFE",
+        "elemento": "vProd - vICMS (+ demais componentes da base)"
+      },
+      "destino": {
+        "obrigacao": "EFD_CONTRIB",
+        "elemento": "C170.VL_BC_PIS, VL_BC_COFINS (CST 50-66)"
+      },
+      "chaveJuncao": [
+        "CHV_NFE",
+        "NUM_ITEM=nItem"
+      ],
+      "operador": "MENOR_OU_IGUAL",
+      "tolerancia": "PARAM:TOL_VALOR_DOCUMENTO",
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "NORMA",
+      "fontes": [
+        "LEI_14592_23",
+        "LEI_10637_02",
+        "LEI_10833_03"
+      ],
+      "hipotesesLegitimas": [
+        "Decisão judicial própria do contribuinte"
+      ],
+      "vigenciaInicio": "2023-05-01",
+      "cadeias": [
+        "C5"
+      ],
+      "mensagemParecer": "NF-e {chave} item {nItem}: base de crédito R$ {base} inclui o ICMS da aquisição (R$ {vICMS})."
+    },
+    {
+      "id": "M2-I01",
+      "titulo": "Cabeçalho igual entre EFD-Contribuições e XML",
+      "mapa": "M2.3",
+      "tipoRelacao": "IDT",
+      "origem": {
+        "obrigacao": "EFD_CONTRIB",
+        "elemento": "C100.VL_DOC, DT_DOC, COD_SIT"
+      },
+      "destino": {
+        "obrigacao": "NFE",
+        "elemento": "vNF, dhEmi, situação"
+      },
+      "chaveJuncao": [
+        "CHV_NFE"
+      ],
+      "operador": "IGUAL",
+      "tolerancia": "PARAM:TOL_VALOR_DOCUMENTO",
+      "severidade": "ESCRITURACAO_GRAVE",
+      "severidadeAtenuada": {
+        "quando": "Somente data divergente",
+        "severidade": "ALERTA"
+      },
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_CONTRIB",
+        "MOC_NFE"
+      ],
+      "hipotesesLegitimas": [
+        "Nenhuma hipótese legítima prevista nos leiautes para esta divergência – solicitar justificativa documental ao contribuinte"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "NF-e {chave}: {campo} na EFD-Contribuições {efd} x XML {xml}."
+    },
+    {
+      "id": "M2-I02",
+      "titulo": "CST PIS/COFINS da saída própria igual ao XML",
+      "mapa": "M2.3",
+      "tipoRelacao": "IDT",
+      "origem": {
+        "obrigacao": "EFD_CONTRIB",
+        "elemento": "C170/C181/C185.CST_PIS, CST_COFINS"
+      },
+      "destino": {
+        "obrigacao": "NFE",
+        "elemento": "det/imposto/PIS/CST, COFINS/CST"
+      },
+      "chaveJuncao": [
+        "CHV_NFE",
+        "NUM_ITEM | COD_ITEM"
+      ],
+      "operador": "IGUAL",
+      "tolerancia": null,
+      "severidade": "ESCRITURACAO_GRAVE",
+      "severidadeAtenuada": {
+        "quando": "A divergência não reduz a contribuição",
+        "severidade": "ALERTA"
+      },
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_CONTRIB",
+        "MOC_NFE"
+      ],
+      "hipotesesLegitimas": [
+        "Correção posterior do enquadramento documentada"
+      ],
+      "cadeias": [
+        "C4"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "NF-e {chave} item {item}: CST PIS/COFINS escriturado {cstEfd} x XML {cstXml}."
+    },
+    {
+      "id": "M2-I03",
+      "titulo": "Base e valor de PIS/COFINS da saída própria coerentes com o XML",
+      "mapa": "M2.3",
+      "tipoRelacao": "IDT",
+      "origem": {
+        "obrigacao": "EFD_CONTRIB",
+        "elemento": "C170.VL_BC_PIS, ALIQ_PIS, VL_PIS, VL_BC_COFINS, ALIQ_COFINS, VL_COFINS"
+      },
+      "destino": {
+        "obrigacao": "NFE",
+        "elemento": "PIS/vBC, pPIS, vPIS; COFINS/vBC, pCOFINS, vCOFINS"
+      },
+      "chaveJuncao": [
+        "CHV_NFE",
+        "NUM_ITEM"
+      ],
+      "operador": "IGUAL",
+      "tolerancia": "PARAM:TOL_VALOR_DOCUMENTO",
+      "severidade": "ALERTA",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_CONTRIB",
+        "MOC_NFE",
+        "STF_RE_574706"
+      ],
+      "hipotesesLegitimas": [
+        "Exclusão do ICMS da base de débito (Tema 69) aplicada na escrituração e não no XML"
+      ],
+      "cadeias": [
+        "C4"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "NF-e {chave} item {item}: base/valor de PIS/COFINS escriturados divergem do XML ({detalhe})."
+    },
+    {
+      "id": "M2-I04",
+      "titulo": "NCM consolidado coerente com o XML",
+      "mapa": "M2.3",
+      "tipoRelacao": "IDT",
+      "origem": {
+        "obrigacao": "EFD_CONTRIB",
+        "elemento": "C180.COD_NCM, C190.COD_NCM"
+      },
+      "destino": {
+        "obrigacao": "NFE",
+        "elemento": "prod/NCM"
+      },
+      "chaveJuncao": [
+        "COD_ITEM",
+        "PERIODO"
+      ],
+      "operador": "IGUAL",
+      "tolerancia": null,
+      "severidade": "ALERTA",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_CONTRIB",
+        "MOC_NFE"
+      ],
+      "hipotesesLegitimas": [],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "Item {codItem}: NCM consolidado {ncmEfd} x NCM nas NF-e {ncmXml}."
+    },
+    {
+      "id": "M2-I05",
+      "titulo": "CST 04/06 (monofásico/alíquota zero) com NCM compatível",
+      "mapa": "M2.3",
+      "tipoRelacao": "PAR",
+      "origem": {
+        "obrigacao": "EFD_CONTRIB",
+        "elemento": "CST_PIS/CST_COFINS in (04,06)"
+      },
+      "destino": {
+        "obrigacao": "EXTERNO",
+        "elemento": "Tabela legal de NCM monofásicos/alíquota zero (fora deste catálogo)"
+      },
+      "chaveJuncao": [
+        "COD_NCM"
+      ],
+      "operador": "COMPATIVEL",
+      "tolerancia": null,
+      "severidade": "ALERTA",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_CONTRIB"
+      ],
+      "hipotesesLegitimas": [],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "Item {codItem} (NCM {ncm}) com CST {cst} – confirmar enquadramento legal."
+    },
+    {
+      "id": "M4-P01",
+      "titulo": "NFS-e emitida presente na EFD-Contribuições",
+      "mapa": "M4.1",
+      "tipoRelacao": "PRE_DIRETA",
+      "origem": {
+        "obrigacao": "NFSE",
+        "elemento": "chave NFS-e",
+        "filtro": "prest/CNPJ in 0140; vigente"
+      },
+      "destino": {
+        "obrigacao": "EFD_CONTRIB",
+        "elemento": "A100.CHV_NFSE (IND_OPER=1, IND_EMIT=0) | F500/F525 (caixa) | F550 (competência consolidada)"
+      },
+      "chaveJuncao": [
+        "CHV_NFSE"
+      ],
+      "operador": "EXISTE",
+      "tolerancia": null,
+      "condicaoDescritiva": "Período de alocação: competência (dCompet); no regime de caixa, período do recebimento.",
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "MANUAL",
+      "fontes": [
+        "GP_EFD_CONTRIB",
+        "NFSE_ANEXO_I"
+      ],
+      "hipotesesLegitimas": [],
+      "filtrosExclusao": [
+        "EXC-006",
+        "EXC-010"
+      ],
+      "dependeDe": [
+        "PAR-001",
+        "PAR-005"
+      ],
+      "cadeias": [
+        "C1",
+        "C4"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "NFS-e {chave} (R$ {vServ}, competência {dCompet}) não está na EFD-Contribuições."
+    },
+    {
+      "id": "M4-P02",
+      "titulo": "NFS-e tomada com possível crédito não aproveitado",
+      "mapa": "M4.1",
+      "tipoRelacao": "PRE_DIRETA",
+      "origem": {
+        "obrigacao": "NFSE",
+        "elemento": "chave NFS-e",
+        "filtro": "toma/CNPJ in 0140; COD_INC_TRIB in (1,3)"
+      },
+      "destino": {
+        "obrigacao": "EFD_CONTRIB",
+        "elemento": "A100.CHV_NFSE (IND_OPER=0)"
+      },
+      "chaveJuncao": [
+        "CHV_NFSE"
+      ],
+      "operador": "EXISTE",
+      "tolerancia": null,
+      "severidade": "INFO",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_CONTRIB"
+      ],
+      "hipotesesLegitimas": [
+        "Serviço não caracterizado como insumo"
+      ],
+      "filtrosExclusao": [
+        "EXC-010"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "NFS-e tomada {chave} não consta da EFD-Contribuições (possível crédito não aproveitado)."
+    },
+    {
+      "id": "M4-P03",
+      "titulo": "Retenção de PIS/COFINS da NFS-e refletida no A100 e no F600",
+      "mapa": "M4.1",
+      "tipoRelacao": "PRE_DIRETA",
+      "origem": {
+        "obrigacao": "NFSE",
+        "elemento": "tribFed/piscofins com retenção",
+        "filtro": "prest/CNPJ in 0140"
+      },
+      "destino": {
+        "obrigacao": "EFD_CONTRIB",
+        "elemento": "A100.VL_PIS_RET, VL_COFINS_RET; F600 (CNPJ = tomador)"
+      },
+      "chaveJuncao": [
+        "CHV_NFSE",
+        "CNPJ_TOMADOR"
+      ],
+      "operador": "EXISTE",
+      "tolerancia": null,
+      "severidade": "ALERTA",
+      "evidencia": "MANUAL",
+      "fontes": [
+        "GP_EFD_CONTRIB",
+        "NFSE_ANEXO_I"
+      ],
+      "hipotesesLegitimas": [
+        "Retenção destacada mas não efetuada pelo tomador"
+      ],
+      "cadeias": [
+        "C8"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "conferirCampo": true,
+      "mensagemParecer": "NFS-e {chave} com PIS/COFINS retidos sem reflexo em A100/F600."
+    },
+    {
+      "id": "M4-R01",
+      "titulo": "A100 com chave tem NFS-e vigente",
+      "mapa": "M4.2",
+      "tipoRelacao": "PRE_REVERSA",
+      "origem": {
+        "obrigacao": "EFD_CONTRIB",
+        "elemento": "A100.CHV_NFSE"
+      },
+      "destino": {
+        "obrigacao": "NFSE",
+        "elemento": "chave NFS-e",
+        "filtro": "vigente (não cancelada/substituída); CNPJ no papel correspondente"
+      },
+      "chaveJuncao": [
+        "CHV_NFSE"
+      ],
+      "operador": "EXISTE",
+      "tolerancia": null,
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_CONTRIB",
+        "NFSE_ANEXO_II"
+      ],
+      "hipotesesLegitimas": [
+        "NFS-e não fornecida ao agente (cobertura)"
+      ],
+      "filtrosExclusao": [
+        "EXC-012"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "A100 {chave} sem NFS-e vigente correspondente ({situacao})."
+    },
+    {
+      "id": "M4-R02",
+      "titulo": "Crédito sobre serviço tomado com NFS-e válida",
+      "mapa": "M4.2",
+      "tipoRelacao": "PRE_REVERSA",
+      "origem": {
+        "obrigacao": "EFD_CONTRIB",
+        "elemento": "A100 (IND_OPER=0) + A170 CST 50-56"
+      },
+      "destino": {
+        "obrigacao": "NFSE",
+        "elemento": "chave NFS-e",
+        "filtro": "toma/CNPJ = estabelecimento; vigente"
+      },
+      "chaveJuncao": [
+        "CHV_NFSE"
+      ],
+      "operador": "EXISTE",
+      "tolerancia": null,
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_CONTRIB"
+      ],
+      "hipotesesLegitimas": [],
+      "filtrosExclusao": [
+        "EXC-012"
+      ],
+      "cadeias": [
+        "C5"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "Crédito sobre serviço {chave} sem NFS-e tomada válida."
+    },
+    {
+      "id": "M4-R03",
+      "titulo": "Retenções deduzidas (F600) limitadas às retenções das NFS-e por fonte pagadora",
+      "mapa": "M4.2",
+      "tipoRelacao": "LIM",
+      "origem": {
+        "obrigacao": "NFSE",
+        "elemento": "PIS/COFINS retidos",
+        "filtro": "prest = contribuinte",
+        "agregacao": "PARTICIPANTE"
+      },
+      "destino": {
+        "obrigacao": "EFD_CONTRIB",
+        "elemento": "F600.VL_RET_PIS, VL_RET_COFINS (CNPJ fonte pagadora)"
+      },
+      "chaveJuncao": [
+        "CNPJ_TOMADOR=F600.CNPJ",
+        "MES"
+      ],
+      "operador": "MENOR_OU_IGUAL",
+      "tolerancia": "PARAM:TOL_AGREGADO_ABSOLUTO",
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_CONTRIB",
+        "NFSE_ANEXO_I"
+      ],
+      "hipotesesLegitimas": [
+        "Retenções sobre outros pagamentos sem NFS-e nacional (ex.: documentos municipais pré-adesão)"
+      ],
+      "cadeias": [
+        "C8"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "Retenções informadas no F600 para {fonte} (R$ {vlF600}) superam as retidas nas NFS-e (R$ {vlNfse})."
+    },
+    {
+      "id": "M4-I01",
+      "titulo": "De-para A100/A170 x NFS-e",
+      "mapa": "M4.3",
+      "tipoRelacao": "IDT",
+      "origem": {
+        "obrigacao": "EFD_CONTRIB",
+        "elemento": "A100.NUM_DOC, SER, DT_DOC, DT_EXE_SERV, COD_PART, VL_DOC, VL_DESC, VL_ISS, VL_PIS, VL_COFINS, VL_PIS_RET, VL_COFINS_RET; A170.CST_PIS, CST_COFINS"
+      },
+      "destino": {
+        "obrigacao": "NFSE",
+        "elemento": "nNFSe, serie, dhEmi, dCompet, toma|prest, vServ, descontos, vISSQN, tribFed/piscofins (CST, valores, retenções)"
+      },
+      "chaveJuncao": [
+        "CHV_NFSE"
+      ],
+      "operador": "IGUAL",
+      "tolerancia": "PARAM:TOL_VALOR_DOCUMENTO",
+      "severidade": "ESCRITURACAO_GRAVE",
+      "severidadeAtenuada": {
+        "quando": "Divergência apenas em datas, série ou descrição",
+        "severidade": "ALERTA"
+      },
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_CONTRIB",
+        "NFSE_ANEXO_I"
+      ],
+      "hipotesesLegitimas": [
+        "Nenhuma hipótese legítima prevista nos leiautes para esta divergência – solicitar justificativa documental ao contribuinte"
+      ],
+      "dependeDe": [
+        "M4-R01"
+      ],
+      "cadeias": [
+        "C4",
+        "C8"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "conferirCampo": true,
+      "mensagemParecer": "NFS-e {chave}: {campo} escriturado {efd} x documento {nfse}."
+    },
+    {
+      "id": "M5-01",
+      "titulo": "Estabelecimento do DF: ISS/NFS-e no Bloco B da EFD ICMS/IPI",
+      "mapa": "M5",
+      "tipoRelacao": "PRE_DIRETA",
+      "origem": {
+        "obrigacao": "NFSE",
+        "elemento": "chave NFS-e",
+        "filtro": "prest = estabelecimento com 0000.UF = DF"
+      },
+      "destino": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "Bloco B"
+      },
+      "chaveJuncao": [
+        "CNPJ",
+        "MES"
+      ],
+      "operador": "EXISTE",
+      "tolerancia": null,
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "MANUAL",
+      "fontes": [
+        "GP_EFD_ICMS_IPI"
+      ],
+      "hipotesesLegitimas": [],
+      "vigenciaInicio": "2025-01-01",
+      "conferirCampo": true,
+      "mensagemParecer": "Estabelecimento do DF {cnpj} com NFS-e em {mes} sem escrituração no Bloco B."
+    },
+    {
+      "id": "M5-02",
+      "titulo": "Bloco B com movimento fora do DF",
+      "mapa": "M5",
+      "tipoRelacao": "PAR",
+      "origem": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "Bloco B com movimento"
+      },
+      "destino": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "0000.UF"
+      },
+      "chaveJuncao": [
+        "CNPJ",
+        "MES"
+      ],
+      "operador": "COMPATIVEL",
+      "tolerancia": null,
+      "severidade": "ALERTA",
+      "evidencia": "MANUAL",
+      "fontes": [
+        "GP_EFD_ICMS_IPI"
+      ],
+      "hipotesesLegitimas": [],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "Estabelecimento {cnpj} ({uf}) com Bloco B em movimento."
+    },
+    {
+      "id": "M5-03",
+      "titulo": "NFS-e recebida por meio eletrônico compõe 1601.TOT_ISS",
+      "mapa": "M5",
+      "tipoRelacao": "AGR",
+      "origem": {
+        "obrigacao": "NFSE",
+        "elemento": "vServ",
+        "filtro": "prest = estabelecimento; pagamento eletrônico (quando conhecido)",
+        "agregacao": "MES"
+      },
+      "destino": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "1601.TOT_ISS"
+      },
+      "chaveJuncao": [
+        "CNPJ",
+        "MES"
+      ],
+      "operador": "SOMA_IGUAL",
+      "tolerancia": "PARAM:TOL_AGREGADO_PERCENTUAL",
+      "severidade": "ALERTA",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_ICMS_IPI"
+      ],
+      "hipotesesLegitimas": [
+        "NFS-e não informa meio de pagamento – comparação depende da DIMP"
+      ],
+      "cadeias": [
+        "C9"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "Serviços recebidos eletronicamente em {mes} (R$ {vlNfse}) x 1601.TOT_ISS (R$ {totIss})."
+    }
+  ]
+}

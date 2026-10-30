@@ -1,0 +1,39 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Api.Agente",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/src/Api.Agente/bin/Debug/net10.0/Api.Agente.dll",
+      "cwd": "${workspaceFolder}/src/Api.Agente",
+      "launchSettingsProfile": "http",
+      "console": "internalConsole",
+      "stopAtEntry": false
+    },
+    {
+      "name": "Api.RAG",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/src/Api.RAG/bin/Debug/net10.0/Api.RAG.dll",
+      "cwd": "${workspaceFolder}/src/Api.RAG",
+      "launchSettingsProfile": "http",
+      "console": "internalConsole",
+      "stopAtEntry": false
+    },
+    {
+      "name": "Anexar a um processo",
+      "type": "coreclr",
+      "request": "attach"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Api.RAG + Api.Agente",
+      "configurations": ["Api.RAG", "Api.Agente"],
+      "stopAll": true
+    }
+  ]
+}

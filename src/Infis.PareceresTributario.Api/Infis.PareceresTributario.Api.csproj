@@ -1,8 +1,0 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
-
-  <ItemGroup>
-    <ProjectReference Include="../Infis.PareceresTributario.Application/Infis.PareceresTributario.Application.csproj" />
-    <ProjectReference Include="../Infis.PareceresTributario.Contracts/Infis.PareceresTributario.Contracts.csproj" />
-    <ProjectReference Include="../Infis.PareceresTributario.Infrastructure/Infis.PareceresTributario.Infrastructure.csproj" />
-  </ItemGroup>
-</Project>

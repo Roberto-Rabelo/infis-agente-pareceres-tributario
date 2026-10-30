@@ -1,0 +1,78 @@
+{
+  "versaoCatalogo": "1.0.0",
+  "descricao": "Parâmetros referenciados pelas regras (PARAM:nome). Nenhum destes valores é definido em norma oficial: são DECISÕES DO PROJETO e devem ser validados por contador responsável. Valores null = obrigatoriamente definir antes de produção.",
+  "parametros": [
+    {
+      "nome": "TOL_VALOR_DOCUMENTO",
+      "descricao": "Tolerância absoluta (R$) para igualdade de valores entre documento e escrituração (arredondamento).",
+      "tipo": "decimal",
+      "valor": null,
+      "exemploSugerido": 0.01,
+      "usadoEm": ["IDT por documento"]
+    },
+    {
+      "nome": "TOL_AGREGADO_PERCENTUAL",
+      "descricao": "Tolerância percentual para cruzamentos agregados (mês/ano) entre escriturações. Abaixo dela, divergência vira ALERTA; acima, mantém a severidade da regra.",
+      "tipo": "decimal",
+      "valor": null,
+      "usadoEm": ["AGR mensais e anuais"]
+    },
+    {
+      "nome": "TOL_AGREGADO_ABSOLUTO",
+      "descricao": "Tolerância absoluta (R$) combinada com a percentual (aplicar a maior / menor – decisão do projeto).",
+      "tipo": "decimal",
+      "valor": null,
+      "usadoEm": ["AGR mensais e anuais"]
+    },
+    {
+      "nome": "JANELA_MESES_ENTRADA",
+      "descricao": "Quantidade de meses após dhEmi em que uma NF-e de entrada pode ser escriturada sem caracterizar omissão (escrituração pela data de entrada – DT_E_S).",
+      "tipo": "int",
+      "valor": null,
+      "usadoEm": ["M1-P05", "M1-P06", "M3-04"]
+    },
+    {
+      "nome": "MATERIALIDADE_DIMP",
+      "descricao": "Limite (R$ ou %) a partir do qual a diferença DIMP x documentos passa de ALERTA a ESCRITURACAO_GRAVE.",
+      "tipo": "decimal",
+      "valor": null,
+      "usadoEm": ["M6-03", "M6-04"]
+    },
+    {
+      "nome": "MATERIALIDADE_RECEITA",
+      "descricao": "Limite (R$ ou %) a partir do qual divergências de receita entre documentos/escriturações e contabilidade passam a ESCRITURACAO_GRAVE.",
+      "tipo": "decimal",
+      "valor": null,
+      "usadoEm": ["M7-08", "M8-02", "M12-01", "M3-06"]
+    },
+    {
+      "nome": "TABELA_CFOP_RECEITA",
+      "descricao": "Tabela CFOP -> {geraReceita: bool, natureza: VENDA|DEVOLUCAO|TRANSFERENCIA|REMESSA|RETORNO|BONIFICACAO|ATIVO|USO_CONSUMO|OUTROS}. Construída a partir da Tabela CFOP oficial (Convênio SINIEF s/nº 1970). Não existe lista oficial 'CFOP de receita'.",
+      "tipo": "tabela",
+      "valor": null,
+      "arquivoSugerido": "tabelas/cfop-natureza.json",
+      "usadoEm": ["M2-P01", "M3-03", "M3-06", "M7-08", "M12-01", "EXC-001", "EXC-002"]
+    },
+    {
+      "nome": "TABELA_CONTAS_POR_FUNCAO",
+      "descricao": "Mapeamento, por contribuinte, das contas da ECD por função: ESTOQUE, ICMS_RECOLHER, ICMS_RECUPERAR, IPI_RECOLHER, PIS_COFINS_RECOLHER, PIS_COFINS_RECUPERAR, RETENCOES_COMPENSAR, IMOBILIZADO, RECEITA_BRUTA, IRPJ_CSLL. Preferir derivar do mapeamento referencial (I051) e completar manualmente.",
+      "tipo": "tabela",
+      "valor": null,
+      "usadoEm": ["M7-02", "M7-05", "M7-06", "M7-07", "M8-05", "M8-06", "M8-07", "M9-15", "M12-02", "M12-04"]
+    },
+    {
+      "nome": "DATA_VIGENCIA_NT_2023_002",
+      "descricao": "Data de produção da eliminação da inutilização (NT 2023.002 v1.02). Depois dela não há novos COD_SIT 05.",
+      "tipo": "date",
+      "valor": null,
+      "usadoEm": ["M1-P04"]
+    },
+    {
+      "nome": "DATA_OBRIGATORIEDADE_UB12_10",
+      "descricao": "Data de obrigatoriedade em produção do grupo IBS/CBS (regra UB12-10) conforme NT 2025.002 v1.52.",
+      "tipo": "date",
+      "valor": null,
+      "usadoEm": ["EXC-007"]
+    }
+  ]
+}

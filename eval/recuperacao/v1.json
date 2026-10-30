@@ -1,0 +1,25 @@
+{
+  "versao": "1.0.0",
+  "descricao": "T065 (P7, D12): perguntas em linguagem natural sobre inconsistências de cruzamento × regras que a busca semântica deve recuperar. 'esperados' entram nas métricas; 'relacionados' são aceitáveis e só aparecem no relatório. As perguntas não citam o identificador esperado, para medir a busca semântica e não a busca exata por regra.",
+  "base": "docs/*.md ingeridos como BASE_REGRAS_INTERNA (scripts/ingerir-base-regras.ps1)",
+  "casos": [
+    { "id": "R001", "pergunta": "NF-e cancelada pelo emitente foi escriturada no C100 como documento regular, com valores", "obrigacoes": [], "esperados": ["CRZ-NFE-EFD-002", "M1-P02"], "relacionados": ["M1-R02", "INT-NFE-005"] },
+    { "id": "R002", "pergunta": "Nota fiscal eletrônica de emissão própria autorizada não aparece na EFD ICMS/IPI do mês", "obrigacoes": [], "esperados": ["CRZ-NFE-EFD-001", "M1-P01"], "relacionados": ["ENT-003"] },
+    { "id": "R003", "pergunta": "Valor total do XML da nota diferente do valor do documento escriturado no C100", "obrigacoes": [], "esperados": ["CRZ-NFE-EFD-004"], "relacionados": [] },
+    { "id": "R004", "pergunta": "Crédito de ICMS escriturado na entrada maior que o imposto destacado na nota do fornecedor", "obrigacoes": [], "esperados": ["CRZ-NFE-EFD-007"], "relacionados": [] },
+    { "id": "R005", "pergunta": "Venda interestadual a consumidor final não contribuinte com diferencial de alíquota sem apuração E300/E310", "obrigacoes": [], "esperados": ["CRZ-NFE-EFD-010"], "relacionados": ["INT-EFD-013"] },
+    { "id": "R006", "pergunta": "Receita de notas de venda emitidas que não foi escriturada na EFD-Contribuições", "obrigacoes": [], "esperados": ["CRZ-NFE-CTB-001", "M2-P01"], "relacionados": [] },
+    { "id": "R007", "pergunta": "Base do crédito de PIS e COFINS nas compras calculada incluindo o ICMS da aquisição", "obrigacoes": [], "esperados": ["CRZ-NFE-CTB-004", "M2-R04"], "relacionados": [] },
+    { "id": "R008", "pergunta": "Nota de serviço eletrônica emitida sem a receita correspondente no registro A100", "obrigacoes": [], "esperados": ["CRZ-NFS-CTB-001"], "relacionados": [] },
+    { "id": "R009", "pergunta": "IRRF e CSLL retidos nas notas de serviço não conferem com o demonstrativo de retenções da ECF", "obrigacoes": [], "esperados": ["CRZ-NFS-ECF-001"], "relacionados": ["CRZ-CTB-ECF-004"] },
+    { "id": "R010", "pergunta": "Total das transações informadas pelas instituições de pagamento diverge do registro 1601 da EFD", "obrigacoes": [], "esperados": ["CRZ-DIMP-EFD-002"], "relacionados": ["CRZ-DIMP-EFD-001", "ENT-012"] },
+    { "id": "R011", "pergunta": "Estabelecimento que entrega EFD ICMS/IPI não está relacionado no 0140 da EFD-Contribuições", "obrigacoes": [], "esperados": ["CRZ-EFD-CTB-002", "ENT-001"], "relacionados": [] },
+    { "id": "R012", "pergunta": "Inventário de 31 de dezembro do Bloco H não confere com o saldo de estoques da contabilidade", "obrigacoes": [], "esperados": ["CRZ-EFD-ECD-002"], "relacionados": ["INT-EFD-009"] },
+    { "id": "R013", "pergunta": "A ECF recuperou o hash de uma ECD que depois foi substituída", "obrigacoes": [], "esperados": ["CRZ-ECD-ECF-001"], "relacionados": [] },
+    { "id": "R014", "pergunta": "Saldos contábeis recuperados na ECF diferentes dos saldos I155 e I355 da ECD", "obrigacoes": [], "esperados": ["CRZ-ECD-ECF-002"], "relacionados": [] },
+    { "id": "R015", "pergunta": "Empresa do lucro presumido apurando PIS e COFINS no regime não cumulativo", "obrigacoes": [], "esperados": ["CRZ-REG-002"], "relacionados": ["ENT-006"] },
+    { "id": "R016", "pergunta": "Conta contábil informada na EFD que não existe como conta analítica no plano de contas da ECD", "obrigacoes": [], "esperados": ["CRZ-EFD-ECD-001", "ENT-030"], "relacionados": ["ENT-031"] },
+    { "id": "R017", "pergunta": "Raiz do CNPJ diferente entre a escrituração contábil, a ECF e as EFDs do grupo", "obrigacoes": [], "esperados": ["ENT-004"], "relacionados": [] },
+    { "id": "R018", "pergunta": "Opção pelo regime de caixa no lucro presumido informada na ECF mas não na EFD-Contribuições", "obrigacoes": [], "esperados": ["CRZ-CTB-ECF-003", "CRZ-REG-004"], "relacionados": [] }
+  ]
+}

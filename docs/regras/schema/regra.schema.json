@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "infis/regras/regra.schema.json",
+  "title": "Arquivo de regras de coesão entre obrigações",
+  "type": "object",
+  "required": ["versaoCatalogo", "grupo", "descricao", "regras"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "versaoCatalogo": { "type": "string" },
+    "grupo": { "type": "string" },
+    "descricao": { "type": "string" },
+    "documentoOrigem": { "type": "string", "description": "Arquivo .md do núcleo de onde as regras foram extraídas" },
+    "regras": { "type": "array", "items": { "$ref": "#/$defs/regra" } }
+  },
+  "$defs": {
+    "obrigacao": {
+      "enum": ["NFE", "NFCE", "NFSE", "DIMP", "EFD_ICMS_IPI", "EFD_CONTRIB", "ECD", "ECF", "EXTERNO"]
+    },
+    "lado": {
+      "type": "object",
+      "required": ["obrigacao", "elemento"],
+      "additionalProperties": false,
+      "properties": {
+        "obrigacao": { "$ref": "#/$defs/obrigacao" },
+        "elemento": { "type": "string", "description": "Registro/campo ou caminho XML. Vários separados por vírgula." },
+        "filtro": { "type": "string", "description": "Universo considerado deste lado (texto descritivo para o motor)" },
+        "agregacao": { "enum": ["NENHUMA", "MES", "TRIMESTRE", "ANO", "ESTABELECIMENTO", "CONTA", "ITEM", "PARTICIPANTE", "DOCUMENTO", "GRUPO_CST_CFOP_ALIQ", "INSTITUICAO_PAGAMENTO"] }
+      }
+    },
+    "regra": {
+      "type": "object",
+      "required": ["id", "titulo", "tipoRelacao", "origem", "operador", "severidade", "evidencia", "fontes", "hipotesesLegitimas", "vigenciaInicio", "mensagemParecer"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^[A-Z0-9]+(-[A-Z0-9]+)+$" },
+        "titulo": { "type": "string" },
+        "mapa": { "type": "string", "description": "Seção do núcleo (ex.: M1.1, NUCLEO-1 §3.1)" },
+        "tipoRelacao": { "enum": ["PRE_DIRETA", "PRE_REVERSA", "IDT", "AGR", "LIM", "CNT", "PAR", "EXC"] },
+        "origem": { "$ref": "#/$defs/lado" },
+        "destino": { "$ref": "#/$defs/lado" },
+        "chaveJuncao": { "type": "array", "items": { "type": "string" } },
+        "operador": { "enum": ["EXISTE", "NAO_EXISTE", "IGUAL", "SOMA_IGUAL", "MENOR_OU_IGUAL", "MAIOR_OU_IGUAL", "SALDO_FINAL_IGUAL_INICIAL", "COMPATIVEL", "FILTRA"] },
+        "tolerancia": { "type": ["string", "null"], "description": "Referência a parâmetro (PARAM:nome) ou null quando a igualdade é exata" },
+        "condicaoDescritiva": { "type": "string" },
+        "severidade": { "$ref": "#/$defs/severidade" },
+        "severidadeAtenuada": {
+          "type": "object",
+          "required": ["quando", "severidade"],
+          "additionalProperties": false,
+          "properties": {
+            "quando": { "type": "string" },
+            "severidade": { "$ref": "#/$defs/severidade" }
+          }
+        },
+        "evidencia": { "enum": ["PVA", "MANUAL", "NORMA", "DERIVADA"] },
+        "fontes": { "type": "array", "minItems": 1, "items": { "type": "string", "description": "id do catálogo de fontes (fontes.json)" } },
+        "hipotesesLegitimas": { "type": "array", "items": { "type": "string" } },
+        "filtrosExclusao": { "type": "array", "items": { "type": "string", "description": "ids de regras EXC aplicadas antes" } },
+        "dependeDe": { "type": "array", "items": { "type": "string" }, "description": "Regras que precisam passar para esta ser conclusiva" },
+        "cadeias": { "type": "array", "items": { "pattern": "^C([1-9]|10)$" } },
+        "aplicavelSe": { "type": "string", "description": "Pré-condição de regime/parâmetro para a regra ser executada" },
+        "vigenciaInicio": { "type": "string", "format": "date" },
+        "vigenciaFim": { "type": ["string", "null"], "format": "date" },
+        "conferirCampo": { "type": "boolean", "description": "true = nome/código de campo a confirmar no PDF oficial antes de produção" },
+        "executor": { "enum": ["AGENTE_COESAO", "AGENTE_ORIGEM"], "default": "AGENTE_COESAO" },
+        "mensagemParecer": { "type": "string" }
+      }
+    },
+    "severidade": { "enum": ["ESTRUTURA_GRAVE", "ESCRITURACAO_GRAVE", "ALERTA", "INFO"] }
+  }
+}

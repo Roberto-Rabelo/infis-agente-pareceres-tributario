@@ -1,0 +1,686 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2400" height="1960" viewBox="0 0 2400 1960">
+<defs>
+<marker id="ar-b45309" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b45309"/></marker>
+<marker id="as-b45309" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b45309"/></marker>
+<marker id="ar-15803d" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#15803d"/></marker>
+<marker id="as-15803d" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#15803d"/></marker>
+<marker id="ar-be123c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#be123c"/></marker>
+<marker id="as-be123c" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#be123c"/></marker>
+<marker id="ar-0f172a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0f172a"/></marker>
+<marker id="as-0f172a" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0f172a"/></marker>
+<marker id="ar-0f766e" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0f766e"/></marker>
+<marker id="as-0f766e" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0f766e"/></marker>
+<marker id="ar-7f1d1d" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#7f1d1d"/></marker>
+<marker id="as-7f1d1d" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#7f1d1d"/></marker>
+<marker id="ar-f8fafc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#f8fafc"/></marker>
+<marker id="as-f8fafc" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#f8fafc"/></marker>
+<marker id="ar-7c3aed" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#7c3aed"/></marker>
+<marker id="as-7c3aed" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#7c3aed"/></marker>
+<marker id="ar-b91c1c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+<marker id="as-b91c1c" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+<marker id="ar-1d4ed8" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1d4ed8"/></marker>
+<marker id="as-1d4ed8" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1d4ed8"/></marker>
+<marker id="ar-cbd5e1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#cbd5e1"/></marker>
+<marker id="as-cbd5e1" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#cbd5e1"/></marker>
+<marker id="ar-64748b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker>
+<marker id="as-64748b" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker>
+<marker id="ar-d97706" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#d97706"/></marker>
+<marker id="as-d97706" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#d97706"/></marker>
+<marker id="ar-475569" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#475569"/></marker>
+<marker id="as-475569" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#475569"/></marker>
+</defs>
+<rect x="0" y="0" width="2400" height="1960" rx="0" fill="#f8fafc" stroke="none" stroke-width="1" fill-opacity="1"/>
+<text x="40" y="46" font-family="Segoe UI, Arial, sans-serif" font-size="30" fill="#0f172a" font-weight="bold" text-anchor="start">Mapa de Coesão entre Obrigações Fiscais e Tributárias</text>
+<text x="40" y="74" font-family="Segoe UI, Arial, sans-serif" font-size="15" fill="#475569" font-weight="normal" text-anchor="start">NF-e · NFS-e · DIMP · EFD ICMS/IPI · EFD-Contribuições · ECD · ECF  —  catálogo v1.0.0 · 158 regras · leiautes vigentes em 29/10/2026</text>
+<text x="2360" y="46" font-family="Segoe UI, Arial, sans-serif" font-size="14" fill="#475569" font-weight="normal" text-anchor="end" font-style="italic">O mesmo fato econômico deve aparecer em cada camada,</text>
+<text x="2360" y="66" font-family="Segoe UI, Arial, sans-serif" font-size="14" fill="#475569" font-weight="normal" text-anchor="end" font-style="italic">com o mesmo valor ou a agregação correta.</text>
+<rect x="40" y="96" width="520" height="74" rx="8" fill="#ffffff" stroke="#0f172a" stroke-width="1.4" fill-opacity="1"/>
+<circle cx="62" cy="118" r="13" fill="#0f172a"/>
+<text x="62" y="123" font-family="Segoe UI, Arial, sans-serif" font-size="14" fill="#fff" font-weight="bold" text-anchor="middle">1</text>
+<text x="82" y="123" font-family="Segoe UI, Arial, sans-serif" font-size="14.5" fill="#0f172a" font-weight="bold" text-anchor="start">PAR · Regime</text>
+<text x="550" y="123" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#475569" font-weight="normal" text-anchor="end">10 regras</text>
+<text x="52" y="146" font-family="Segoe UI, Arial, sans-serif" font-size="11.8" fill="#0f172a" font-weight="normal" text-anchor="start">CRT (NF-e) × FORMA_TRIB (ECF) × COD_INC_TRIB / IND_REG_CUM</text>
+<text x="52" y="162" font-family="Segoe UI, Arial, sans-serif" font-size="11.8" fill="#0f172a" font-weight="normal" text-anchor="start">(EFD-Contrib.) × COD_PLAN_REF (ECD) × IND_ATIV (EFD)</text>
+<rect x="575" y="96" width="560" height="74" rx="8" fill="#ffffff" stroke="#0f172a" stroke-width="1.4" fill-opacity="1"/>
+<circle cx="597" cy="118" r="13" fill="#0f172a"/>
+<text x="597" y="123" font-family="Segoe UI, Arial, sans-serif" font-size="14" fill="#fff" font-weight="bold" text-anchor="middle">2</text>
+<text x="617" y="123" font-family="Segoe UI, Arial, sans-serif" font-size="14.5" fill="#0f172a" font-weight="bold" text-anchor="start">EXC · Exclusividades legítimas (filtros)</text>
+<text x="1125" y="123" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#475569" font-weight="normal" text-anchor="end">13 regras</text>
+<text x="587" y="146" font-family="Segoe UI, Arial, sans-serif" font-size="11.8" fill="#0f172a" font-weight="normal" text-anchor="start">transferências · remessas/retornos · canceladas/denegadas · 210220/210240 ·</text>
+<text x="587" y="162" font-family="Segoe UI, Arial, sans-serif" font-size="11.8" fill="#0f172a" font-weight="normal" text-anchor="start">outro estab. · caixa não recebido · só IBS/CBS · IND_PROP=2 · NFS-e substituída</text>
+<rect x="1150" y="96" width="490" height="74" rx="8" fill="#ffffff" stroke="#0f172a" stroke-width="1.4" fill-opacity="1"/>
+<circle cx="1172" cy="118" r="13" fill="#0f172a"/>
+<text x="1172" y="123" font-family="Segoe UI, Arial, sans-serif" font-size="14" fill="#fff" font-weight="bold" text-anchor="middle">3</text>
+<text x="1192" y="123" font-family="Segoe UI, Arial, sans-serif" font-size="14.5" fill="#0f172a" font-weight="bold" text-anchor="start">ENT · Entidades compartilhadas</text>
+<text x="1630" y="123" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#475569" font-weight="normal" text-anchor="end">16 regras</text>
+<text x="1162" y="146" font-family="Segoe UI, Arial, sans-serif" font-size="11.8" fill="#0f172a" font-weight="normal" text-anchor="start">CNPJ/IE (0000·0140) · participante (0150 → CNPJ)</text>
+<text x="1162" y="162" font-family="Segoe UI, Arial, sans-serif" font-size="11.8" fill="#0f172a" font-weight="normal" text-anchor="start">item (0200·NCM·0220) · conta contábil (0500 ↔ I050)</text>
+<path d="M855,170 L855,196" fill="none" stroke="#0f172a" stroke-width="1.6" marker-end="url(#ar-0f172a)" stroke-linejoin="round"/>
+<text x="868" y="192" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#475569" font-weight="bold" text-anchor="start" font-style="italic">passos 1–3 executados antes de qualquer cruzamento de valor</text>
+<rect x="40" y="200" width="1600" height="136" rx="6" fill="#7c3aed" stroke="none" stroke-width="1" fill-opacity="0.05"/>
+<rect x="40" y="200" width="6" height="136" rx="2" fill="#7c3aed" stroke="none" stroke-width="1" fill-opacity="1"/>
+<text x="56" y="222" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#7c3aed" font-weight="bold" text-anchor="start">CAMADA 0</text>
+<text x="56" y="238" font-family="Segoe UI, Arial, sans-serif" font-size="11.5" fill="#475569" font-weight="normal" text-anchor="start">Evidência externa</text>
+<rect x="40" y="346" width="1600" height="236" rx="6" fill="#1d4ed8" stroke="none" stroke-width="1" fill-opacity="0.05"/>
+<rect x="40" y="346" width="6" height="236" rx="2" fill="#1d4ed8" stroke="none" stroke-width="1" fill-opacity="1"/>
+<text x="56" y="368" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#1d4ed8" font-weight="bold" text-anchor="start">CAMADA 1</text>
+<text x="56" y="384" font-family="Segoe UI, Arial, sans-serif" font-size="11.5" fill="#475569" font-weight="normal" text-anchor="start">Documento fiscal</text>
+<rect x="40" y="600" width="1600" height="350" rx="6" fill="#0f766e" stroke="none" stroke-width="1" fill-opacity="0.05"/>
+<rect x="40" y="600" width="6" height="350" rx="2" fill="#0f766e" stroke="none" stroke-width="1" fill-opacity="1"/>
+<text x="56" y="622" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#0f766e" font-weight="bold" text-anchor="start">CAMADA 2</text>
+<text x="56" y="638" font-family="Segoe UI, Arial, sans-serif" font-size="11.5" fill="#475569" font-weight="normal" text-anchor="start">Escrituração fiscal</text>
+<rect x="40" y="968" width="1600" height="230" rx="6" fill="#b45309" stroke="none" stroke-width="1" fill-opacity="0.05"/>
+<rect x="40" y="968" width="6" height="230" rx="2" fill="#b45309" stroke="none" stroke-width="1" fill-opacity="1"/>
+<text x="56" y="990" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#b45309" font-weight="bold" text-anchor="start">CAMADA 3</text>
+<text x="56" y="1006" font-family="Segoe UI, Arial, sans-serif" font-size="11.5" fill="#475569" font-weight="normal" text-anchor="start">Contabilidade</text>
+<rect x="40" y="1216" width="1600" height="270" rx="6" fill="#be123c" stroke="none" stroke-width="1" fill-opacity="0.05"/>
+<rect x="40" y="1216" width="6" height="270" rx="2" fill="#be123c" stroke="none" stroke-width="1" fill-opacity="1"/>
+<text x="56" y="1238" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#be123c" font-weight="bold" text-anchor="start">CAMADA 4</text>
+<text x="56" y="1254" font-family="Segoe UI, Arial, sans-serif" font-size="11.5" fill="#475569" font-weight="normal" text-anchor="start">IRPJ / CSLL</text>
+<rect x="674" y="212" width="360" height="118" rx="10" fill="#0f172a" stroke="none" stroke-width="1" fill-opacity="0.08"/>
+<rect x="670" y="208" width="360" height="118" rx="10" fill="#ffffff" stroke="#7c3aed" stroke-width="2" fill-opacity="1"/>
+<path d="M670,218 a10,10 0 0 1 10,-10 h340 a10,10 0 0 1 10,10 v24 h-360 z" fill="#7c3aed"/>
+<text x="682" y="231" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#fff" font-weight="bold" text-anchor="start">DIMP</text>
+<text x="682" y="260" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#475569" font-weight="normal" text-anchor="start" font-style="italic">Declarada por instituições de pagamento / intermediadores</text>
+<text x="682" y="280" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#7c3aed" font-weight="bold" text-anchor="start">Conv. ICMS 134/16</text>
+<text x="812.4" y="280" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start"></text>
+<text x="682" y="297" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">Ato COTEPE 65/18 – Versão 10 (desde 01/06/2026)</text>
+<text x="682" y="314" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">Total transacionado por CNPJ beneficiário / UF / mês</text>
+<rect x="204" y="360" width="380" height="216" rx="10" fill="#0f172a" stroke="none" stroke-width="1" fill-opacity="0.08"/>
+<rect x="200" y="356" width="380" height="216" rx="10" fill="#ffffff" stroke="#1d4ed8" stroke-width="2" fill-opacity="1"/>
+<path d="M200,366 a10,10 0 0 1 10,-10 h360 a10,10 0 0 1 10,10 v24 h-380 z" fill="#1d4ed8"/>
+<text x="212" y="379" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#fff" font-weight="bold" text-anchor="start">NF-e / NFC-e (55/65)</text>
+<text x="212" y="408" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#475569" font-weight="normal" text-anchor="start" font-style="italic">1 fato = 1 documento, item a item · MOC 4.00 + NTs</text>
+<text x="212" y="428" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#1d4ed8" font-weight="bold" text-anchor="start">Id</text>
+<text x="234.4" y="428" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">chave 44 posições + protocolo</text>
+<text x="212" y="445" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#1d4ed8" font-weight="bold" text-anchor="start">ide</text>
+<text x="241.6" y="445" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">mod · serie · nNF · dhEmi · tpNF · finNFe</text>
+<text x="212" y="462" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#1d4ed8" font-weight="bold" text-anchor="start">emit/dest</text>
+<text x="284.8" y="462" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">CNPJ · IE · CRT</text>
+<text x="212" y="479" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#1d4ed8" font-weight="bold" text-anchor="start">det/prod</text>
+<text x="277.6" y="479" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">cProd · NCM · CFOP · CEST · cBenef</text>
+<text x="212" y="496" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#1d4ed8" font-weight="bold" text-anchor="start">ICMSTot</text>
+<text x="270.4" y="496" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">vBC · vICMS · vST · vIPI · vPIS · vNF</text>
+<text x="212" y="513" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#1d4ed8" font-weight="bold" text-anchor="start">detPag</text>
+<text x="263.2" y="513" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">tPag · card/CNPJ · infIntermed</text>
+<text x="212" y="530" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#1d4ed8" font-weight="bold" text-anchor="start">eventos</text>
+<text x="270.4" y="530" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">110111 · 210200 · 210220 · 210240</text>
+<rect x="1104" y="360" width="380" height="216" rx="10" fill="#0f172a" stroke="none" stroke-width="1" fill-opacity="0.08"/>
+<rect x="1100" y="356" width="380" height="216" rx="10" fill="#ffffff" stroke="#1d4ed8" stroke-width="2" fill-opacity="1"/>
+<path d="M1100,366 a10,10 0 0 1 10,-10 h360 a10,10 0 0 1 10,10 v24 h-380 z" fill="#1d4ed8"/>
+<text x="1112" y="379" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#fff" font-weight="bold" text-anchor="start">NFS-e (Padrão Nacional)</text>
+<text x="1112" y="408" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#475569" font-weight="normal" text-anchor="start" font-style="italic">DPS → NFS-e · Anexo I v1.01 · XSD v1.01</text>
+<text x="1112" y="428" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#1d4ed8" font-weight="bold" text-anchor="start">chave</text>
+<text x="1156.0" y="428" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">NFS-e + nDPS / serie</text>
+<text x="1112" y="445" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#1d4ed8" font-weight="bold" text-anchor="start">datas</text>
+<text x="1156.0" y="445" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">dhEmi · dCompet (competência)</text>
+<text x="1112" y="462" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#1d4ed8" font-weight="bold" text-anchor="start">papéis</text>
+<text x="1163.2" y="462" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">prest · toma · interm</text>
+<text x="1112" y="479" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#1d4ed8" font-weight="bold" text-anchor="start">serviço</text>
+<text x="1170.4" y="479" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">cTribNac · cNBS · local</text>
+<text x="1112" y="496" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#1d4ed8" font-weight="bold" text-anchor="start">tribMun</text>
+<text x="1170.4" y="496" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">vISSQN · tpRetISSQN</text>
+<text x="1112" y="513" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#1d4ed8" font-weight="bold" text-anchor="start">tribFed</text>
+<text x="1170.4" y="513" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">CST PIS/COFINS · retenções</text>
+<text x="1112" y="530" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#1d4ed8" font-weight="bold" text-anchor="start">retenções</text>
+<text x="1184.8" y="530" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">vRetIRRF · vRetCSLL · vRetCP</text>
+<rect x="204" y="664" width="400" height="272" rx="10" fill="#0f172a" stroke="none" stroke-width="1" fill-opacity="0.08"/>
+<rect x="200" y="660" width="400" height="272" rx="10" fill="#ffffff" stroke="#0f766e" stroke-width="2" fill-opacity="1"/>
+<path d="M200,670 a10,10 0 0 1 10,-10 h380 a10,10 0 0 1 10,10 v24 h-400 z" fill="#0f766e"/>
+<text x="212" y="683" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#fff" font-weight="bold" text-anchor="start">EFD ICMS/IPI</text>
+<rect x="533" y="667" width="59" height="20" rx="10" fill="#ffffff" stroke="none" stroke-width="1" fill-opacity="0.9"/>
+<text x="562.5" y="681" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#0f766e" font-weight="bold" text-anchor="middle">↻ CNT</text>
+<text x="212" y="712" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#475569" font-weight="normal" text-anchor="start" font-style="italic">Mensal · por estabelecimento · Guia 3.2.2 · leiaute 020</text>
+<text x="212" y="732" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#0f766e" font-weight="bold" text-anchor="start">0000/0150/0200</text>
+<text x="320.8" y="732" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">estab. · participante · item</text>
+<text x="212" y="749" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#0f766e" font-weight="bold" text-anchor="start">0500</text>
+<text x="248.8" y="749" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">contas contábeis (COD_CTA)</text>
+<text x="212" y="766" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#0f766e" font-weight="bold" text-anchor="start">C100/C170</text>
+<text x="284.8" y="766" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">documento · itens · COD_SIT</text>
+<text x="212" y="783" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#0f766e" font-weight="bold" text-anchor="start">C190/C101</text>
+<text x="284.8" y="783" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">analítico CST/CFOP · DIFAL</text>
+<text x="212" y="800" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#0f766e" font-weight="bold" text-anchor="start">E110/E116</text>
+<text x="284.8" y="800" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">apuração ICMS próprio</text>
+<text x="212" y="817" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#0f766e" font-weight="bold" text-anchor="start">E210/E310</text>
+<text x="284.8" y="817" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">ST · DIFAL/FCP por UF</text>
+<text x="212" y="834" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#0f766e" font-weight="bold" text-anchor="start">E520</text>
+<text x="248.8" y="834" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">apuração IPI</text>
+<text x="212" y="851" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#0f766e" font-weight="bold" text-anchor="start">G125/G130</text>
+<text x="284.8" y="851" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">CIAP (1/48) · chave NF-e</text>
+<text x="212" y="868" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#0f766e" font-weight="bold" text-anchor="start">H005/H010</text>
+<text x="284.8" y="868" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">inventário 31/12 (fevereiro)</text>
+<text x="212" y="885" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#0f766e" font-weight="bold" text-anchor="start">K200</text>
+<text x="248.8" y="885" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">estoque escriturado</text>
+<text x="212" y="902" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#0f766e" font-weight="bold" text-anchor="start">1601</text>
+<text x="248.8" y="902" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">pagamentos eletrônicos</text>
+<text x="212" y="919" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#0f766e" font-weight="bold" text-anchor="start">Bloco B</text>
+<text x="270.4" y="919" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">ISS – somente DF</text>
+<rect x="1064" y="664" width="420" height="272" rx="10" fill="#0f172a" stroke="none" stroke-width="1" fill-opacity="0.08"/>
+<rect x="1060" y="660" width="420" height="272" rx="10" fill="#ffffff" stroke="#15803d" stroke-width="2" fill-opacity="1"/>
+<path d="M1060,670 a10,10 0 0 1 10,-10 h400 a10,10 0 0 1 10,10 v24 h-420 z" fill="#15803d"/>
+<text x="1072" y="683" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#fff" font-weight="bold" text-anchor="start">EFD-Contribuições</text>
+<rect x="1413" y="667" width="59" height="20" rx="10" fill="#ffffff" stroke="none" stroke-width="1" fill-opacity="0.9"/>
+<text x="1442.5" y="681" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#15803d" font-weight="bold" text-anchor="middle">↻ CNT</text>
+<text x="1072" y="712" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#475569" font-weight="normal" text-anchor="start" font-style="italic">Mensal · centralizada na matriz · Guia 1.35</text>
+<text x="1072" y="732" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#15803d" font-weight="bold" text-anchor="start">0110</text>
+<text x="1108.8" y="732" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">COD_INC_TRIB · IND_REG_CUM</text>
+<text x="1072" y="749" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#15803d" font-weight="bold" text-anchor="start">0140/0500</text>
+<text x="1144.8" y="749" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">estabelecimentos · plano de contas</text>
+<text x="1072" y="766" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#15803d" font-weight="bold" text-anchor="start">A100/A170</text>
+<text x="1144.8" y="766" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">serviços (CHV_NFSE)</text>
+<text x="1072" y="783" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#15803d" font-weight="bold" text-anchor="start">C100/C170</text>
+<text x="1144.8" y="783" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">NF-e individualizada</text>
+<text x="1072" y="800" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#15803d" font-weight="bold" text-anchor="start">C180/C181/C185</text>
+<text x="1180.8" y="800" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">vendas consolidadas</text>
+<text x="1072" y="817" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#15803d" font-weight="bold" text-anchor="start">C190/C191</text>
+<text x="1144.8" y="817" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">aquisições consolidadas</text>
+<text x="1072" y="834" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#15803d" font-weight="bold" text-anchor="start">F100/F120/F130</text>
+<text x="1180.8" y="834" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">demais · depreciação · ativo</text>
+<text x="1072" y="851" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#15803d" font-weight="bold" text-anchor="start">F500/F525/F550</text>
+<text x="1180.8" y="851" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">presumido caixa/competência</text>
+<text x="1072" y="868" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#15803d" font-weight="bold" text-anchor="start">F600</text>
+<text x="1108.8" y="868" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">retenções sofridas</text>
+<text x="1072" y="885" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#15803d" font-weight="bold" text-anchor="start">M200/M210/M400</text>
+<text x="1180.8" y="885" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">apuração · receitas não trib.</text>
+<text x="1072" y="902" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#15803d" font-weight="bold" text-anchor="start">1100/1500</text>
+<text x="1144.8" y="902" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">saldo de créditos</text>
+<text x="1072" y="919" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#15803d" font-weight="bold" text-anchor="start">1300/1700</text>
+<text x="1144.8" y="919" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">saldo de retenções</text>
+<rect x="624" y="1004" width="440" height="180" rx="10" fill="#0f172a" stroke="none" stroke-width="1" fill-opacity="0.08"/>
+<rect x="620" y="1000" width="440" height="180" rx="10" fill="#ffffff" stroke="#b45309" stroke-width="2" fill-opacity="1"/>
+<path d="M620,1010 a10,10 0 0 1 10,-10 h420 a10,10 0 0 1 10,10 v24 h-440 z" fill="#b45309"/>
+<text x="632" y="1023" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#fff" font-weight="bold" text-anchor="start">ECD</text>
+<rect x="993" y="1007" width="59" height="20" rx="10" fill="#ffffff" stroke="none" stroke-width="1" fill-opacity="0.9"/>
+<text x="1022.5" y="1021" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#b45309" font-weight="bold" text-anchor="middle">↻ CNT</text>
+<text x="632" y="1052" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#475569" font-weight="normal" text-anchor="start" font-style="italic">Anual · Leiaute 9 · ADE Cofis 1/2026</text>
+<text x="632" y="1072" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#b45309" font-weight="bold" text-anchor="start">0000</text>
+<text x="668.8" y="1072" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">COD_PLAN_REF · IND_SIT_ESP · substituta</text>
+<text x="632" y="1089" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#b45309" font-weight="bold" text-anchor="start">I050/I051</text>
+<text x="704.8" y="1089" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">plano de contas · referencial</text>
+<text x="632" y="1106" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#b45309" font-weight="bold" text-anchor="start">I155</text>
+<text x="668.8" y="1106" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">saldos periódicos (mensal)</text>
+<text x="632" y="1123" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#b45309" font-weight="bold" text-anchor="start">I200/I250</text>
+<text x="704.8" y="1123" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">lançamentos e partidas</text>
+<text x="632" y="1140" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#b45309" font-weight="bold" text-anchor="start">I355</text>
+<text x="668.8" y="1140" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">resultado antes do encerramento</text>
+<text x="632" y="1157" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#b45309" font-weight="bold" text-anchor="start">J100/J150</text>
+<text x="704.8" y="1157" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">balanço · DRE</text>
+<rect x="584" y="1254" width="520" height="224" rx="10" fill="#0f172a" stroke="none" stroke-width="1" fill-opacity="0.08"/>
+<rect x="580" y="1250" width="520" height="224" rx="10" fill="#ffffff" stroke="#be123c" stroke-width="2" fill-opacity="1"/>
+<path d="M580,1260 a10,10 0 0 1 10,-10 h500 a10,10 0 0 1 10,10 v24 h-520 z" fill="#be123c"/>
+<text x="592" y="1273" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#fff" font-weight="bold" text-anchor="start">ECF</text>
+<rect x="1033" y="1257" width="59" height="20" rx="10" fill="#ffffff" stroke="none" stroke-width="1" fill-opacity="0.9"/>
+<text x="1062.5" y="1271" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#be123c" font-weight="bold" text-anchor="middle">↻ CNT</text>
+<text x="592" y="1302" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#475569" font-weight="normal" text-anchor="start" font-style="italic">Anual · Leiaute 12 · ADE Cofis 2/2026</text>
+<text x="592" y="1322" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#be123c" font-weight="bold" text-anchor="start">0010</text>
+<text x="628.8" y="1322" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">FORMA_TRIB · TIP_ESC_PRE · COD_QUALIF_PJ</text>
+<text x="592" y="1339" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#be123c" font-weight="bold" text-anchor="start">C040</text>
+<text x="628.8" y="1339" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">hash da ECD recuperada</text>
+<text x="592" y="1356" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#be123c" font-weight="bold" text-anchor="start">K155/K355/K156</text>
+<text x="700.8" y="1356" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">saldos = ECD (via mapeamento)</text>
+<text x="592" y="1373" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#be123c" font-weight="bold" text-anchor="start">L100/L300 · P100/P150</text>
+<text x="751.2" y="1373" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">balanço · DRE</text>
+<text x="592" y="1390" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#be123c" font-weight="bold" text-anchor="start">P200/P400</text>
+<text x="664.8" y="1390" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">receita base do presumido</text>
+<text x="592" y="1407" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#be123c" font-weight="bold" text-anchor="start">M300/M310/M312</text>
+<text x="700.8" y="1407" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">e-Lalur → conta / lançamento</text>
+<text x="592" y="1424" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#be123c" font-weight="bold" text-anchor="start">M010/M500</text>
+<text x="664.8" y="1424" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">Parte B (prejuízo/base negativa)</text>
+<text x="592" y="1441" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#be123c" font-weight="bold" text-anchor="start">N630/N670 · Y540/Y570/Y672</text>
+<text x="787.2" y="1441" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">IRPJ/CSLL · receita · retenções</text>
+<path d="M670,246 L390,246 L390,352" fill="none" stroke="#7c3aed" stroke-width="2.2" stroke-dasharray="7 5" marker-end="url(#ar-7c3aed)" stroke-linejoin="round"/>
+<path d="M1030,246 L1290,246 L1290,352" fill="none" stroke="#7c3aed" stroke-width="2.2" stroke-dasharray="7 5" marker-end="url(#ar-7c3aed)" stroke-linejoin="round"/>
+<path d="M770,326 L770,740 L604,740" fill="none" stroke="#7c3aed" stroke-width="2.2" stroke-dasharray="7 5" marker-end="url(#ar-7c3aed)" stroke-linejoin="round"/>
+<path d="M930,326 L930,750 L1056,750" fill="none" stroke="#7c3aed" stroke-width="2.2" stroke-dasharray="7 5" marker-end="url(#ar-7c3aed)" stroke-linejoin="round"/>
+<rect x="315.0" y="260.0" width="330" height="56" rx="7" fill="#ffffff" stroke="#7c3aed" stroke-width="1.6" fill-opacity="1"/>
+<rect x="315.0" y="260.0" width="56" height="22" rx="7" fill="#7c3aed" stroke="none" stroke-width="1" fill-opacity="1"/>
+<text x="343.0" y="276.0" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#fff" font-weight="bold" text-anchor="middle">M6</text>
+<text x="637.0" y="276.0" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#475569" font-weight="normal" text-anchor="end">8 regras</text>
+<text x="325.0" y="297.0" font-family="Segoe UI, Arial, sans-serif" font-size="11.5" fill="#0f172a" font-weight="normal" text-anchor="start">detPag · card/CNPJ · indIntermed ⇄ declarante</text>
+<text x="325.0" y="313.0" font-family="Segoe UI, Arial, sans-serif" font-size="11.5" fill="#0f172a" font-weight="normal" text-anchor="start">Σ pagamentos eletrônicos ≥ DIMP (+ justificativas)</text>
+<rect x="1085.0" y="260.0" width="250" height="56" rx="7" fill="#ffffff" stroke="#7c3aed" stroke-width="1.6" fill-opacity="1"/>
+<rect x="1085.0" y="260.0" width="56" height="22" rx="7" fill="#7c3aed" stroke="none" stroke-width="1" fill-opacity="1"/>
+<text x="1113.0" y="276.0" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#fff" font-weight="bold" text-anchor="middle">M6</text>
+<text x="1095.0" y="297.0" font-family="Segoe UI, Arial, sans-serif" font-size="11.5" fill="#0f172a" font-weight="normal" text-anchor="start">NFS-e paga eletronicamente</text>
+<text x="1095.0" y="313.0" font-family="Segoe UI, Arial, sans-serif" font-size="11.5" fill="#0f172a" font-weight="normal" text-anchor="start">compõe 1601.TOT_ISS</text>
+<rect x="700.0" y="376.0" width="300" height="56" rx="7" fill="#ffffff" stroke="#7c3aed" stroke-width="1.6" fill-opacity="1"/>
+<rect x="700.0" y="376.0" width="56" height="22" rx="7" fill="#7c3aed" stroke="none" stroke-width="1" fill-opacity="1"/>
+<text x="728.0" y="392.0" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#fff" font-weight="bold" text-anchor="middle">M6</text>
+<text x="710.0" y="413.0" font-family="Segoe UI, Arial, sans-serif" font-size="11.5" fill="#0f172a" font-weight="normal" text-anchor="start">DIMP = 1601 (TOT_VS+TOT_ISS+TOT_OUTROS)</text>
+<text x="710.0" y="429.0" font-family="Segoe UI, Arial, sans-serif" font-size="11.5" fill="#0f172a" font-weight="normal" text-anchor="start">por instituição · F525 (caixa) · ECD (anual)</text>
+<path d="M330,572 L330,656" fill="none" stroke="#1d4ed8" stroke-width="2.2" marker-end="url(#ar-1d4ed8)" stroke-linejoin="round"/>
+<rect x="215.0" y="586.0" width="360" height="56" rx="7" fill="#ffffff" stroke="#1d4ed8" stroke-width="1.6" fill-opacity="1"/>
+<rect x="215.0" y="586.0" width="56" height="22" rx="7" fill="#1d4ed8" stroke="none" stroke-width="1" fill-opacity="1"/>
+<text x="243.0" y="602.0" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#fff" font-weight="bold" text-anchor="middle">M1</text>
+<text x="567.0" y="602.0" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#475569" font-weight="normal" text-anchor="end">29 regras</text>
+<text x="225.0" y="623.0" font-family="Segoe UI, Arial, sans-serif" font-size="11.5" fill="#0f172a" font-weight="normal" text-anchor="start">CHV_NFE · VL_DOC=vNF · C190=Σ itens · COD_SIT↔eventos</text>
+<text x="225.0" y="639.0" font-family="Segoe UI, Arial, sans-serif" font-size="11.5" fill="#0f172a" font-weight="normal" text-anchor="start">entrada: crédito ≤ destacado · DIFAL→C101/E310 · ST→E210</text>
+<path d="M1350,572 L1350,656" fill="none" stroke="#1d4ed8" stroke-width="2.2" marker-end="url(#ar-1d4ed8)" stroke-linejoin="round"/>
+<rect x="1210.0" y="586.0" width="280" height="56" rx="7" fill="#ffffff" stroke="#1d4ed8" stroke-width="1.6" fill-opacity="1"/>
+<rect x="1210.0" y="586.0" width="56" height="22" rx="7" fill="#1d4ed8" stroke="none" stroke-width="1" fill-opacity="1"/>
+<text x="1238.0" y="602.0" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#fff" font-weight="bold" text-anchor="middle">M4</text>
+<text x="1482.0" y="602.0" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#475569" font-weight="normal" text-anchor="end">7 regras</text>
+<text x="1220.0" y="623.0" font-family="Segoe UI, Arial, sans-serif" font-size="11.5" fill="#0f172a" font-weight="normal" text-anchor="start">A100.CHV_NFSE · VL_DOC=vServ · CST</text>
+<text x="1220.0" y="639.0" font-family="Segoe UI, Arial, sans-serif" font-size="11.5" fill="#0f172a" font-weight="normal" text-anchor="start">retenções NFS-e ≥ F600 (por tomador)</text>
+<path d="M580,520 L1080,520 L1080,656" fill="none" stroke="#1d4ed8" stroke-width="2.2" marker-end="url(#ar-1d4ed8)" stroke-linejoin="round"/>
+<rect x="770.0" y="494.0" width="270" height="56" rx="7" fill="#ffffff" stroke="#1d4ed8" stroke-width="1.6" fill-opacity="1"/>
+<rect x="770.0" y="494.0" width="56" height="22" rx="7" fill="#1d4ed8" stroke="none" stroke-width="1" fill-opacity="1"/>
+<text x="798.0" y="510.0" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#fff" font-weight="bold" text-anchor="middle">M2</text>
+<text x="1032.0" y="510.0" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#475569" font-weight="normal" text-anchor="end">12 regras</text>
+<text x="780.0" y="531.0" font-family="Segoe UI, Arial, sans-serif" font-size="11.5" fill="#0f172a" font-weight="normal" text-anchor="start">saída c/ receita → C100 ou C180/C181</text>
+<text x="780.0" y="547.0" font-family="Segoe UI, Arial, sans-serif" font-size="11.5" fill="#0f172a" font-weight="normal" text-anchor="start">crédito exige NF-e válida · base sem ICMS</text>
+<path d="M1100,470 L592,470 L592,656" fill="none" stroke="#1d4ed8" stroke-width="1.6" stroke-dasharray="3 4" marker-end="url(#ar-1d4ed8)" stroke-linejoin="round"/>
+<rect x="722" y="448" width="374" height="18" rx="4" fill="#ffffff" stroke="none" stroke-width="1" fill-opacity="0.9"/>
+<text x="1092" y="462" font-family="Segoe UI, Arial, sans-serif" font-size="11.5" fill="#1d4ed8" font-weight="bold" text-anchor="end">M5 · 3 regras · NFS-e → Bloco B (DF) · 1601.TOT_ISS</text>
+<path d="M604,850 L1056,850" fill="none" stroke="#0f766e" stroke-width="2.2" marker-end="url(#ar-0f766e)" marker-start="url(#as-0f766e)" stroke-linejoin="round"/>
+<rect x="680.0" y="814.0" width="300" height="72" rx="7" fill="#ffffff" stroke="#0f766e" stroke-width="1.6" fill-opacity="1"/>
+<rect x="680.0" y="814.0" width="56" height="22" rx="7" fill="#0f766e" stroke="none" stroke-width="1" fill-opacity="1"/>
+<text x="708.0" y="830.0" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#fff" font-weight="bold" text-anchor="middle">M3</text>
+<text x="972.0" y="830.0" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#475569" font-weight="normal" text-anchor="end">7 regras</text>
+<text x="690.0" y="851.0" font-family="Segoe UI, Arial, sans-serif" font-size="11.5" fill="#0f172a" font-weight="normal" text-anchor="start">mesma chave → mesmos valores/situação</text>
+<text x="690.0" y="867.0" font-family="Segoe UI, Arial, sans-serif" font-size="11.5" fill="#0f172a" font-weight="normal" text-anchor="start">Σ saídas CFOP receita ≈ receita Contrib.</text>
+<text x="690.0" y="883.0" font-family="Segoe UI, Arial, sans-serif" font-size="11.5" fill="#0f172a" font-weight="normal" text-anchor="start">estabelecimentos ⊆ 0140 · CIAP ↔ F120/F130</text>
+<path d="M440,932 L440,1080 L616,1080" fill="none" stroke="#0f766e" stroke-width="2.2" marker-end="url(#ar-0f766e)" stroke-linejoin="round"/>
+<rect x="250.0" y="974.0" width="280" height="72" rx="7" fill="#ffffff" stroke="#0f766e" stroke-width="1.6" fill-opacity="1"/>
+<rect x="250.0" y="974.0" width="56" height="22" rx="7" fill="#0f766e" stroke="none" stroke-width="1" fill-opacity="1"/>
+<text x="278.0" y="990.0" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#fff" font-weight="bold" text-anchor="middle">M7</text>
+<text x="522.0" y="990.0" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#475569" font-weight="normal" text-anchor="end">10 regras</text>
+<text x="260.0" y="1011.0" font-family="Segoe UI, Arial, sans-serif" font-size="11.5" fill="#0f172a" font-weight="normal" text-anchor="start">COD_CTA ∈ I050 (analítica)</text>
+<text x="260.0" y="1027.0" font-family="Segoe UI, Arial, sans-serif" font-size="11.5" fill="#0f172a" font-weight="normal" text-anchor="start">Σ H010 (IND_PROP 0/1) = estoque</text>
+<text x="260.0" y="1043.0" font-family="Segoe UI, Arial, sans-serif" font-size="11.5" fill="#0f172a" font-weight="normal" text-anchor="start">E110/E520 ↔ ICMS/IPI a recolher</text>
+<path d="M1270,932 L1270,1080 L1064,1080" fill="none" stroke="#15803d" stroke-width="2.2" marker-end="url(#ar-15803d)" stroke-linejoin="round"/>
+<rect x="1160.0" y="974.0" width="280" height="72" rx="7" fill="#ffffff" stroke="#15803d" stroke-width="1.6" fill-opacity="1"/>
+<rect x="1160.0" y="974.0" width="56" height="22" rx="7" fill="#15803d" stroke="none" stroke-width="1" fill-opacity="1"/>
+<text x="1188.0" y="990.0" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#fff" font-weight="bold" text-anchor="middle">M8</text>
+<text x="1432.0" y="990.0" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#475569" font-weight="normal" text-anchor="end">7 regras</text>
+<text x="1170.0" y="1011.0" font-family="Segoe UI, Arial, sans-serif" font-size="11.5" fill="#0f172a" font-weight="normal" text-anchor="start">0500 = I050 · receita por conta</text>
+<text x="1170.0" y="1027.0" font-family="Segoe UI, Arial, sans-serif" font-size="11.5" fill="#0f172a" font-weight="normal" text-anchor="start">F120 ≤ depreciação contábil</text>
+<text x="1170.0" y="1043.0" font-family="Segoe UI, Arial, sans-serif" font-size="11.5" fill="#0f172a" font-weight="normal" text-anchor="start">M200/M600 ↔ passivo PIS/COFINS</text>
+<path d="M840,1180 L840,1246" fill="none" stroke="#b45309" stroke-width="2.2" marker-end="url(#ar-b45309)" stroke-linejoin="round"/>
+<rect x="630.0" y="1185.0" width="420" height="56" rx="7" fill="#ffffff" stroke="#b45309" stroke-width="1.6" fill-opacity="1"/>
+<rect x="630.0" y="1185.0" width="56" height="22" rx="7" fill="#b45309" stroke="none" stroke-width="1" fill-opacity="1"/>
+<text x="658.0" y="1201.0" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#fff" font-weight="bold" text-anchor="middle">M9</text>
+<text x="1042.0" y="1201.0" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#475569" font-weight="normal" text-anchor="end">16 regras</text>
+<text x="640.0" y="1222.0" font-family="Segoe UI, Arial, sans-serif" font-size="11.5" fill="#0f172a" font-weight="normal" text-anchor="start">C040 = hash da última ECD · I155=K155 · I355=K355</text>
+<text x="640.0" y="1238.0" font-family="Segoe UI, Arial, sans-serif" font-size="11.5" fill="#0f172a" font-weight="normal" text-anchor="start">J150=L300/P150 · M312 → I200 · Parte B t → t+1</text>
+<path d="M1480,800 L1560,800 L1560,1362 L1104,1362" fill="none" stroke="#15803d" stroke-width="2.2" marker-end="url(#ar-15803d)" stroke-linejoin="round"/>
+<rect x="1335.0" y="1272.0" width="250" height="56" rx="7" fill="#ffffff" stroke="#15803d" stroke-width="1.6" fill-opacity="1"/>
+<rect x="1335.0" y="1272.0" width="56" height="22" rx="7" fill="#15803d" stroke="none" stroke-width="1" fill-opacity="1"/>
+<text x="1363.0" y="1288.0" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#fff" font-weight="bold" text-anchor="middle">M10</text>
+<text x="1577.0" y="1288.0" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#475569" font-weight="normal" text-anchor="end">5 regras</text>
+<text x="1345.0" y="1309.0" font-family="Segoe UI, Arial, sans-serif" font-size="11.5" fill="#0f172a" font-weight="normal" text-anchor="start">presumido: receita ≤ P200/P400</text>
+<text x="1345.0" y="1325.0" font-family="Segoe UI, Arial, sans-serif" font-size="11.5" fill="#0f172a" font-weight="normal" text-anchor="start">real: M210 ≈ L300 · F600 ↔ Y570</text>
+<path d="M200,910 L160,910 L160,1400 L576,1400" fill="none" stroke="#0f766e" stroke-width="1.8" stroke-dasharray="3 4" marker-end="url(#ar-0f766e)" stroke-linejoin="round"/>
+<rect x="245.0" y="1372.0" width="250" height="56" rx="7" fill="#ffffff" stroke="#0f766e" stroke-width="1.6" fill-opacity="1"/>
+<rect x="245.0" y="1372.0" width="56" height="22" rx="7" fill="#0f766e" stroke="none" stroke-width="1" fill-opacity="1"/>
+<text x="273.0" y="1388.0" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#fff" font-weight="bold" text-anchor="middle">M11</text>
+<text x="487.0" y="1388.0" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#475569" font-weight="normal" text-anchor="end">4 regras</text>
+<text x="255.0" y="1409.0" font-family="Segoe UI, Arial, sans-serif" font-size="11.5" fill="#0f172a" font-weight="normal" text-anchor="start">inventário = estoque ECF</text>
+<text x="255.0" y="1425.0" font-family="Segoe UI, Arial, sans-serif" font-size="11.5" fill="#0f172a" font-weight="normal" text-anchor="start">compras/ativo ↔ Y672 (presumido)</text>
+<path d="M200,540 L180,540 L180,1140 L616,1140" fill="none" stroke="#1d4ed8" stroke-width="1.8" stroke-dasharray="3 4" marker-end="url(#ar-1d4ed8)" stroke-linejoin="round"/>
+<rect x="260.0" y="1112.0" width="260" height="56" rx="7" fill="#ffffff" stroke="#1d4ed8" stroke-width="1.6" fill-opacity="1"/>
+<rect x="260.0" y="1112.0" width="56" height="22" rx="7" fill="#1d4ed8" stroke="none" stroke-width="1" fill-opacity="1"/>
+<text x="288.0" y="1128.0" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#fff" font-weight="bold" text-anchor="middle">M12</text>
+<text x="512.0" y="1128.0" font-family="Segoe UI, Arial, sans-serif" font-size="11" fill="#475569" font-weight="normal" text-anchor="end">5 regras</text>
+<text x="270.0" y="1149.0" font-family="Segoe UI, Arial, sans-serif" font-size="11.5" fill="#0f172a" font-weight="normal" text-anchor="start">Σ docs de receita ≈ receita contábil</text>
+<text x="270.0" y="1165.0" font-family="Segoe UI, Arial, sans-serif" font-size="11.5" fill="#0f172a" font-weight="normal" text-anchor="start">x.551 → imobilizado · IRRF/CSLL → Y570</text>
+<rect x="1680" y="96" width="680" height="1390" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="1" fill-opacity="1"/>
+<text x="1700" y="128" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#0f172a" font-weight="bold" text-anchor="start">Tipos de relação (motor .NET)</text>
+<rect x="1700" y="141" width="62" height="21" rx="4" fill="#0f172a" stroke="none" stroke-width="1" fill-opacity="1"/>
+<text x="1731" y="156" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#fff" font-weight="bold" text-anchor="middle">PRE→</text>
+<text x="1774" y="156" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#475569" font-weight="bold" text-anchor="start">30</text>
+<text x="1804" y="156" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">existe em A ⇒ existe em B  (omissão)</text>
+<rect x="1700" y="167" width="62" height="21" rx="4" fill="#0f172a" stroke="none" stroke-width="1" fill-opacity="1"/>
+<text x="1731" y="182" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#fff" font-weight="bold" text-anchor="middle">←PRE</text>
+<text x="1774" y="182" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#475569" font-weight="bold" text-anchor="start">10</text>
+<text x="1804" y="182" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">existe em B ⇒ origem em A  (sem lastro)</text>
+<rect x="1700" y="193" width="62" height="21" rx="4" fill="#0f172a" stroke="none" stroke-width="1" fill-opacity="1"/>
+<text x="1731" y="208" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#fff" font-weight="bold" text-anchor="middle">IDT</text>
+<text x="1774" y="208" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#475569" font-weight="bold" text-anchor="start">47</text>
+<text x="1804" y="208" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">mesmo fato, mesmo valor</text>
+<rect x="1700" y="219" width="62" height="21" rx="4" fill="#0f172a" stroke="none" stroke-width="1" fill-opacity="1"/>
+<text x="1731" y="234" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#fff" font-weight="bold" text-anchor="middle">AGR</text>
+<text x="1774" y="234" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#475569" font-weight="bold" text-anchor="start">24</text>
+<text x="1804" y="234" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">Σ de N registros = 1 valor</text>
+<rect x="1700" y="245" width="62" height="21" rx="4" fill="#0f172a" stroke="none" stroke-width="1" fill-opacity="1"/>
+<text x="1731" y="260" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#fff" font-weight="bold" text-anchor="middle">LIM</text>
+<text x="1774" y="260" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#475569" font-weight="bold" text-anchor="start">11</text>
+<text x="1804" y="260" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">B ≤ A  (crédito, retenção, dedução)</text>
+<rect x="1700" y="271" width="62" height="21" rx="4" fill="#0f172a" stroke="none" stroke-width="1" fill-opacity="1"/>
+<text x="1731" y="286" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#fff" font-weight="bold" text-anchor="middle">CNT</text>
+<text x="1774" y="286" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#475569" font-weight="bold" text-anchor="start">9</text>
+<text x="1804" y="286" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">saldo final t = saldo inicial t+1</text>
+<rect x="1700" y="297" width="62" height="21" rx="4" fill="#0f172a" stroke="none" stroke-width="1" fill-opacity="1"/>
+<text x="1731" y="312" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#fff" font-weight="bold" text-anchor="middle">PAR</text>
+<text x="1774" y="312" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#475569" font-weight="bold" text-anchor="start">14</text>
+<text x="1804" y="312" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">parâmetros de regime compatíveis</text>
+<rect x="1700" y="323" width="62" height="21" rx="4" fill="#0f172a" stroke="none" stroke-width="1" fill-opacity="1"/>
+<text x="1731" y="338" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#fff" font-weight="bold" text-anchor="middle">EXC</text>
+<text x="1774" y="338" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#475569" font-weight="bold" text-anchor="start">13</text>
+<text x="1804" y="338" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="normal" text-anchor="start">fato legítimo só em uma obrigação</text>
+<text x="1700" y="370" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#0f172a" font-weight="bold" text-anchor="start">Severidade</text>
+<rect x="1700" y="382" width="170" height="20" rx="10" fill="#7f1d1d" stroke="none" stroke-width="1" fill-opacity="1"/>
+<text x="1785" y="396" font-family="Segoe UI, Arial, sans-serif" font-size="11.5" fill="#fff" font-weight="bold" text-anchor="middle">ESTRUTURA_GRAVE</text>
+<text x="1880" y="396" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#475569" font-weight="bold" text-anchor="start">1</text>
+<text x="1912" y="396" font-family="Segoe UI, Arial, sans-serif" font-size="12.2" fill="#0f172a" font-weight="normal" text-anchor="start">lote/entrada inconsistente – bloqueia cruzamentos</text>
+<rect x="1700" y="407" width="170" height="20" rx="10" fill="#b91c1c" stroke="none" stroke-width="1" fill-opacity="1"/>
+<text x="1785" y="421" font-family="Segoe UI, Arial, sans-serif" font-size="11.5" fill="#fff" font-weight="bold" text-anchor="middle">ESCRITURACAO_GRAVE</text>
+<text x="1880" y="421" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#475569" font-weight="bold" text-anchor="start">82</text>
+<text x="1912" y="421" font-family="Segoe UI, Arial, sans-serif" font-size="12.2" fill="#0f172a" font-weight="normal" text-anchor="start">omissão / sem lastro com impacto em tributo</text>
+<rect x="1700" y="432" width="170" height="20" rx="10" fill="#d97706" stroke="none" stroke-width="1" fill-opacity="1"/>
+<text x="1785" y="446" font-family="Segoe UI, Arial, sans-serif" font-size="11.5" fill="#fff" font-weight="bold" text-anchor="middle">ALERTA</text>
+<text x="1880" y="446" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#475569" font-weight="bold" text-anchor="start">60</text>
+<text x="1912" y="446" font-family="Segoe UI, Arial, sans-serif" font-size="12.2" fill="#0f172a" font-weight="normal" text-anchor="start">divergência com hipótese legítima a confirmar</text>
+<rect x="1700" y="457" width="170" height="20" rx="10" fill="#64748b" stroke="none" stroke-width="1" fill-opacity="1"/>
+<text x="1785" y="471" font-family="Segoe UI, Arial, sans-serif" font-size="11.5" fill="#fff" font-weight="bold" text-anchor="middle">INFO</text>
+<text x="1880" y="471" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#475569" font-weight="bold" text-anchor="start">15</text>
+<text x="1912" y="471" font-family="Segoe UI, Arial, sans-serif" font-size="12.2" fill="#0f172a" font-weight="normal" text-anchor="start">faculdade / filtro aplicado</text>
+<text x="1700" y="504" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#0f172a" font-weight="bold" text-anchor="start">Base de cada regra (evidência)</text>
+<text x="1700" y="528" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#0f172a" font-weight="bold" text-anchor="start">DERIVADA</text>
+<rect x="1790" y="516" width="160.0" height="14" rx="3" fill="#475569" stroke="none" stroke-width="1" fill-opacity="0.7"/>
+<text x="1960" y="528" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#475569" font-weight="bold" text-anchor="start">110</text>
+<text x="1994" y="528" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="normal" text-anchor="start">inferida dos campos oficiais – exige hipóteses legítimas</text>
+<text x="1700" y="550" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#0f172a" font-weight="bold" text-anchor="start">MANUAL</text>
+<rect x="1790" y="538" width="55.27272727272727" height="14" rx="3" fill="#475569" stroke="none" stroke-width="1" fill-opacity="0.7"/>
+<text x="1960" y="550" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#475569" font-weight="bold" text-anchor="start">38</text>
+<text x="1994" y="550" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="normal" text-anchor="start">Guia/Manual/NT</text>
+<text x="1700" y="572" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#0f172a" font-weight="bold" text-anchor="start">NORMA</text>
+<rect x="1790" y="560" width="11.636363636363637" height="14" rx="3" fill="#475569" stroke="none" stroke-width="1" fill-opacity="0.7"/>
+<text x="1960" y="572" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#475569" font-weight="bold" text-anchor="start">8</text>
+<text x="1994" y="572" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="normal" text-anchor="start">lei, IN, convênio</text>
+<text x="1700" y="594" font-family="Consolas, 'Courier New', monospace" font-size="12.5" fill="#0f172a" font-weight="bold" text-anchor="start">PVA</text>
+<rect x="1790" y="582" width="4" height="14" rx="3" fill="#475569" stroke="none" stroke-width="1" fill-opacity="0.7"/>
+<text x="1960" y="594" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#475569" font-weight="bold" text-anchor="start">2</text>
+<text x="1994" y="594" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="normal" text-anchor="start">validador oficial</text>
+<text x="1700" y="626" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#0f172a" font-weight="bold" text-anchor="start">Ordem de execução</text>
+<rect x="1700" y="635" width="53.0" height="22" rx="11" fill="#e2e8f0" stroke="none" stroke-width="1" fill-opacity="1"/>
+<text x="1709" y="650" font-family="Segoe UI, Arial, sans-serif" font-size="11.8" fill="#0f172a" font-weight="bold" text-anchor="start">1 PAR</text>
+<rect x="1759.0" y="635" width="53.0" height="22" rx="11" fill="#e2e8f0" stroke="none" stroke-width="1" fill-opacity="1"/>
+<text x="1768.0" y="650" font-family="Segoe UI, Arial, sans-serif" font-size="11.8" fill="#0f172a" font-weight="bold" text-anchor="start">2 EXC</text>
+<rect x="1818.0" y="635" width="53.0" height="22" rx="11" fill="#e2e8f0" stroke="none" stroke-width="1" fill-opacity="1"/>
+<text x="1827.0" y="650" font-family="Segoe UI, Arial, sans-serif" font-size="11.8" fill="#0f172a" font-weight="bold" text-anchor="start">3 ENT</text>
+<rect x="1877.0" y="635" width="200.0" height="22" rx="11" fill="#e2e8f0" stroke="none" stroke-width="1" fill-opacity="1"/>
+<text x="1886.0" y="650" font-family="Segoe UI, Arial, sans-serif" font-size="11.8" fill="#0f172a" font-weight="bold" text-anchor="start">4 Documentos (M1·M2·M4·M5)</text>
+<rect x="2083.0" y="635" width="256.0" height="22" rx="11" fill="#e2e8f0" stroke="none" stroke-width="1" fill-opacity="1"/>
+<text x="2092.0" y="650" font-family="Segoe UI, Arial, sans-serif" font-size="11.8" fill="#0f172a" font-weight="bold" text-anchor="start">5 Escriturações (M3·M7·M8·M10·M11)</text>
+<rect x="1700" y="663" width="158.0" height="22" rx="11" fill="#e2e8f0" stroke="none" stroke-width="1" fill-opacity="1"/>
+<text x="1709" y="678" font-family="Segoe UI, Arial, sans-serif" font-size="11.8" fill="#0f172a" font-weight="bold" text-anchor="start">6 Continuidade (CNT)</text>
+<rect x="1864.0" y="663" width="158.0" height="22" rx="11" fill="#e2e8f0" stroke="none" stroke-width="1" fill-opacity="1"/>
+<text x="1873.0" y="678" font-family="Segoe UI, Arial, sans-serif" font-size="11.8" fill="#0f172a" font-weight="bold" text-anchor="start">7 ECD → ECF (M9·M12)</text>
+<rect x="2028.0" y="663" width="95.0" height="22" rx="11" fill="#e2e8f0" stroke="none" stroke-width="1" fill-opacity="1"/>
+<text x="2037.0" y="678" font-family="Segoe UI, Arial, sans-serif" font-size="11.8" fill="#0f172a" font-weight="bold" text-anchor="start">8 DIMP (M6)</text>
+<rect x="2129.0" y="663" width="193.0" height="22" rx="11" fill="#e2e8f0" stroke="none" stroke-width="1" fill-opacity="1"/>
+<text x="2138.0" y="678" font-family="Segoe UI, Arial, sans-serif" font-size="11.8" fill="#0f172a" font-weight="bold" text-anchor="start">9 Consolidação por cadeia</text>
+<text x="1700" y="700" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#b91c1c" font-weight="bold" text-anchor="start">CP quebrado → CPs seguintes NAO_CONCLUSIVO · sem insumo → SEM_EVIDENCIA (nunca erro)</text>
+<text x="1700" y="730" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#0f172a" font-weight="bold" text-anchor="start">Cadeias de valor ponta a ponta</text>
+<text x="1700" y="786" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#0f172a" font-weight="bold" text-anchor="start">C1</text>
+<text x="1736" y="786" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#475569" font-weight="bold" text-anchor="start">Receita</text>
+<rect x="1860" y="771" width="43.6" height="21" rx="5" fill="#7c3aed" stroke="none" stroke-width="1" fill-opacity="0.92"/>
+<text x="1881.8" y="786" font-family="Segoe UI, Arial, sans-serif" font-size="11.2" fill="#fff" font-weight="bold" text-anchor="middle">DIMP</text>
+<text x="1910.6" y="786" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#475569" font-weight="bold" text-anchor="middle">→</text>
+<rect x="1917.6" y="771" width="85.0" height="21" rx="5" fill="#1d4ed8" stroke="none" stroke-width="1" fill-opacity="0.92"/>
+<text x="1960.1" y="786" font-family="Segoe UI, Arial, sans-serif" font-size="11.2" fill="#fff" font-weight="bold" text-anchor="middle">NF-e/NFS-e</text>
+<text x="2009.6" y="786" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#475569" font-weight="bold" text-anchor="middle">→</text>
+<rect x="2016.6" y="771" width="43.6" height="21" rx="5" fill="#0f766e" stroke="none" stroke-width="1" fill-opacity="0.92"/>
+<text x="2038.3999999999999" y="786" font-family="Segoe UI, Arial, sans-serif" font-size="11.2" fill="#fff" font-weight="bold" text-anchor="middle">C190</text>
+<text x="2067.2" y="786" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#475569" font-weight="bold" text-anchor="middle">→</text>
+<rect x="2074.2" y="771" width="78.1" height="21" rx="5" fill="#15803d" stroke="none" stroke-width="1" fill-opacity="0.92"/>
+<text x="2113.25" y="786" font-family="Segoe UI, Arial, sans-serif" font-size="11.2" fill="#fff" font-weight="bold" text-anchor="middle">C181/A100</text>
+<text x="2159.2999999999997" y="786" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#475569" font-weight="bold" text-anchor="middle">→</text>
+<rect x="2166.2999999999997" y="771" width="43.6" height="21" rx="5" fill="#b45309" stroke="none" stroke-width="1" fill-opacity="0.92"/>
+<text x="2188.1" y="786" font-family="Segoe UI, Arial, sans-serif" font-size="11.2" fill="#fff" font-weight="bold" text-anchor="middle">I355</text>
+<text x="2216.8999999999996" y="786" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#475569" font-weight="bold" text-anchor="middle">→</text>
+<rect x="2223.8999999999996" y="771" width="78.1" height="21" rx="5" fill="#be123c" stroke="none" stroke-width="1" fill-opacity="0.92"/>
+<text x="2262.95" y="786" font-family="Segoe UI, Arial, sans-serif" font-size="11.2" fill="#fff" font-weight="bold" text-anchor="middle">L300/P200</text>
+<text x="1700" y="816" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#0f172a" font-weight="bold" text-anchor="start">C2</text>
+<text x="1736" y="816" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#475569" font-weight="bold" text-anchor="start">ICMS</text>
+<rect x="1860" y="801" width="50.5" height="21" rx="5" fill="#1d4ed8" stroke="none" stroke-width="1" fill-opacity="0.92"/>
+<text x="1885.25" y="816" font-family="Segoe UI, Arial, sans-serif" font-size="11.2" fill="#fff" font-weight="bold" text-anchor="middle">vICMS</text>
+<text x="1917.5" y="816" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#475569" font-weight="bold" text-anchor="middle">→</text>
+<rect x="1924.5" y="801" width="78.1" height="21" rx="5" fill="#0f766e" stroke="none" stroke-width="1" fill-opacity="0.92"/>
+<text x="1963.55" y="816" font-family="Segoe UI, Arial, sans-serif" font-size="11.2" fill="#fff" font-weight="bold" text-anchor="middle">C100/C190</text>
+<text x="2009.6" y="816" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#475569" font-weight="bold" text-anchor="middle">→</text>
+<rect x="2016.6" y="801" width="57.400000000000006" height="21" rx="5" fill="#0f766e" stroke="none" stroke-width="1" fill-opacity="0.92"/>
+<text x="2045.3" y="816" font-family="Segoe UI, Arial, sans-serif" font-size="11.2" fill="#fff" font-weight="bold" text-anchor="middle">E110 ↻</text>
+<text x="2081.0" y="816" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#475569" font-weight="bold" text-anchor="middle">→</text>
+<rect x="2088.0" y="801" width="119.5" height="21" rx="5" fill="#b45309" stroke="none" stroke-width="1" fill-opacity="0.92"/>
+<text x="2147.75" y="816" font-family="Segoe UI, Arial, sans-serif" font-size="11.2" fill="#fff" font-weight="bold" text-anchor="middle">ICMS a recolher</text>
+<text x="2214.5" y="816" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#475569" font-weight="bold" text-anchor="middle">→</text>
+<rect x="2221.5" y="801" width="36.7" height="21" rx="5" fill="#be123c" stroke="none" stroke-width="1" fill-opacity="0.92"/>
+<text x="2239.85" y="816" font-family="Segoe UI, Arial, sans-serif" font-size="11.2" fill="#fff" font-weight="bold" text-anchor="middle">DRE</text>
+<text x="1700" y="846" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#0f172a" font-weight="bold" text-anchor="start">C3</text>
+<text x="1736" y="846" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#475569" font-weight="bold" text-anchor="start">IPI</text>
+<rect x="1860" y="831" width="43.6" height="21" rx="5" fill="#1d4ed8" stroke="none" stroke-width="1" fill-opacity="0.92"/>
+<text x="1881.8" y="846" font-family="Segoe UI, Arial, sans-serif" font-size="11.2" fill="#fff" font-weight="bold" text-anchor="middle">vIPI</text>
+<text x="1910.6" y="846" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#475569" font-weight="bold" text-anchor="middle">→</text>
+<rect x="1917.6" y="831" width="43.6" height="21" rx="5" fill="#0f766e" stroke="none" stroke-width="1" fill-opacity="0.92"/>
+<text x="1939.3999999999999" y="846" font-family="Segoe UI, Arial, sans-serif" font-size="11.2" fill="#fff" font-weight="bold" text-anchor="middle">C100</text>
+<text x="1968.1999999999998" y="846" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#475569" font-weight="bold" text-anchor="middle">→</text>
+<rect x="1975.1999999999998" y="831" width="57.400000000000006" height="21" rx="5" fill="#0f766e" stroke="none" stroke-width="1" fill-opacity="0.92"/>
+<text x="2003.8999999999999" y="846" font-family="Segoe UI, Arial, sans-serif" font-size="11.2" fill="#fff" font-weight="bold" text-anchor="middle">E520 ↻</text>
+<text x="2039.6" y="846" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#475569" font-weight="bold" text-anchor="middle">→</text>
+<rect x="2046.6" y="831" width="112.60000000000001" height="21" rx="5" fill="#b45309" stroke="none" stroke-width="1" fill-opacity="0.92"/>
+<text x="2102.9" y="846" font-family="Segoe UI, Arial, sans-serif" font-size="11.2" fill="#fff" font-weight="bold" text-anchor="middle">IPI a recolher</text>
+<text x="2166.2" y="846" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#475569" font-weight="bold" text-anchor="middle">→</text>
+<rect x="2173.2" y="831" width="43.6" height="21" rx="5" fill="#be123c" stroke="none" stroke-width="1" fill-opacity="0.92"/>
+<text x="2195.0" y="846" font-family="Segoe UI, Arial, sans-serif" font-size="11.2" fill="#fff" font-weight="bold" text-anchor="middle">L300</text>
+<text x="1700" y="876" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#0f172a" font-weight="bold" text-anchor="start">C4</text>
+<text x="1736" y="876" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#475569" font-weight="bold" text-anchor="start">PIS/COFINS déb.</text>
+<rect x="1860" y="861" width="71.2" height="21" rx="5" fill="#1d4ed8" stroke="none" stroke-width="1" fill-opacity="0.92"/>
+<text x="1895.6" y="876" font-family="Segoe UI, Arial, sans-serif" font-size="11.2" fill="#fff" font-weight="bold" text-anchor="middle">CST/vPIS</text>
+<text x="1938.2" y="876" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#475569" font-weight="bold" text-anchor="middle">→</text>
+<rect x="1945.2" y="861" width="78.1" height="21" rx="5" fill="#15803d" stroke="none" stroke-width="1" fill-opacity="0.92"/>
+<text x="1984.25" y="876" font-family="Segoe UI, Arial, sans-serif" font-size="11.2" fill="#fff" font-weight="bold" text-anchor="middle">C181/A170</text>
+<text x="2030.3" y="876" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#475569" font-weight="bold" text-anchor="middle">→</text>
+<rect x="2037.3" y="861" width="78.1" height="21" rx="5" fill="#15803d" stroke="none" stroke-width="1" fill-opacity="0.92"/>
+<text x="2076.35" y="876" font-family="Segoe UI, Arial, sans-serif" font-size="11.2" fill="#fff" font-weight="bold" text-anchor="middle">M210→M200</text>
+<text x="2122.4" y="876" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#475569" font-weight="bold" text-anchor="middle">→</text>
+<rect x="2129.4" y="861" width="64.30000000000001" height="21" rx="5" fill="#b45309" stroke="none" stroke-width="1" fill-opacity="0.92"/>
+<text x="2161.55" y="876" font-family="Segoe UI, Arial, sans-serif" font-size="11.2" fill="#fff" font-weight="bold" text-anchor="middle">passivo</text>
+<text x="2200.7000000000003" y="876" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#475569" font-weight="bold" text-anchor="middle">→</text>
+<rect x="2207.7000000000003" y="861" width="71.2" height="21" rx="5" fill="#be123c" stroke="none" stroke-width="1" fill-opacity="0.92"/>
+<text x="2243.3" y="876" font-family="Segoe UI, Arial, sans-serif" font-size="11.2" fill="#fff" font-weight="bold" text-anchor="middle">deduções</text>
+<text x="1700" y="906" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#0f172a" font-weight="bold" text-anchor="start">C5</text>
+<text x="1736" y="906" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#475569" font-weight="bold" text-anchor="start">PIS/COFINS créd.</text>
+<rect x="1860" y="891" width="85.0" height="21" rx="5" fill="#1d4ed8" stroke="none" stroke-width="1" fill-opacity="0.92"/>
+<text x="1902.5" y="906" font-family="Segoe UI, Arial, sans-serif" font-size="11.2" fill="#fff" font-weight="bold" text-anchor="middle">NF-e/NFS-e</text>
+<text x="1952.0" y="906" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#475569" font-weight="bold" text-anchor="middle">→</text>
+<rect x="1959.0" y="891" width="78.1" height="21" rx="5" fill="#15803d" stroke="none" stroke-width="1" fill-opacity="0.92"/>
+<text x="1998.05" y="906" font-family="Segoe UI, Arial, sans-serif" font-size="11.2" fill="#fff" font-weight="bold" text-anchor="middle">CST 50–66</text>
+<text x="2044.1" y="906" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#475569" font-weight="bold" text-anchor="middle">→</text>
+<rect x="2051.1" y="891" width="105.7" height="21" rx="5" fill="#15803d" stroke="none" stroke-width="1" fill-opacity="0.92"/>
+<text x="2103.95" y="906" font-family="Segoe UI, Arial, sans-serif" font-size="11.2" fill="#fff" font-weight="bold" text-anchor="middle">M100 · 1100 ↻</text>
+<text x="2163.7999999999997" y="906" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#475569" font-weight="bold" text-anchor="middle">→</text>
+<rect x="2170.7999999999997" y="891" width="91.9" height="21" rx="5" fill="#b45309" stroke="none" stroke-width="1" fill-opacity="0.92"/>
+<text x="2216.7499999999995" y="906" font-family="Segoe UI, Arial, sans-serif" font-size="11.2" fill="#fff" font-weight="bold" text-anchor="middle">a recuperar</text>
+<text x="1700" y="936" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#0f172a" font-weight="bold" text-anchor="start">C6</text>
+<text x="1736" y="936" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#475569" font-weight="bold" text-anchor="start">Estoque</text>
+<rect x="1860" y="921" width="91.9" height="21" rx="5" fill="#1d4ed8" stroke="none" stroke-width="1" fill-opacity="0.92"/>
+<text x="1905.95" y="936" font-family="Segoe UI, Arial, sans-serif" font-size="11.2" fill="#fff" font-weight="bold" text-anchor="middle">NF-e/210200</text>
+<text x="1958.9" y="936" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#475569" font-weight="bold" text-anchor="middle">→</text>
+<rect x="1965.9" y="921" width="91.9" height="21" rx="5" fill="#0f766e" stroke="none" stroke-width="1" fill-opacity="0.92"/>
+<text x="2011.8500000000001" y="936" font-family="Segoe UI, Arial, sans-serif" font-size="11.2" fill="#fff" font-weight="bold" text-anchor="middle">K200 · H010</text>
+<text x="2064.8" y="936" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#475569" font-weight="bold" text-anchor="middle">→</text>
+<rect x="2071.8" y="921" width="98.80000000000001" height="21" rx="5" fill="#b45309" stroke="none" stroke-width="1" fill-opacity="0.92"/>
+<text x="2121.2000000000003" y="936" font-family="Segoe UI, Arial, sans-serif" font-size="11.2" fill="#fff" font-weight="bold" text-anchor="middle">I155 estoque</text>
+<text x="2177.6000000000004" y="936" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#475569" font-weight="bold" text-anchor="middle">→</text>
+<rect x="2184.6000000000004" y="921" width="78.1" height="21" rx="5" fill="#be123c" stroke="none" stroke-width="1" fill-opacity="0.92"/>
+<text x="2223.6500000000005" y="936" font-family="Segoe UI, Arial, sans-serif" font-size="11.2" fill="#fff" font-weight="bold" text-anchor="middle">L100/P100</text>
+<text x="1700" y="966" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#0f172a" font-weight="bold" text-anchor="start">C7</text>
+<text x="1736" y="966" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#475569" font-weight="bold" text-anchor="start">Ativo</text>
+<rect x="1860" y="951" width="85.0" height="21" rx="5" fill="#1d4ed8" stroke="none" stroke-width="1" fill-opacity="0.92"/>
+<text x="1902.5" y="966" font-family="Segoe UI, Arial, sans-serif" font-size="11.2" fill="#fff" font-weight="bold" text-anchor="middle">NF-e x.551</text>
+<text x="1952.0" y="966" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#475569" font-weight="bold" text-anchor="middle">→</text>
+<rect x="1959.0" y="951" width="78.1" height="21" rx="5" fill="#0f766e" stroke="none" stroke-width="1" fill-opacity="0.92"/>
+<text x="1998.05" y="966" font-family="Segoe UI, Arial, sans-serif" font-size="11.2" fill="#fff" font-weight="bold" text-anchor="middle">CIAP G130</text>
+<text x="2044.1" y="966" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#475569" font-weight="bold" text-anchor="middle">→</text>
+<rect x="2051.1" y="951" width="78.1" height="21" rx="5" fill="#15803d" stroke="none" stroke-width="1" fill-opacity="0.92"/>
+<text x="2090.15" y="966" font-family="Segoe UI, Arial, sans-serif" font-size="11.2" fill="#fff" font-weight="bold" text-anchor="middle">F120/F130</text>
+<text x="2136.2" y="966" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#475569" font-weight="bold" text-anchor="middle">→</text>
+<rect x="2143.2" y="951" width="91.9" height="21" rx="5" fill="#b45309" stroke="none" stroke-width="1" fill-opacity="0.92"/>
+<text x="2189.1499999999996" y="966" font-family="Segoe UI, Arial, sans-serif" font-size="11.2" fill="#fff" font-weight="bold" text-anchor="middle">imobilizado</text>
+<text x="1700" y="996" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#0f172a" font-weight="bold" text-anchor="start">C8</text>
+<text x="1736" y="996" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#475569" font-weight="bold" text-anchor="start">Retenções</text>
+<rect x="1860" y="981" width="91.9" height="21" rx="5" fill="#1d4ed8" stroke="none" stroke-width="1" fill-opacity="0.92"/>
+<text x="1905.95" y="996" font-family="Segoe UI, Arial, sans-serif" font-size="11.2" fill="#fff" font-weight="bold" text-anchor="middle">NFS-e vRet*</text>
+<text x="1958.9" y="996" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#475569" font-weight="bold" text-anchor="middle">→</text>
+<rect x="1965.9" y="981" width="105.7" height="21" rx="5" fill="#15803d" stroke="none" stroke-width="1" fill-opacity="0.92"/>
+<text x="2018.75" y="996" font-family="Segoe UI, Arial, sans-serif" font-size="11.2" fill="#fff" font-weight="bold" text-anchor="middle">F600 · 1300 ↻</text>
+<text x="2078.6" y="996" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#475569" font-weight="bold" text-anchor="middle">→</text>
+<rect x="2085.6" y="981" width="91.9" height="21" rx="5" fill="#b45309" stroke="none" stroke-width="1" fill-opacity="0.92"/>
+<text x="2131.5499999999997" y="996" font-family="Segoe UI, Arial, sans-serif" font-size="11.2" fill="#fff" font-weight="bold" text-anchor="middle">a compensar</text>
+<text x="2184.5" y="996" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#475569" font-weight="bold" text-anchor="middle">→</text>
+<rect x="2191.5" y="981" width="43.6" height="21" rx="5" fill="#be123c" stroke="none" stroke-width="1" fill-opacity="0.92"/>
+<text x="2213.3" y="996" font-family="Segoe UI, Arial, sans-serif" font-size="11.2" fill="#fff" font-weight="bold" text-anchor="middle">Y570</text>
+<text x="1700" y="1026" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#0f172a" font-weight="bold" text-anchor="start">C9</text>
+<text x="1736" y="1026" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#475569" font-weight="bold" text-anchor="start">Pagto. eletrônico</text>
+<rect x="1860" y="1011" width="43.6" height="21" rx="5" fill="#7c3aed" stroke="none" stroke-width="1" fill-opacity="0.92"/>
+<text x="1881.8" y="1026" font-family="Segoe UI, Arial, sans-serif" font-size="11.2" fill="#fff" font-weight="bold" text-anchor="middle">DIMP</text>
+<text x="1910.6" y="1026" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#475569" font-weight="bold" text-anchor="middle">→</text>
+<rect x="1917.6" y="1011" width="43.6" height="21" rx="5" fill="#0f766e" stroke="none" stroke-width="1" fill-opacity="0.92"/>
+<text x="1939.3999999999999" y="1026" font-family="Segoe UI, Arial, sans-serif" font-size="11.2" fill="#fff" font-weight="bold" text-anchor="middle">1601</text>
+<text x="1968.1999999999998" y="1026" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#475569" font-weight="bold" text-anchor="middle">→</text>
+<rect x="1975.1999999999998" y="1011" width="57.400000000000006" height="21" rx="5" fill="#1d4ed8" stroke="none" stroke-width="1" fill-opacity="0.92"/>
+<text x="2003.8999999999999" y="1026" font-family="Segoe UI, Arial, sans-serif" font-size="11.2" fill="#fff" font-weight="bold" text-anchor="middle">detPag</text>
+<text x="2039.6" y="1026" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#475569" font-weight="bold" text-anchor="middle">→</text>
+<rect x="2046.6" y="1011" width="43.6" height="21" rx="5" fill="#15803d" stroke="none" stroke-width="1" fill-opacity="0.92"/>
+<text x="2068.4" y="1026" font-family="Segoe UI, Arial, sans-serif" font-size="11.2" fill="#fff" font-weight="bold" text-anchor="middle">F525</text>
+<text x="2097.2" y="1026" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#475569" font-weight="bold" text-anchor="middle">→</text>
+<rect x="2104.2" y="1011" width="57.400000000000006" height="21" rx="5" fill="#b45309" stroke="none" stroke-width="1" fill-opacity="0.92"/>
+<text x="2132.8999999999996" y="1026" font-family="Segoe UI, Arial, sans-serif" font-size="11.2" fill="#fff" font-weight="bold" text-anchor="middle">bancos</text>
+<text x="1700" y="1056" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#0f172a" font-weight="bold" text-anchor="start">C10</text>
+<text x="1736" y="1056" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#475569" font-weight="bold" text-anchor="start">Resultado</text>
+<rect x="1860" y="1041" width="78.1" height="21" rx="5" fill="#b45309" stroke="none" stroke-width="1" fill-opacity="0.92"/>
+<text x="1899.05" y="1056" font-family="Segoe UI, Arial, sans-serif" font-size="11.2" fill="#fff" font-weight="bold" text-anchor="middle">I355/J150</text>
+<text x="1945.1" y="1056" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#475569" font-weight="bold" text-anchor="middle">→</text>
+<rect x="1952.1" y="1041" width="91.9" height="21" rx="5" fill="#be123c" stroke="none" stroke-width="1" fill-opacity="0.92"/>
+<text x="1998.05" y="1056" font-family="Segoe UI, Arial, sans-serif" font-size="11.2" fill="#fff" font-weight="bold" text-anchor="middle">C040 · K355</text>
+<text x="2051.0" y="1056" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#475569" font-weight="bold" text-anchor="middle">→</text>
+<rect x="2058.0" y="1041" width="78.1" height="21" rx="5" fill="#be123c" stroke="none" stroke-width="1" fill-opacity="0.92"/>
+<text x="2097.05" y="1056" font-family="Segoe UI, Arial, sans-serif" font-size="11.2" fill="#fff" font-weight="bold" text-anchor="middle">M300/M312</text>
+<text x="2143.1" y="1056" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#475569" font-weight="bold" text-anchor="middle">→</text>
+<rect x="2150.1" y="1041" width="78.1" height="21" rx="5" fill="#be123c" stroke="none" stroke-width="1" fill-opacity="0.92"/>
+<text x="2189.15" y="1056" font-family="Segoe UI, Arial, sans-serif" font-size="11.2" fill="#fff" font-weight="bold" text-anchor="middle">Parte B ↻</text>
+<text x="2235.2" y="1056" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#475569" font-weight="bold" text-anchor="middle">→</text>
+<rect x="2242.2" y="1041" width="36.7" height="21" rx="5" fill="#be123c" stroke="none" stroke-width="1" fill-opacity="0.92"/>
+<text x="2260.5499999999997" y="1056" font-family="Segoe UI, Arial, sans-serif" font-size="11.2" fill="#fff" font-weight="bold" text-anchor="middle">N/P</text>
+<rect x="40" y="1510" width="2320" height="430" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="1" fill-opacity="1"/>
+<text x="60" y="1540" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#0f172a" font-weight="bold" text-anchor="start">Matriz de presença – onde cada fato DEVE estar (●), PODE estar conforme condição (◐), NÃO pode estar (○) ou não se aplica (—)</text>
+<rect x="362.0" y="1552" width="278.85714285714283" height="28" rx="5" fill="#1d4ed8" stroke="none" stroke-width="1" fill-opacity="1"/>
+<text x="501.42857142857144" y="1571" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#fff" font-weight="bold" text-anchor="middle">NF-e</text>
+<rect x="644.8571428571429" y="1552" width="278.85714285714283" height="28" rx="5" fill="#1d4ed8" stroke="none" stroke-width="1" fill-opacity="1"/>
+<text x="784.2857142857143" y="1571" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#fff" font-weight="bold" text-anchor="middle">NFS-e</text>
+<rect x="927.7142857142857" y="1552" width="278.85714285714283" height="28" rx="5" fill="#7c3aed" stroke="none" stroke-width="1" fill-opacity="1"/>
+<text x="1067.142857142857" y="1571" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#fff" font-weight="bold" text-anchor="middle">DIMP</text>
+<rect x="1210.5714285714284" y="1552" width="278.85714285714283" height="28" rx="5" fill="#0f766e" stroke="none" stroke-width="1" fill-opacity="1"/>
+<text x="1349.9999999999998" y="1571" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#fff" font-weight="bold" text-anchor="middle">EFD ICMS/IPI</text>
+<rect x="1493.4285714285713" y="1552" width="278.85714285714283" height="28" rx="5" fill="#15803d" stroke="none" stroke-width="1" fill-opacity="1"/>
+<text x="1632.8571428571427" y="1571" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#fff" font-weight="bold" text-anchor="middle">EFD-Contribuições</text>
+<rect x="1776.2857142857142" y="1552" width="278.85714285714283" height="28" rx="5" fill="#b45309" stroke="none" stroke-width="1" fill-opacity="1"/>
+<text x="1915.7142857142856" y="1571" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#fff" font-weight="bold" text-anchor="middle">ECD</text>
+<rect x="2059.142857142857" y="1552" width="278.85714285714283" height="28" rx="5" fill="#be123c" stroke="none" stroke-width="1" fill-opacity="1"/>
+<text x="2198.5714285714284" y="1571" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#fff" font-weight="bold" text-anchor="middle">ECF</text>
+<rect x="60" y="1586" width="2280" height="26" rx="3" fill="#f1f5f9" stroke="none" stroke-width="1" fill-opacity="1"/>
+<text x="68" y="1604" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="bold" text-anchor="start">Venda de mercadoria (saída própria)</text>
+<text x="501.42857142857144" y="1604" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="bold" text-anchor="middle">● autorizada</text>
+<text x="784.2857142857143" y="1604" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#94a3b8" font-weight="normal" text-anchor="middle">—</text>
+<text x="1067.142857142857" y="1604" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#d97706" font-weight="normal" text-anchor="middle">◐ se cartão/PIX</text>
+<text x="1349.9999999999998" y="1604" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="bold" text-anchor="middle">● C100 + C190 → E110</text>
+<text x="1632.8571428571427" y="1604" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="bold" text-anchor="middle">● C100/C181 · caixa: F500</text>
+<text x="1915.7142857142856" y="1604" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="bold" text-anchor="middle">● receita (nat. 04)</text>
+<text x="2198.5714285714284" y="1604" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="bold" text-anchor="middle">● receita bruta</text>
+<text x="68" y="1630" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="bold" text-anchor="start">NF-e cancelada (110111)</text>
+<text x="501.42857142857144" y="1630" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="bold" text-anchor="middle">● evento</text>
+<text x="784.2857142857143" y="1630" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#94a3b8" font-weight="normal" text-anchor="middle">—</text>
+<text x="1067.142857142857" y="1630" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#b91c1c" font-weight="bold" text-anchor="middle">○</text>
+<text x="1349.9999999999998" y="1630" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="bold" text-anchor="middle">● COD_SIT 02/03 sem valores</text>
+<text x="1632.8571428571427" y="1630" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#b91c1c" font-weight="bold" text-anchor="middle">○</text>
+<text x="1915.7142857142856" y="1630" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#b91c1c" font-weight="bold" text-anchor="middle">○</text>
+<text x="2198.5714285714284" y="1630" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#b91c1c" font-weight="bold" text-anchor="middle">○</text>
+<rect x="60" y="1638" width="2280" height="26" rx="3" fill="#f1f5f9" stroke="none" stroke-width="1" fill-opacity="1"/>
+<text x="68" y="1656" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="bold" text-anchor="start">Transferência entre estabelecimentos</text>
+<text x="501.42857142857144" y="1656" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="bold" text-anchor="middle">●</text>
+<text x="784.2857142857143" y="1656" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#94a3b8" font-weight="normal" text-anchor="middle">—</text>
+<text x="1067.142857142857" y="1656" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#b91c1c" font-weight="bold" text-anchor="middle">○</text>
+<text x="1349.9999999999998" y="1656" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="bold" text-anchor="middle">● nos 2 estabelecimentos</text>
+<text x="1632.8571428571427" y="1656" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#d97706" font-weight="normal" text-anchor="middle">◐ sem receita</text>
+<text x="1915.7142857142856" y="1656" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#d97706" font-weight="normal" text-anchor="middle">◐ sem receita</text>
+<text x="2198.5714285714284" y="1656" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#b91c1c" font-weight="bold" text-anchor="middle">○ na receita</text>
+<text x="68" y="1682" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="bold" text-anchor="start">Remessa / retorno / bonificação</text>
+<text x="501.42857142857144" y="1682" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="bold" text-anchor="middle">●</text>
+<text x="784.2857142857143" y="1682" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#94a3b8" font-weight="normal" text-anchor="middle">—</text>
+<text x="1067.142857142857" y="1682" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#b91c1c" font-weight="bold" text-anchor="middle">○</text>
+<text x="1349.9999999999998" y="1682" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="bold" text-anchor="middle">●</text>
+<text x="1632.8571428571427" y="1682" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#d97706" font-weight="normal" text-anchor="middle">◐ pode omitir</text>
+<text x="1915.7142857142856" y="1682" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#d97706" font-weight="normal" text-anchor="middle">◐</text>
+<text x="2198.5714285714284" y="1682" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#b91c1c" font-weight="bold" text-anchor="middle">○ na receita</text>
+<rect x="60" y="1690" width="2280" height="26" rx="3" fill="#f1f5f9" stroke="none" stroke-width="1" fill-opacity="1"/>
+<text x="68" y="1708" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="bold" text-anchor="start">Compra para revenda / insumo</text>
+<text x="501.42857142857144" y="1708" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="bold" text-anchor="middle">● do fornecedor</text>
+<text x="784.2857142857143" y="1708" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#94a3b8" font-weight="normal" text-anchor="middle">—</text>
+<text x="1067.142857142857" y="1708" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#94a3b8" font-weight="normal" text-anchor="middle">—</text>
+<text x="1349.9999999999998" y="1708" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="bold" text-anchor="middle">● entrada (DT_E_S)</text>
+<text x="1632.8571428571427" y="1708" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#d97706" font-weight="normal" text-anchor="middle">◐ com crédito (50–66)</text>
+<text x="1915.7142857142856" y="1708" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="bold" text-anchor="middle">● estoque/custo</text>
+<text x="2198.5714285714284" y="1708" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="bold" text-anchor="middle">● custo</text>
+<text x="68" y="1734" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="bold" text-anchor="start">Compra de ativo imobilizado</text>
+<text x="501.42857142857144" y="1734" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="bold" text-anchor="middle">● x.551</text>
+<text x="784.2857142857143" y="1734" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#94a3b8" font-weight="normal" text-anchor="middle">—</text>
+<text x="1067.142857142857" y="1734" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#94a3b8" font-weight="normal" text-anchor="middle">—</text>
+<text x="1349.9999999999998" y="1734" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="bold" text-anchor="middle">● + CIAP G125/G130</text>
+<text x="1632.8571428571427" y="1734" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#d97706" font-weight="normal" text-anchor="middle">◐ F120/F130</text>
+<text x="1915.7142857142856" y="1734" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="bold" text-anchor="middle">● imobilizado</text>
+<text x="2198.5714285714284" y="1734" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="bold" text-anchor="middle">● L100/P100</text>
+<rect x="60" y="1742" width="2280" height="26" rx="3" fill="#f1f5f9" stroke="none" stroke-width="1" fill-opacity="1"/>
+<text x="68" y="1760" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="bold" text-anchor="start">Serviço prestado</text>
+<text x="501.42857142857144" y="1760" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#94a3b8" font-weight="normal" text-anchor="middle">—</text>
+<text x="784.2857142857143" y="1760" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="bold" text-anchor="middle">● vigente</text>
+<text x="1067.142857142857" y="1760" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#d97706" font-weight="normal" text-anchor="middle">◐</text>
+<text x="1349.9999999999998" y="1760" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#b91c1c" font-weight="bold" text-anchor="middle">○ (DF: Bloco B)</text>
+<text x="1632.8571428571427" y="1760" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="bold" text-anchor="middle">● A100 · caixa: F500</text>
+<text x="1915.7142857142856" y="1760" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="bold" text-anchor="middle">● receita</text>
+<text x="2198.5714285714284" y="1760" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="bold" text-anchor="middle">● receita bruta</text>
+<text x="68" y="1786" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="bold" text-anchor="start">Serviço com retenção federal</text>
+<text x="501.42857142857144" y="1786" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#94a3b8" font-weight="normal" text-anchor="middle">—</text>
+<text x="784.2857142857143" y="1786" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="bold" text-anchor="middle">● vRet*</text>
+<text x="1067.142857142857" y="1786" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#94a3b8" font-weight="normal" text-anchor="middle">—</text>
+<text x="1349.9999999999998" y="1786" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#b91c1c" font-weight="bold" text-anchor="middle">○</text>
+<text x="1632.8571428571427" y="1786" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="bold" text-anchor="middle">● A100 + F600 + 1300</text>
+<text x="1915.7142857142856" y="1786" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="bold" text-anchor="middle">● a compensar</text>
+<text x="2198.5714285714284" y="1786" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="bold" text-anchor="middle">● Y570 · dedução</text>
+<rect x="60" y="1794" width="2280" height="26" rx="3" fill="#f1f5f9" stroke="none" stroke-width="1" fill-opacity="1"/>
+<text x="68" y="1812" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="bold" text-anchor="start">Inventário 31/12</text>
+<text x="501.42857142857144" y="1812" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#94a3b8" font-weight="normal" text-anchor="middle">—</text>
+<text x="784.2857142857143" y="1812" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#94a3b8" font-weight="normal" text-anchor="middle">—</text>
+<text x="1067.142857142857" y="1812" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#94a3b8" font-weight="normal" text-anchor="middle">—</text>
+<text x="1349.9999999999998" y="1812" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="bold" text-anchor="middle">● H005/H010 (fevereiro)</text>
+<text x="1632.8571428571427" y="1812" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#d97706" font-weight="normal" text-anchor="middle">◐ F150 (transição)</text>
+<text x="1915.7142857142856" y="1812" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="bold" text-anchor="middle">● I155 estoque</text>
+<text x="2198.5714285714284" y="1812" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="bold" text-anchor="middle">● L100/P100 · Y672</text>
+<text x="68" y="1838" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="bold" text-anchor="start">Recebimento cartão / PIX</text>
+<text x="501.42857142857144" y="1838" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#d97706" font-weight="normal" text-anchor="middle">◐ detPag</text>
+<text x="784.2857142857143" y="1838" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#d97706" font-weight="normal" text-anchor="middle">◐</text>
+<text x="1067.142857142857" y="1838" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="bold" text-anchor="middle">● declarante</text>
+<text x="1349.9999999999998" y="1838" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="bold" text-anchor="middle">● 1601</text>
+<text x="1632.8571428571427" y="1838" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#d97706" font-weight="normal" text-anchor="middle">◐ F525 (caixa)</text>
+<text x="1915.7142857142856" y="1838" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="bold" text-anchor="middle">● bancos/clientes</text>
+<text x="2198.5714285714284" y="1838" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#d97706" font-weight="normal" text-anchor="middle">◐</text>
+<rect x="60" y="1846" width="2280" height="26" rx="3" fill="#f1f5f9" stroke="none" stroke-width="1" fill-opacity="1"/>
+<text x="68" y="1864" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="bold" text-anchor="start">Receita financeira</text>
+<text x="501.42857142857144" y="1864" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#94a3b8" font-weight="normal" text-anchor="middle">—</text>
+<text x="784.2857142857143" y="1864" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#94a3b8" font-weight="normal" text-anchor="middle">—</text>
+<text x="1067.142857142857" y="1864" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#94a3b8" font-weight="normal" text-anchor="middle">—</text>
+<text x="1349.9999999999998" y="1864" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#b91c1c" font-weight="bold" text-anchor="middle">○</text>
+<text x="1632.8571428571427" y="1864" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="bold" text-anchor="middle">● F100 / M210</text>
+<text x="1915.7142857142856" y="1864" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="bold" text-anchor="middle">●</text>
+<text x="2198.5714285714284" y="1864" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="bold" text-anchor="middle">● fora da receita bruta</text>
+<text x="68" y="1890" font-family="Segoe UI, Arial, sans-serif" font-size="12.5" fill="#0f172a" font-weight="bold" text-anchor="start">Prejuízo fiscal / Parte B</text>
+<text x="501.42857142857144" y="1890" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#94a3b8" font-weight="normal" text-anchor="middle">—</text>
+<text x="784.2857142857143" y="1890" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#94a3b8" font-weight="normal" text-anchor="middle">—</text>
+<text x="1067.142857142857" y="1890" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#94a3b8" font-weight="normal" text-anchor="middle">—</text>
+<text x="1349.9999999999998" y="1890" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#b91c1c" font-weight="bold" text-anchor="middle">○</text>
+<text x="1632.8571428571427" y="1890" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#b91c1c" font-weight="bold" text-anchor="middle">○</text>
+<text x="1915.7142857142856" y="1890" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#b91c1c" font-weight="bold" text-anchor="middle">○</text>
+<text x="2198.5714285714284" y="1890" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="bold" text-anchor="middle">● M010/M500 ↻</text>
+<text x="60" y="1922" font-family="Segoe UI, Arial, sans-serif" font-size="12" fill="#475569" font-weight="normal" text-anchor="start" font-style="italic">○ em vermelho: se o fato aparecer ali, é erro (ex.: NF-e cancelada compondo receita).   ◐ em âmbar: presença condicionada ao regime ou à operação.   ↻ = verificado também entre períodos (CNT).</text>
+</svg>

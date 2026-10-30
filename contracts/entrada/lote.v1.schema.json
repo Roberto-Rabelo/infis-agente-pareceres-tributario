@@ -1,0 +1,112 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://infis/agente-parecer-tributario/contracts/entrada/lote.v1.schema.json",
+  "title": "Lote de análise – contrato de entrada v1 (PROPOSTA – D24)",
+  "description": "Obrigações já validadas pelos agentes de origem, normalizadas por registro e campo. Valores de campos em texto canônico: datas ISO 8601 (AAAA-MM-DD), decimais com ponto, CNPJ sem máscara (alfanumérico).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["versaoContrato", "contribuinte", "periodo", "obrigacoes"],
+  "properties": {
+    "versaoContrato": { "type": "string", "pattern": "^1\\.[0-9]+\\.[0-9]+$" },
+    "loteId": { "type": ["string", "null"], "maxLength": 100 },
+    "contribuinte": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["cnpj"],
+      "properties": {
+        "cnpj": { "type": "string", "description": "Raiz (8 posições) ou CNPJ completo do contribuinte analisado." }
+      }
+    },
+    "periodo": { "$ref": "#/$defs/periodo" },
+    "obrigacoes": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/obrigacao" } }
+  },
+  "$defs": {
+    "periodo": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["inicio", "fim"],
+      "properties": {
+        "inicio": { "type": "string", "format": "date" },
+        "fim": { "type": "string", "format": "date" }
+      }
+    },
+    "obrigacao": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "tipo", "versaoLayout", "contribuinte", "periodo", "finalidade", "identificacao", "validacaoOrigem", "registros"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "tipo": { "enum": ["NFE", "NFCE", "NFSE", "DIMP", "EFD_ICMS_IPI", "EFD_CONTRIBUICOES", "ECD", "ECF"] },
+        "versaoLayout": {
+          "type": "string",
+          "description": "Valor declarado no próprio arquivo: 0000.COD_VER (EFD ICMS/IPI, EFD-Contribuições, ECF), I010.COD_VER_LC (ECD), atributo versao (NF-e, NFS-e)."
+        },
+        "contribuinte": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["cnpj"],
+          "properties": {
+            "cnpj": { "type": "string", "pattern": "^[0-9A-Z]{12}[0-9]{2}$", "description": "Escriturações: CNPJ do 0000. Documentos: CNPJ do contribuinte analisado no papel que ocupa (emitente, destinatário, prestador ou tomador)." },
+            "inscricaoEstadual": { "type": ["string", "null"] },
+            "uf": { "type": ["string", "null"], "pattern": "^[A-Z]{2}$" }
+          }
+        },
+        "periodo": { "$ref": "#/$defs/periodo" },
+        "finalidade": { "enum": ["ORIGINAL", "SUBSTITUTA"] },
+        "identificacao": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "recibo": { "type": ["string", "null"] },
+            "reciboAnterior": { "type": ["string", "null"], "description": "Recibo da escrituração substituída (obrigatório quando finalidade = SUBSTITUTA)." },
+            "hash": { "type": ["string", "null"] },
+            "chaveAcesso": { "type": ["string", "null"], "pattern": "^[0-9A-Z]{44}$" }
+          }
+        },
+        "validacaoOrigem": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["agente", "versaoValidador", "dataValidacao", "status", "ocorrencias"],
+          "properties": {
+            "agente": { "type": "string" },
+            "versaoValidador": { "type": "string" },
+            "dataValidacao": { "type": "string", "format": "date-time" },
+            "status": { "enum": ["APROVADO", "REPROVADO"] },
+            "ocorrencias": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["tipo", "mensagem"],
+                "properties": {
+                  "tipo": { "enum": ["ERRO", "ADVERTENCIA"] },
+                  "codigo": { "type": ["string", "null"] },
+                  "mensagem": { "type": "string" },
+                  "registro": { "type": ["string", "null"] },
+                  "campo": { "type": ["string", "null"] },
+                  "linha": { "type": ["integer", "null"] }
+                }
+              }
+            }
+          }
+        },
+        "registros": {
+          "type": "object",
+          "description": "Chave = código do registro (ex.: 0000, C100) ou grupo do XML (ex.: ide, emit, det). Valor = ocorrências na ordem do arquivo.",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["campos"],
+              "properties": {
+                "linha": { "type": ["integer", "null"] },
+                "campos": { "type": "object", "additionalProperties": { "type": ["string", "null"] } }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

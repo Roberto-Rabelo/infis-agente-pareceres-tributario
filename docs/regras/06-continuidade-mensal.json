@@ -1,0 +1,215 @@
+{
+  "$schema": "./schema/regra.schema.json",
+  "versaoCatalogo": "1.0.0",
+  "grupo": "CONTINUIDADE",
+  "descricao": "Continuidade entre períodos consecutivos de uma mesma obrigação (saldo final do mês t = saldo inicial do mês t+1). Só é verificável pelo agente de coesão, porque exige dois arquivos de períodos diferentes.",
+  "documentoOrigem": "NUCLEO-3-cadeias-de-valor.md",
+  "regras": [
+    {
+      "id": "CNT-ICMS-001",
+      "titulo": "Saldo credor de ICMS transportado = saldo credor anterior do mês seguinte",
+      "mapa": "NUCLEO-3 C2 CP-3",
+      "tipoRelacao": "CNT",
+      "origem": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "E110.VL_SLD_CREDOR_TRANSPORTAR (mês t)"
+      },
+      "destino": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "E110.VL_SLD_CREDOR_ANT (mês t+1)"
+      },
+      "chaveJuncao": [
+        "CNPJ",
+        "IE"
+      ],
+      "operador": "SALDO_FINAL_IGUAL_INICIAL",
+      "tolerancia": null,
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_ICMS_IPI"
+      ],
+      "hipotesesLegitimas": [
+        "Estorno/transferência de saldo credor autorizado e lançado como ajuste (E111) – verificar o ajuste, não o saldo"
+      ],
+      "cadeias": [
+        "C2"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "{cnpj}: saldo credor transportado em {mes} R$ {fim} x saldo credor anterior em {mesSeg} R$ {ini}."
+    },
+    {
+      "id": "CNT-ICMS-002",
+      "titulo": "Saldo credor de ICMS-ST e DIFAL transportado por UF",
+      "mapa": "NUCLEO-3 C2",
+      "tipoRelacao": "CNT",
+      "origem": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "E210 / E310 saldo credor a transportar (mês t, por UF)"
+      },
+      "destino": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "E210 / E310 saldo credor anterior (mês t+1, mesma UF)"
+      },
+      "chaveJuncao": [
+        "CNPJ",
+        "UF"
+      ],
+      "operador": "SALDO_FINAL_IGUAL_INICIAL",
+      "tolerancia": null,
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_ICMS_IPI"
+      ],
+      "hipotesesLegitimas": [
+        "Nenhuma hipótese legítima prevista nos leiautes para esta divergência – solicitar justificativa documental ao contribuinte"
+      ],
+      "cadeias": [
+        "C2"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "conferirCampo": true,
+      "mensagemParecer": "{cnpj}/{uf}: saldo credor de {apuracao} não transportado corretamente de {mes} para {mesSeg}."
+    },
+    {
+      "id": "CNT-IPI-001",
+      "titulo": "Saldo credor de IPI transportado",
+      "mapa": "NUCLEO-3 C3 CP-3",
+      "tipoRelacao": "CNT",
+      "origem": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "E520.VL_SC_IPI (mês t)"
+      },
+      "destino": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "E520.VL_SD_ANT_IPI (mês t+1)"
+      },
+      "chaveJuncao": [
+        "CNPJ"
+      ],
+      "operador": "SALDO_FINAL_IGUAL_INICIAL",
+      "tolerancia": null,
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_ICMS_IPI"
+      ],
+      "hipotesesLegitimas": [
+        "Apuração de IPI em período diferente do mensal quando previsto"
+      ],
+      "aplicavelSe": "EFD_ICMS_IPI 0000.IND_ATIV = 0",
+      "cadeias": [
+        "C3"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "conferirCampo": true,
+      "mensagemParecer": "{cnpj}: saldo credor de IPI de {mes} R$ {fim} x saldo anterior de {mesSeg} R$ {ini}."
+    },
+    {
+      "id": "CNT-CTB-001",
+      "titulo": "Saldo de créditos de PIS/COFINS (1100/1500) transportado",
+      "mapa": "NUCLEO-3 C5 CP-4",
+      "tipoRelacao": "CNT",
+      "origem": {
+        "obrigacao": "EFD_CONTRIB",
+        "elemento": "1100/1500.SLD_CRED_FIM (mês t), por PER_APU_CRED e COD_CRED"
+      },
+      "destino": {
+        "obrigacao": "EFD_CONTRIB",
+        "elemento": "1100/1500 saldo de abertura (mês t+1), mesmo PER_APU_CRED e COD_CRED"
+      },
+      "chaveJuncao": [
+        "CNPJ_BASE",
+        "PER_APU_CRED",
+        "COD_CRED"
+      ],
+      "operador": "SALDO_FINAL_IGUAL_INICIAL",
+      "tolerancia": null,
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_CONTRIB"
+      ],
+      "hipotesesLegitimas": [
+        "Crédito utilizado em PER/DCOMP ou ressarcimento (informado nos campos próprios)"
+      ],
+      "aplicavelSe": "COD_INC_TRIB in (1,3)",
+      "cadeias": [
+        "C5"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "conferirCampo": true,
+      "mensagemParecer": "Crédito {codCred} do período {perApu}: saldo final {mes} R$ {fim} x saldo inicial {mesSeg} R$ {ini}."
+    },
+    {
+      "id": "CNT-CTB-002",
+      "titulo": "Saldo de retenções a deduzir (1300/1700) transportado",
+      "mapa": "NUCLEO-3 C8",
+      "tipoRelacao": "CNT",
+      "origem": {
+        "obrigacao": "EFD_CONTRIB",
+        "elemento": "1300/1700 saldo de retenção a utilizar (mês t)"
+      },
+      "destino": {
+        "obrigacao": "EFD_CONTRIB",
+        "elemento": "1300/1700 saldo de abertura (mês t+1)"
+      },
+      "chaveJuncao": [
+        "CNPJ_BASE",
+        "IND_NAT_RET",
+        "PR_REC_RET"
+      ],
+      "operador": "SALDO_FINAL_IGUAL_INICIAL",
+      "tolerancia": null,
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_CONTRIB"
+      ],
+      "hipotesesLegitimas": [
+        "Retenção utilizada em PER/DCOMP ou restituição"
+      ],
+      "cadeias": [
+        "C8"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "conferirCampo": true,
+      "mensagemParecer": "Retenção do período {prRec}: saldo a utilizar não transportado corretamente de {mes} para {mesSeg}."
+    },
+    {
+      "id": "CNT-INV-001",
+      "titulo": "Inventário de 31/12 (EFD de fevereiro) = estoque inicial do Bloco K de janeiro",
+      "mapa": "NUCLEO-3 C6",
+      "tipoRelacao": "CNT",
+      "origem": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "H010.QTD (DT_INV = 31/12)"
+      },
+      "destino": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "K200.QTD (DT_EST = 31/12) informado na EFD de dezembro"
+      },
+      "chaveJuncao": [
+        "CNPJ",
+        "COD_ITEM",
+        "POSSE"
+      ],
+      "operador": "IGUAL",
+      "tolerancia": null,
+      "severidade": "ALERTA",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_ICMS_IPI"
+      ],
+      "hipotesesLegitimas": [
+        "Estabelecimento não obrigado ao Bloco K completo"
+      ],
+      "cadeias": [
+        "C6"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "Ver M7-10 – item {codItem}."
+    }
+  ]
+}

@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://infis.local/contracts/saida/parecer.v1.schema.json",
+  "title": "Parecer técnico de cruzamento (saída do LLM) 1.0.0",
+  "description": "Contrato da resposta do LLM (constitution 4.3, FR-037). Não contém campos operacionais (P10): execução, correlação, consumo, tempos e versões são do envelope.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["status", "identificacao", "escopoELimitacoes", "sintese", "achados", "indiciosIa", "fontesCitadas", "limitacoes", "revisaoHumana"],
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": ["CONCLUIDA", "CONCLUIDA_PARCIAL", "INCONCLUSIVA", "FALHA_TECNICA"],
+      "description": "Deve repetir o status determinado pelo sistema."
+    },
+    "identificacao": {
+      "type": "string",
+      "description": "Contribuinte (mascarado), período e obrigações analisadas com versões de leiaute (doc 05 §5, item 1)."
+    },
+    "escopoELimitacoes": {
+      "type": "string",
+      "description": "Obrigações ou períodos não recebidos e regras não aplicadas por falta de insumo (doc 05 §5, item 2)."
+    },
+    "sintese": {
+      "type": "string",
+      "description": "Síntese técnica, sem declarar conformidade."
+    },
+    "achados": {
+      "type": "array",
+      "description": "Exatamente os achados determinísticos recebidos, sem criar, remover ou reclassificar.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["achadoId", "regraId", "natureza", "severidade", "hipotesesLegitimas", "analise", "referencias"],
+        "properties": {
+          "achadoId": { "type": "string" },
+          "regraId": { "type": "string" },
+          "natureza": {
+            "type": "string",
+            "enum": ["PRE_CONDICAO_NAO_ATENDIDA", "INCONSISTENCIA_CRUZAMENTO", "AUSENCIA_EVIDENCIAS", "FALHA_TECNICA"]
+          },
+          "severidade": { "type": ["string", "null"], "enum": ["ERRO_GRAVE", "ALERTA", null] },
+          "hipotesesLegitimas": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "Hipóteses legítimas do achado, listadas antes da análise."
+          },
+          "analise": { "type": "string" },
+          "referencias": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "trechoId de trechos recuperados nesta execução."
+          }
+        }
+      }
+    },
+    "indiciosIa": {
+      "type": "array",
+      "description": "Indícios adicionais do LLM, sem confirmação determinística; severidade máxima ALERTA (FR-036).",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["descricao", "severidade", "obrigacoes", "referencias"],
+        "properties": {
+          "descricao": { "type": "string" },
+          "severidade": { "type": "string", "enum": ["ALERTA"] },
+          "obrigacoes": {
+            "type": "array",
+            "items": { "type": "string", "enum": ["NFE", "NFCE", "NFSE", "DIMP", "EFD_ICMS_IPI", "EFD_CONTRIBUICOES", "ECD", "ECF"] }
+          },
+          "referencias": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "fontesCitadas": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "trechoId de todos os trechos citados no parecer."
+    },
+    "limitacoes": { "type": "array", "items": { "type": "string" } },
+    "revisaoHumana": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requerida", "motivos"],
+      "properties": {
+        "requerida": { "type": "boolean" },
+        "motivos": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}

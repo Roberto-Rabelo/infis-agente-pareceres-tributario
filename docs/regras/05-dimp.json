@@ -1,0 +1,330 @@
+{
+  "$schema": "./schema/regra.schema.json",
+  "versaoCatalogo": "1.0.0",
+  "grupo": "DIMP",
+  "descricao": "Mapa M6 – DIMP como evidência externa x NF-e/NFC-e/NFS-e, EFD ICMS/IPI (1601), EFD-Contribuições (F525) e ECD. Registros internos da DIMP devem ser mapeados pelo PDF da Versão 10 (Ato COTEPE/ICMS 65/18) – todas as regras marcadas conferirCampo.",
+  "documentoOrigem": "NUCLEO-2-mapas-bidirecionais.md",
+  "regras": [
+    {
+      "id": "M6-01",
+      "titulo": "Total da DIMP por instituição de pagamento = registro 1601",
+      "mapa": "M6.1",
+      "tipoRelacao": "IDT",
+      "origem": {
+        "obrigacao": "DIMP",
+        "elemento": "Total transacionado (declarante = instituição X)",
+        "agregacao": "INSTITUICAO_PAGAMENTO"
+      },
+      "destino": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "1601 (COD_PART_IP -> CNPJ X): TOT_VS + TOT_ISS + TOT_OUTROS"
+      },
+      "chaveJuncao": [
+        "CNPJ_INSTITUICAO",
+        "CNPJ_ESTABELECIMENTO",
+        "MES"
+      ],
+      "operador": "IGUAL",
+      "tolerancia": "PARAM:TOL_AGREGADO_ABSOLUTO",
+      "condicaoDescritiva": "DIMP maior que 1601 = recebimentos não declarados pelo contribuinte.",
+      "severidade": "ESCRITURACAO_GRAVE",
+      "severidadeAtenuada": {
+        "quando": "1601 maior que DIMP (possível diferença de data de transação x liquidação)",
+        "severidade": "ALERTA"
+      },
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "CONV_ICMS_134_16",
+        "ATO_COTEPE_65_18",
+        "GP_EFD_ICMS_IPI"
+      ],
+      "hipotesesLegitimas": [
+        "Estornos/chargebacks",
+        "Diferença entre data da transação e data do documento",
+        "Transações de outro estabelecimento/UF"
+      ],
+      "dependeDe": [
+        "ENT-012"
+      ],
+      "cadeias": [
+        "C1",
+        "C9"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "conferirCampo": true,
+      "mensagemParecer": "{mes}: DIMP declarada por {instituicao} R$ {dimp} x registro 1601 de {cnpj} R$ {efd}."
+    },
+    {
+      "id": "M6-02",
+      "titulo": "Total da DIMP por intermediador = registro 1601 (COD_PART_IT)",
+      "mapa": "M6.1",
+      "tipoRelacao": "IDT",
+      "origem": {
+        "obrigacao": "DIMP",
+        "elemento": "Total intermediado (declarante = intermediador Y)",
+        "agregacao": "INSTITUICAO_PAGAMENTO"
+      },
+      "destino": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "1601 (COD_PART_IT -> CNPJ Y)"
+      },
+      "chaveJuncao": [
+        "CNPJ_INTERMEDIADOR",
+        "CNPJ_ESTABELECIMENTO",
+        "MES"
+      ],
+      "operador": "IGUAL",
+      "tolerancia": "PARAM:TOL_AGREGADO_ABSOLUTO",
+      "severidade": "ESCRITURACAO_GRAVE",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "CONV_ICMS_134_16",
+        "ATO_COTEPE_65_18",
+        "GP_EFD_ICMS_IPI"
+      ],
+      "hipotesesLegitimas": [
+        "Mesmas da M6-01"
+      ],
+      "dependeDe": [
+        "ENT-012"
+      ],
+      "cadeias": [
+        "C1",
+        "C9"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "conferirCampo": true,
+      "mensagemParecer": "{mes}: intermediador {intermediador} declarou R$ {dimp} x 1601 R$ {efd}."
+    },
+    {
+      "id": "M6-03",
+      "titulo": "Recebimentos eletrônicos (DIMP) explicados por documentos fiscais",
+      "mapa": "M6.1",
+      "tipoRelacao": "LIM",
+      "origem": {
+        "obrigacao": "NFE",
+        "elemento": "Σ detPag.vPag com tPag eletrônico (03, 04, 17, 20 e demais eletrônicos) de NF-e/NFC-e + NFS-e pagas eletronicamente",
+        "agregacao": "MES"
+      },
+      "destino": {
+        "obrigacao": "DIMP",
+        "elemento": "Total transacionado do estabelecimento",
+        "agregacao": "MES"
+      },
+      "chaveJuncao": [
+        "CNPJ_ESTABELECIMENTO",
+        "MES"
+      ],
+      "operador": "MENOR_OU_IGUAL",
+      "tolerancia": "PARAM:MATERIALIDADE_DIMP",
+      "condicaoDescritiva": "DIMP <= documentos + recebimentos justificados (lista de hipóteses). Excesso da DIMP = indício de saídas sem documento fiscal.",
+      "severidade": "ESCRITURACAO_GRAVE",
+      "severidadeAtenuada": {
+        "quando": "Diferença abaixo de PARAM:MATERIALIDADE_DIMP, ou hipóteses legítimas ainda não esgotadas/justificadas",
+        "severidade": "ALERTA"
+      },
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "CONV_ICMS_134_16",
+        "MOC_NFE",
+        "DECISAO_PROJETO"
+      ],
+      "hipotesesLegitimas": [
+        "Transferências entre contas do próprio titular",
+        "Empréstimos e aportes",
+        "Adiantamentos de clientes (fato gerador futuro)",
+        "Estornos/chargebacks",
+        "Vendas de outro estabelecimento ou UF",
+        "Recebimento de vendas a prazo de períodos anteriores"
+      ],
+      "dependeDe": [
+        "M6-01"
+      ],
+      "cadeias": [
+        "C1",
+        "C9"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "conferirCampo": true,
+      "mensagemParecer": "{mes}: recebimentos eletrônicos declarados na DIMP R$ {dimp} x documentos com pagamento eletrônico R$ {docs}. Diferença R$ {dif} a justificar."
+    },
+    {
+      "id": "M6-04",
+      "titulo": "Total anual da DIMP x receita bruta (ECD/ECF)",
+      "mapa": "M6.1",
+      "tipoRelacao": "LIM",
+      "origem": {
+        "obrigacao": "ECD",
+        "elemento": "Receita bruta (contas RECEITA_BRUTA) + recebimentos sem fato gerador justificados",
+        "agregacao": "ANO"
+      },
+      "destino": {
+        "obrigacao": "DIMP",
+        "elemento": "Σ total transacionado",
+        "agregacao": "ANO"
+      },
+      "chaveJuncao": [
+        "CNPJ_BASE",
+        "ANO"
+      ],
+      "operador": "MENOR_OU_IGUAL",
+      "tolerancia": "PARAM:MATERIALIDADE_DIMP",
+      "severidade": "ALERTA",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "CONV_ICMS_134_16",
+        "MANUAL_ECD_L9"
+      ],
+      "hipotesesLegitimas": [
+        "Mesmas da M6-03"
+      ],
+      "cadeias": [
+        "C9"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "conferirCampo": true,
+      "mensagemParecer": "DIMP anual R$ {dimp} x receita bruta contábil R$ {ecd}."
+    },
+    {
+      "id": "M6-05",
+      "titulo": "Presumido em regime de caixa: recebimentos via instituição no F525",
+      "mapa": "M6.1",
+      "tipoRelacao": "AGR",
+      "origem": {
+        "obrigacao": "DIMP",
+        "elemento": "Total transacionado",
+        "agregacao": "MES"
+      },
+      "destino": {
+        "obrigacao": "EFD_CONTRIB",
+        "elemento": "F525 com indicação de recebimento via administradora/instituição (conferir códigos de IND_REC)"
+      },
+      "chaveJuncao": [
+        "CNPJ_BASE",
+        "MES"
+      ],
+      "operador": "SOMA_IGUAL",
+      "tolerancia": "PARAM:TOL_AGREGADO_PERCENTUAL",
+      "severidade": "ALERTA",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_CONTRIB",
+        "CONV_ICMS_134_16"
+      ],
+      "hipotesesLegitimas": [
+        "Diferença entre data da transação e data do crédito em conta"
+      ],
+      "aplicavelSe": "EFD_CONTRIB 0110.IND_REG_CUM = 1",
+      "cadeias": [
+        "C9"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "conferirCampo": true,
+      "mensagemParecer": "{mes}: DIMP R$ {dimp} x recebimentos via instituição no F525 R$ {f525}."
+    },
+    {
+      "id": "M6-10",
+      "titulo": "Credenciadora informada na NF-e presente na DIMP",
+      "mapa": "M6.2",
+      "tipoRelacao": "PRE_DIRETA",
+      "origem": {
+        "obrigacao": "NFE",
+        "elemento": "pag/detPag/card/CNPJ",
+        "agregacao": "MES"
+      },
+      "destino": {
+        "obrigacao": "DIMP",
+        "elemento": "CNPJ do declarante"
+      },
+      "chaveJuncao": [
+        "CNPJ_INSTITUICAO",
+        "MES"
+      ],
+      "operador": "EXISTE",
+      "tolerancia": null,
+      "severidade": "ALERTA",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "MOC_NFE",
+        "ATO_COTEPE_65_18"
+      ],
+      "hipotesesLegitimas": [
+        "DIMP da instituição não fornecida ao agente (cobertura)"
+      ],
+      "cadeias": [
+        "C9"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "Credenciadora {cnpj} informada em NF-e de {mes} não aparece na DIMP recebida."
+    },
+    {
+      "id": "M6-11",
+      "titulo": "Intermediador informado na NF-e presente na DIMP",
+      "mapa": "M6.2",
+      "tipoRelacao": "PRE_DIRETA",
+      "origem": {
+        "obrigacao": "NFE",
+        "elemento": "ide/indIntermed = 1; infIntermed/CNPJ",
+        "agregacao": "MES"
+      },
+      "destino": {
+        "obrigacao": "DIMP",
+        "elemento": "CNPJ do declarante (intermediador)"
+      },
+      "chaveJuncao": [
+        "CNPJ_INTERMEDIADOR",
+        "MES"
+      ],
+      "operador": "EXISTE",
+      "tolerancia": null,
+      "severidade": "ALERTA",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "NT_2020_006",
+        "CONV_ICMS_134_16"
+      ],
+      "hipotesesLegitimas": [
+        "DIMP do intermediador não fornecida ao agente (cobertura)"
+      ],
+      "cadeias": [
+        "C9"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "Intermediador {cnpj} informado em NF-e de {mes} não aparece na DIMP recebida."
+    },
+    {
+      "id": "M6-12",
+      "titulo": "Instituição do 1601 presente na DIMP",
+      "mapa": "M6.2",
+      "tipoRelacao": "PRE_DIRETA",
+      "origem": {
+        "obrigacao": "EFD_ICMS_IPI",
+        "elemento": "1601.COD_PART_IP / COD_PART_IT -> 0150.CNPJ"
+      },
+      "destino": {
+        "obrigacao": "DIMP",
+        "elemento": "CNPJ do declarante"
+      },
+      "chaveJuncao": [
+        "CNPJ_INSTITUICAO",
+        "MES"
+      ],
+      "operador": "EXISTE",
+      "tolerancia": null,
+      "severidade": "ALERTA",
+      "evidencia": "DERIVADA",
+      "fontes": [
+        "GP_EFD_ICMS_IPI",
+        "ATO_COTEPE_65_18"
+      ],
+      "hipotesesLegitimas": [
+        "DIMP da instituição não fornecida ao agente (cobertura)"
+      ],
+      "cadeias": [
+        "C9"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "mensagemParecer": "Instituição {cnpj} informada no 1601 de {mes} não aparece na DIMP recebida."
+    }
+  ]
+}

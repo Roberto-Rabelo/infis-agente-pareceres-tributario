@@ -1,6 +1,0 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
-  <ItemGroup>
-    <ProjectReference Include="../../src/Infis.PareceresTributario.Domain/Infis.PareceresTributario.Domain.csproj" />
-  </ItemGroup>
-</Project>

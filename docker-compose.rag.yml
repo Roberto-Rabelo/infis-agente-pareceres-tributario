@@ -1,0 +1,17 @@
+# PostgreSQL + PgVector local para a Api.RAG. A senha vem do ambiente (nunca versionar).
+#   $env:RAG_POSTGRES_PASSWORD = '<senha>'
+#   docker compose -f docker-compose.rag.yml up -d
+#   $env:ConnectionStrings__Rag = "Host=localhost;Port=5433;Database=rag;Username=rag;Password=$env:RAG_POSTGRES_PASSWORD"
+services:
+  rag-postgres:
+    image: pgvector/pgvector:pg17
+    environment:
+      POSTGRES_DB: rag
+      POSTGRES_USER: rag
+      POSTGRES_PASSWORD: ${RAG_POSTGRES_PASSWORD:?defina RAG_POSTGRES_PASSWORD}
+    ports:
+      - "5433:5432"
+    volumes:
+      - rag-dados:/var/lib/postgresql/data
+volumes:
+  rag-dados:
