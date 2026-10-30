@@ -91,8 +91,33 @@ public class ValidadorParecerTests
     }
 
     [Fact]
-    public void HipoteseLegitimaOmitida_Rejeitada() =>
-        Assert.Contains("HIPOTESE_OMITIDA", Codigos(p => PrimeiroAchado(p)["hipotesesLegitimas"] = new JsonArray()));
+    public void AchadoDeCruzamentoSemCitarTrechoDisponivel_Rejeitado() =>
+        Assert.Contains("ACHADO_SEM_REFERENCIA", Codigos(p => PrimeiroAchado(p)["referencias"] = new JsonArray()));
+
+    [Theory]
+    [InlineData("A escrituração está em conformidade.")]
+    [InlineData("Todas as regras foram avaliadas.")]
+    [InlineData("Não há limitações no escopo.")]
+    [InlineData("A divergência poderá resultar em penalidades.")]
+    [InlineData("Há inadimplência de registros.")]
+    [InlineData("Sujeito a MULTA.")]
+    public void AfirmacaoProibida_Rejeitada(string texto)
+    {
+        Assert.Contains("AFIRMACAO_PROIBIDA", Codigos(p => p["sintese"] = texto));
+        Assert.Contains("AFIRMACAO_PROIBIDA", Codigos(p => PrimeiroAchado(p)["analise"] = texto));
+    }
+
+    [Theory]
+    [InlineData("O processamento foi simultaneamente revisado, conforme o trecho citado.")]
+    [InlineData("A regularidade depende de revisão humana.")]
+    public void TextoSemAfirmacaoProibida_Aceito(string texto)
+    {
+        var analise = Analise();
+        var parecer = ParecerValido(analise);
+        parecer["sintese"] = texto;
+
+        Assert.True(Validar(analise, parecer.ToJsonString()).Valido);
+    }
 
     /// <summary>FR-036: indício da IA nunca é ERRO_GRAVE.</summary>
     [Fact]

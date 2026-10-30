@@ -33,7 +33,7 @@ public static partial class ValidadorCatalogo
     {
         if (!PadraoId().IsMatch(regra.Id))
         {
-            yield return "identificador fora do padrão (ex.: PRE-001, CRZ-NFE-EFD-001, ENT-001).";
+            yield return "identificador fora do padrão (ex.: PRE-001, CRZ-NFE-EFD-001, ENT-001, M1-P01).";
         }
 
         if (string.IsNullOrWhiteSpace(regra.Titulo))
@@ -190,6 +190,6 @@ public static partial class ValidadorCatalogo
         texto.Contains("conferir", StringComparison.OrdinalIgnoreCase)
         || texto.Contains("verificar", StringComparison.OrdinalIgnoreCase);
 
-    [GeneratedRegex("^(PRE|ENT|CRZ|EXC)(-[A-Z]{2,5})*-[0-9]{3}$")]
+    [GeneratedRegex("^(?:(PRE|ENT|CRZ|EXC)(-[A-Z]{2,5})*-[0-9]{3}|M[0-9]{1,2}-[A-Z]?[0-9]{2})$")]
     private static partial Regex PadraoId();
 }

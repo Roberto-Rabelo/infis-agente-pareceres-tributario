@@ -120,7 +120,7 @@ X-Correlation-Id: http-exemplo-{{$timestamp}}
 
 < ./exemplos/lote-exemplo.json
 
-### 3.2 Duas obrigações aptas → sem achado de pré-condição; INCONCLUSIVA enquanto não houver regra de cruzamento aprovada
+### 3.2 Duas obrigações aptas → sem achado de pré-condição; dados mínimos geram ausência de evidências (cenários completos em analise-obrigacoes.http)
 POST {{agente}}/api/v1/analises
 Authorization: Bearer {{tokenAgente}}
 Content-Type: application/json

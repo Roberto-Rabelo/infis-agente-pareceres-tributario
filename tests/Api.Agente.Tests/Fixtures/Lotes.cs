@@ -97,7 +97,7 @@ public static class Lotes
 
     public static byte[] Bytes(JsonNode lote) => Encoding.UTF8.GetBytes(lote.ToJsonString());
 
-    /// <summary>Monta o serviço com o catálogo real (catalog/) e sem validadores de cruzamento.</summary>
+    /// <summary>Monta o serviço com o catálogo real (catalog/) e os validadores de produção, salvo se outros forem informados.</summary>
     public static ServicoAnalise Servico(params IValidadorCruzamento[] validadores)
     {
         var diretorio = CarregadorCatalogo.ResolverDiretorio("catalog");
@@ -105,7 +105,7 @@ public static class Lotes
         return new ServicoAnalise(
             CarregadorCatalogo.CarregarRegras(diretorio),
             new VerificadorPreCondicoes(CarregadorCatalogo.CarregarVersoes(diretorio)),
-            new MotorRegras(validadores),
+            new MotorRegras(validadores.Length > 0 ? validadores : ValidadoresNfeEfd.Todos()),
             ParametrosComparacao.Exata,
             leitor);
     }

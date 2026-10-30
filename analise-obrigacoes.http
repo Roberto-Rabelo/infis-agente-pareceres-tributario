@@ -1,0 +1,132 @@
+# Cenários de análise NF-e × EFD ICMS/IPI, com as regras M1 do NUCLEO-2 (dados sintéticos).
+# Cliente: extensão REST Client (humao.rest-client). Clique em "Send Request" acima de cada bloco.
+# Os lotes ficam em exemplos/cenarios/ e cada um tem o mesmo resultado verificado em CenariosNfeEfdTests.
+#
+# Antes de usar:
+#   1. docker compose -f docker-compose.rag.yml up -d
+#   2. ./scripts/preparar-http.ps1             (grava os tokens locais no .env, que não é versionado)
+#   3. Suba as duas APIs: F5 com "Api.RAG + Api.Agente"
+#
+# Atenção: com Parecer:Habilitado = true nos user-secrets, cada análise chama a OpenAI e gera custo.
+#
+# O que olhar na resposta:
+#   resultado.status          situação da análise
+#   resultado.achados         regra, severidade, valores dos dois lados, diferença e hipóteses legítimas
+#   resultado.regras          situação de cada uma das 10 regras
+#   resultado.fundamentacao   trechos do RAG por regra com achado
+#   parecer                   texto do LLM, sempre sujeito a revisão humana
+
+@agente = http://localhost:5117
+@rag = http://localhost:5203
+@tokenAgente = {{$dotenv AGENTE_TOKEN}}
+
+
+###############################################################################
+# 1. Saúde dos serviços
+###############################################################################
+
+### 1.1 Api.Agente
+GET {{agente}}/health
+
+### 1.2 Api.RAG
+GET {{rag}}/health
+
+
+###############################################################################
+# 2. Controle positivo
+###############################################################################
+
+### 2.1 Tudo coerente → CONCLUIDA, sem achados, sem revisão humana
+POST {{agente}}/api/v1/analises
+Authorization: Bearer {{tokenAgente}}
+Content-Type: application/json
+X-Correlation-Id: cenario-01-{{$timestamp}}
+
+< ./exemplos/cenarios/01-consistente.json
+
+
+###############################################################################
+# 3. Inconsistências de presença e lastro (M1.1 e M1.2)
+###############################################################################
+
+### 3.1 NF-e de venda sem C100 → M1-P01 grave; M1-I01 não conclusiva; CONCLUIDA_PARCIAL
+POST {{agente}}/api/v1/analises
+Authorization: Bearer {{tokenAgente}}
+Content-Type: application/json
+X-Correlation-Id: cenario-02-{{$timestamp}}
+
+< ./exemplos/cenarios/02-omissao-saida.json
+
+### 3.2 NF-e cancelada escriturada como regular → M1-P02 alerta e M1-R01 grave
+POST {{agente}}/api/v1/analises
+Authorization: Bearer {{tokenAgente}}
+Content-Type: application/json
+X-Correlation-Id: cenario-05-{{$timestamp}}
+
+< ./exemplos/cenarios/05-cancelada-escriturada-regular.json
+
+### 3.3 C100 cancelado sem evento na NF-e → M1-R02 e M1-P01 graves (indício de débito omitido)
+POST {{agente}}/api/v1/analises
+Authorization: Bearer {{tokenAgente}}
+Content-Type: application/json
+X-Correlation-Id: cenario-06-{{$timestamp}}
+
+< ./exemplos/cenarios/06-cancelado-sem-evento.json
+
+### 3.4 Documentos de outro estabelecimento → M1-R03 e M1-R04 graves; EFD da filial ausente em M1-P01
+POST {{agente}}/api/v1/analises
+Authorization: Bearer {{tokenAgente}}
+Content-Type: application/json
+X-Correlation-Id: cenario-07-{{$timestamp}}
+
+< ./exemplos/cenarios/07-documento-de-outro-estabelecimento.json
+
+
+###############################################################################
+# 4. Inconsistências de valor e identificação (de-para M1.3)
+###############################################################################
+
+### 4.1 Valores do C100 × XML → M1-I03 (900 × 1000) e M1-I05 (BC 500 × 1000; ICMS 90 × 180)
+POST {{agente}}/api/v1/analises
+Authorization: Bearer {{tokenAgente}}
+Content-Type: application/json
+X-Correlation-Id: cenario-03-{{$timestamp}}
+
+< ./exemplos/cenarios/03-valores-divergentes.json
+
+### 4.2 Crédito de entrada acima do destacado → M1-I06 (250 × 60)
+POST {{agente}}/api/v1/analises
+Authorization: Bearer {{tokenAgente}}
+Content-Type: application/json
+X-Correlation-Id: cenario-04-{{$timestamp}}
+
+< ./exemplos/cenarios/04-credito-acima-do-destacado.json
+
+### 4.3 Número e data divergentes → M1-I01 grave (NUM_DOC) e alerta (DT_DOC)
+POST {{agente}}/api/v1/analises
+Authorization: Bearer {{tokenAgente}}
+Content-Type: application/json
+X-Correlation-Id: cenario-08-{{$timestamp}}
+
+< ./exemplos/cenarios/08-identificacao-divergente.json
+
+
+###############################################################################
+# 5. Falta de evidência: nunca vira erro nem conformidade (P4, P5)
+###############################################################################
+
+### 5.1 C100 sem XML fornecido → M1-R01 ausência de evidências; CONCLUIDA_PARCIAL
+POST {{agente}}/api/v1/analises
+Authorization: Bearer {{tokenAgente}}
+Content-Type: application/json
+X-Correlation-Id: cenario-09-{{$timestamp}}
+
+< ./exemplos/cenarios/09-c100-sem-xml.json
+
+### 5.2 NF-e reprovada na origem → PRE-003, 9 regras sem evidências e M1-I01 não conclusiva; INCONCLUSIVA
+POST {{agente}}/api/v1/analises
+Authorization: Bearer {{tokenAgente}}
+Content-Type: application/json
+X-Correlation-Id: cenario-10-{{$timestamp}}
+
+< ./exemplos/cenarios/10-nfe-reprovada-na-origem.json

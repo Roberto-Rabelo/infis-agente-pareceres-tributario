@@ -201,6 +201,9 @@ Pode começar em paralelo à Fase 5 após a Fase 3.
 - [ ] T089 [P] Matriz de rastreabilidade requisito → regra → tarefa → teste em `specs/001-cruzamento-obrigacoes/rastreabilidade.md` → 6.2
 - [ ] T090 [P] Atualizar `docs/README.md` e docs 02/03/05 com IDs e severidades finais decididos na Fase 0
 - [ ] T091 Revisão final com o checklist da constitution (Definition of Done, Seção 7)
+- [x] T093 Regras M1 de NF-e × EFD ICMS/IPI aprovadas no catálogo 0.2.0 pelo responsável, com base em `docs/NUCLEO-2` (M1-P01, P02, R01 a R04, I01, I03, I05, I06), validadores em `ValidadoresNfeEfd` e cenários `exemplos/cenarios/*.json` cobertos por `CenariosNfeEfdTests` → US3, plan.md §7
+- [x] T094 Identificadores M1-I01, I03, I05 e I06 incluídos nas tabelas de `docs/NUCLEO-2` M1.3 e base reingerida, para a fundamentação recuperar o de-para por regra → FR-034, plan.md §7
+- [x] T095 Hipóteses, escopo e limitações do parecer preenchidos pelo sistema (`ConsolidadorParecer`); validador recusa afirmações proibidas e achado sem o trecho disponível; prompt 1.1.0 → FR-035/040, P2, P4, plan.md §7
 - [x] T092 [P] API REST com controllers e documentação OpenAPI/Swagger nos dois serviços, desligada fora de Development e nunca servida em Production → 5.1, P16 (`plan.md` §2 "API REST"; `DocumentacaoApiTests` nos dois projetos de teste)
 
 ---

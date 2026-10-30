@@ -113,7 +113,7 @@ public static class Pareceres
 
     public static readonly ValidadorParecer Validador = ValidadorParecer.DoArquivo(SchemaSaidaParecer.Caminho(AppContext.BaseDirectory));
 
-    public static readonly PromptParecer Prompt = PromptParecer.DoArquivo(AppContext.BaseDirectory, "1.0.0");
+    public static readonly PromptParecer Prompt = PromptParecer.DoArquivo(AppContext.BaseDirectory, new OpcoesParecer().VersaoPrompt);
 
     public static readonly SchemaSaidaParecer Schema = SchemaSaidaParecer.DoArquivo(AppContext.BaseDirectory);
 

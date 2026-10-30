@@ -1,0 +1,175 @@
+{
+  "versaoContrato": "1.0.0",
+  "loteId": "cenario-09-c100-sem-xml",
+  "contribuinte": {
+    "cnpj": "11222333"
+  },
+  "periodo": {
+    "inicio": "2026-03-01",
+    "fim": "2026-03-31"
+  },
+  "obrigacoes": [
+    {
+      "id": "efd-icms-2026-03",
+      "tipo": "EFD_ICMS_IPI",
+      "versaoLayout": "020",
+      "contribuinte": {
+        "cnpj": "11222333000181",
+        "inscricaoEstadual": "110042490114",
+        "uf": "SP"
+      },
+      "periodo": {
+        "inicio": "2026-03-01",
+        "fim": "2026-03-31"
+      },
+      "finalidade": "ORIGINAL",
+      "identificacao": {
+        "recibo": "REC-2026-03-0001",
+        "hash": "HASH-REC-2026-03-0001"
+      },
+      "validacaoOrigem": {
+        "agente": "agente-validador",
+        "versaoValidador": "1.0.0",
+        "dataValidacao": "2026-04-10T10:00:00-03:00",
+        "status": "APROVADO",
+        "ocorrencias": []
+      },
+      "registros": {
+        "0000": [
+          {
+            "linha": 1,
+            "campos": {
+              "COD_VER": "020",
+              "CNPJ": "11222333000181",
+              "DT_INI": "2026-03-01",
+              "DT_FIN": "2026-03-31",
+              "UF": "SP",
+              "IE": "110042490114"
+            }
+          }
+        ],
+        "0150": [
+          {
+            "linha": 2,
+            "campos": {
+              "COD_PART": "CLI001",
+              "NOME": "CLIENTE FICTICIO LTDA",
+              "CNPJ": "11444777000161"
+            }
+          },
+          {
+            "linha": 3,
+            "campos": {
+              "COD_PART": "FOR001",
+              "NOME": "FORNECEDOR FICTICIO LTDA",
+              "CNPJ": "11444777000242"
+            }
+          }
+        ],
+        "C100": [
+          {
+            "linha": 4,
+            "campos": {
+              "IND_OPER": "1",
+              "IND_EMIT": "0",
+              "COD_PART": "CLI001",
+              "COD_MOD": "55",
+              "COD_SIT": "00",
+              "SER": "1",
+              "NUM_DOC": "1",
+              "CHV_NFE": "35260311222333000181550010000000011000000010",
+              "DT_DOC": "2026-03-10",
+              "VL_DOC": "1000.00",
+              "VL_BC_ICMS": "1000.00",
+              "VL_ICMS": "180.00"
+            }
+          },
+          {
+            "linha": 5,
+            "campos": {
+              "IND_OPER": "0",
+              "IND_EMIT": "1",
+              "COD_PART": "FOR001",
+              "COD_MOD": "55",
+              "COD_SIT": "00",
+              "SER": "1",
+              "NUM_DOC": "2",
+              "CHV_NFE": "35260311444777000242550010000000021000000020",
+              "DT_DOC": "2026-03-12",
+              "VL_DOC": "500.00",
+              "VL_BC_ICMS": "500.00",
+              "VL_ICMS": "60.00"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "nfe-venda-1",
+      "tipo": "NFE",
+      "versaoLayout": "4.00",
+      "contribuinte": {
+        "cnpj": "11222333000181",
+        "inscricaoEstadual": "110042490114",
+        "uf": "SP"
+      },
+      "periodo": {
+        "inicio": "2026-03-10",
+        "fim": "2026-03-10"
+      },
+      "finalidade": "ORIGINAL",
+      "identificacao": {
+        "chaveAcesso": "35260311222333000181550010000000011000000010"
+      },
+      "validacaoOrigem": {
+        "agente": "agente-validador-nfe",
+        "versaoValidador": "1.0.0",
+        "dataValidacao": "2026-04-10T10:00:00-03:00",
+        "status": "APROVADO",
+        "ocorrencias": []
+      },
+      "registros": {
+        "ide": [
+          {
+            "linha": null,
+            "campos": {
+              "mod": "55",
+              "serie": "1",
+              "nNF": "1",
+              "dhEmi": "2026-03-10T09:00:00-03:00",
+              "tpNF": "1"
+            }
+          }
+        ],
+        "emit": [
+          {
+            "linha": null,
+            "campos": {
+              "CNPJ": "11222333000181",
+              "UF": "SP"
+            }
+          }
+        ],
+        "dest": [
+          {
+            "linha": null,
+            "campos": {
+              "CNPJ": "11444777000161",
+              "UF": "SP"
+            }
+          }
+        ],
+        "ICMSTot": [
+          {
+            "linha": null,
+            "campos": {
+              "vBC": "1000.00",
+              "vICMS": "180.00",
+              "vNF": "1000.00"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

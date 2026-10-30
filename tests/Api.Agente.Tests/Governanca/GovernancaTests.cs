@@ -22,7 +22,7 @@ public class GovernancaTests
         "System.Text.Json",
     ];
 
-    private static readonly Lazy<JsonSchema> SchemaEntrada = new(() =>
+    internal static readonly Lazy<JsonSchema> SchemaEntrada = new(() =>
         JsonSchema.FromFile(Path.Combine(AppContext.BaseDirectory, "contracts", "entrada", "lote.v1.schema.json")));
 
     [Fact]

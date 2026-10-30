@@ -28,6 +28,7 @@
     <None Include="..\..\contracts\entrada\*.json" Link="contracts\entrada\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
     <None Include="..\..\docs\03-regras-cruzamento.md" Link="docs\03-regras-cruzamento.md" CopyToOutputDirectory="PreserveNewest" />
     <None Include="..\..\eval\parecer\*.json" Link="eval\parecer\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\exemplos\cenarios\*.json" Link="exemplos\cenarios\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

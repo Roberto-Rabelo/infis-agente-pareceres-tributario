@@ -1,5 +1,5 @@
 {
-  "versao": "0.1.0",
+  "versao": "0.2.0",
   "regras": [
     {
       "id": "PRE-001",
@@ -7,8 +7,20 @@
       "tipo": "PRE_CONDICAO",
       "resultadoEsperado": "O JSON da obrigação respeita o contrato de entrada v1 (campos obrigatórios, tipos, códigos, CNPJ com DV válido, período coerente, chave de acesso para documentos, recibo ou hash para escriturações) e o identificador é único no lote.",
       "fontes": [
-        { "emissor": "Projeto infis-agente-parecer-tributário", "documento": "Constitution", "versao": "2.0.0", "localizacao": "P18", "conferida": true },
-        { "emissor": "Projeto infis-agente-parecer-tributário", "documento": "contracts/entrada/lote.v1.schema.json", "versao": "1.0.0", "localizacao": "$defs.obrigacao", "conferida": true }
+        {
+          "emissor": "Projeto infis-agente-parecer-tributário",
+          "documento": "Constitution",
+          "versao": "2.0.0",
+          "localizacao": "P18",
+          "conferida": true
+        },
+        {
+          "emissor": "Projeto infis-agente-parecer-tributário",
+          "documento": "contracts/entrada/lote.v1.schema.json",
+          "versao": "1.0.0",
+          "localizacao": "$defs.obrigacao",
+          "conferida": true
+        }
       ],
       "vigenciaInicio": "2000-01-01",
       "status": "APROVADA",
@@ -27,8 +39,20 @@
       "tipo": "PRE_CONDICAO",
       "resultadoEsperado": "A versão de layout informada pelo agente de origem consta de catalog/versoes-layout.json como conferida e vigente para o período da obrigação.",
       "fontes": [
-        { "emissor": "Projeto infis-agente-parecer-tributário", "documento": "Constitution", "versao": "2.0.0", "localizacao": "P6", "conferida": true },
-        { "emissor": "Projeto infis-agente-parecer-tributário", "documento": "docs/02-regras-intra-obrigacao.md", "versao": "2026-10-29", "localizacao": "INT-COM-002", "conferida": true }
+        {
+          "emissor": "Projeto infis-agente-parecer-tributário",
+          "documento": "Constitution",
+          "versao": "2.0.0",
+          "localizacao": "P6",
+          "conferida": true
+        },
+        {
+          "emissor": "Projeto infis-agente-parecer-tributário",
+          "documento": "docs/02-regras-intra-obrigacao.md",
+          "versao": "2026-10-29",
+          "localizacao": "INT-COM-002",
+          "conferida": true
+        }
       ],
       "vigenciaInicio": "2000-01-01",
       "status": "APROVADA",
@@ -47,8 +71,20 @@
       "tipo": "PRE_CONDICAO",
       "resultadoEsperado": "Há relatório de validação de origem com status APROVADO e sem ocorrências do tipo ERRO. Advertências são repassadas como alerta, com texto e origem preservados.",
       "fontes": [
-        { "emissor": "Projeto infis-agente-parecer-tributário", "documento": "Constitution", "versao": "2.0.0", "localizacao": "P18", "conferida": true },
-        { "emissor": "Projeto infis-agente-parecer-tributário", "documento": "specs/001-cruzamento-obrigacoes/plan.md", "versao": "incremento 1", "localizacao": "D25", "conferida": true }
+        {
+          "emissor": "Projeto infis-agente-parecer-tributário",
+          "documento": "Constitution",
+          "versao": "2.0.0",
+          "localizacao": "P18",
+          "conferida": true
+        },
+        {
+          "emissor": "Projeto infis-agente-parecer-tributário",
+          "documento": "specs/001-cruzamento-obrigacoes/plan.md",
+          "versao": "incremento 1",
+          "localizacao": "D25",
+          "conferida": true
+        }
       ],
       "vigenciaInicio": "2000-01-01",
       "status": "APROVADA",
@@ -67,8 +103,20 @@
       "tipo": "PRE_CONDICAO",
       "resultadoEsperado": "Para o mesmo tipo, CNPJ e período, apenas a escrituração não substituída por outra do lote (cadeia reciboAnterior → recibo) é usada; cadeia ambígua torna todas não aptas. Documento repetido pela chave de acesso é descartado.",
       "fontes": [
-        { "emissor": "Projeto infis-agente-parecer-tributário", "documento": "docs/02-regras-intra-obrigacao.md", "versao": "2026-10-29", "localizacao": "INT-COM-003", "conferida": true },
-        { "emissor": "Projeto infis-agente-parecer-tributário", "documento": "specs/001-cruzamento-obrigacoes/plan.md", "versao": "incremento 1", "localizacao": "§2.1", "conferida": true }
+        {
+          "emissor": "Projeto infis-agente-parecer-tributário",
+          "documento": "docs/02-regras-intra-obrigacao.md",
+          "versao": "2026-10-29",
+          "localizacao": "INT-COM-003",
+          "conferida": true
+        },
+        {
+          "emissor": "Projeto infis-agente-parecer-tributário",
+          "documento": "specs/001-cruzamento-obrigacoes/plan.md",
+          "versao": "incremento 1",
+          "localizacao": "§2.1",
+          "conferida": true
+        }
       ],
       "vigenciaInicio": "2000-01-01",
       "status": "APROVADA",
@@ -86,8 +134,20 @@
       "tipo": "PRE_CONDICAO",
       "resultadoEsperado": "A raiz do CNPJ da obrigação é a do contribuinte do lote e o período da obrigação se sobrepõe ao período do lote; divergências são reportadas e não cruzadas.",
       "fontes": [
-        { "emissor": "Projeto infis-agente-parecer-tributário", "documento": "Constitution", "versao": "2.0.0", "localizacao": "P5", "conferida": true },
-        { "emissor": "Projeto infis-agente-parecer-tributário", "documento": "docs/02-regras-intra-obrigacao.md", "versao": "2026-10-29", "localizacao": "INT-COM-004", "conferida": true }
+        {
+          "emissor": "Projeto infis-agente-parecer-tributário",
+          "documento": "Constitution",
+          "versao": "2.0.0",
+          "localizacao": "P5",
+          "conferida": true
+        },
+        {
+          "emissor": "Projeto infis-agente-parecer-tributário",
+          "documento": "docs/02-regras-intra-obrigacao.md",
+          "versao": "2026-10-29",
+          "localizacao": "INT-COM-004",
+          "conferida": true
+        }
       ],
       "vigenciaInicio": "2000-01-01",
       "status": "APROVADA",
@@ -96,6 +156,377 @@
       "testes": [
         "PreCondicoesTests.Pre005_OutroContribuinte_NaoApta",
         "PreCondicoesTests.Pre005_PeriodoSemSobreposicao_NaoApta"
+      ]
+    },
+    {
+      "id": "M1-P01",
+      "titulo": "NF-e própria autorizada escriturada na EFD ICMS/IPI",
+      "tipo": "CRUZAMENTO",
+      "relacao": "PRE_DIRETA",
+      "obrigacoes": {
+        "NFE": [],
+        "EFD_ICMS_IPI": []
+      },
+      "evidencia": "MANUAL",
+      "severidades": {
+        "padrao": "ERRO_GRAVE"
+      },
+      "resultadoEsperado": "NF-e {chave} emitida em {dhEmi} (R$ {vNF}) não está escriturada na EFD ICMS/IPI de {cnpj}/{mes}. Indício de omissão de saída.",
+      "fontes": [
+        {
+          "emissor": "Projeto infis-agente-parecer-tributário",
+          "documento": "docs/NUCLEO-2-mapas-bidirecionais.md",
+          "versao": "2026-10-30",
+          "localizacao": "M1.1 / M1-P01",
+          "conferida": true
+        }
+      ],
+      "hipotesesLegitimas": [
+        "NF-e emitida no último dia do mês com saída no mês seguinte – conferir se escriturada no mês seguinte com COD_SIT 01 (extemporâneo)"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "status": "APROVADA",
+      "aprovadoPor": "Roberto, 2026-10-30, com base em docs/NUCLEO-2 (manuais oficiais citados na regra ainda sem curadoria T011)",
+      "dependeDe": [],
+      "implementacao": "DETERMINISTICA",
+      "testes": [
+        "CenariosNfeEfdTests.Consistente_SemAchados",
+        "CenariosNfeEfdTests.Omissao_M1P01",
+        "CenariosNfeEfdTests.Incompleto_NfeReprovada_AusenciaDeEvidencias"
+      ]
+    },
+    {
+      "id": "M1-P02",
+      "titulo": "NF-e própria cancelada escriturada com COD_SIT 02/03",
+      "tipo": "CRUZAMENTO",
+      "relacao": "PRE_DIRETA",
+      "obrigacoes": {
+        "NFE": [],
+        "EFD_ICMS_IPI": []
+      },
+      "evidencia": "MANUAL",
+      "severidades": {
+        "padrao": "ALERTA"
+      },
+      "resultadoEsperado": "NF-e cancelada {chave} não informada como cancelada na EFD ICMS/IPI de {mes}.",
+      "fontes": [
+        {
+          "emissor": "Projeto infis-agente-parecer-tributário",
+          "documento": "docs/NUCLEO-2-mapas-bidirecionais.md",
+          "versao": "2026-10-30",
+          "localizacao": "M1.1 / M1-P02",
+          "conferida": true
+        }
+      ],
+      "hipotesesLegitimas": [],
+      "vigenciaInicio": "2025-01-01",
+      "status": "APROVADA",
+      "aprovadoPor": "Roberto, 2026-10-30, com base em docs/NUCLEO-2 (manuais oficiais citados na regra ainda sem curadoria T011)",
+      "dependeDe": [],
+      "implementacao": "DETERMINISTICA",
+      "testes": [
+        "CenariosNfeEfdTests.Consistente_SemAchados",
+        "CenariosNfeEfdTests.CanceladaEscrituradaRegular_M1P02_M1R01",
+        "CenariosNfeEfdTests.Incompleto_NfeReprovada_AusenciaDeEvidencias"
+      ]
+    },
+    {
+      "id": "M1-R01",
+      "titulo": "C100 regular de NF-e tem XML autorizado e não cancelado",
+      "tipo": "CRUZAMENTO",
+      "relacao": "PRE_REVERSA",
+      "obrigacoes": {
+        "NFE": [],
+        "EFD_ICMS_IPI": []
+      },
+      "evidencia": "DERIVADA",
+      "severidades": {
+        "padrao": "ERRO_GRAVE"
+      },
+      "resultadoEsperado": "C100 {chave} escriturado como regular, mas a NF-e {situacao} (inexistente/cancelada/denegada).",
+      "fontes": [
+        {
+          "emissor": "Projeto infis-agente-parecer-tributário",
+          "documento": "docs/NUCLEO-2-mapas-bidirecionais.md",
+          "versao": "2026-10-30",
+          "localizacao": "M1.2 / M1-R01",
+          "conferida": true
+        }
+      ],
+      "hipotesesLegitimas": [
+        "XML não fornecido ao agente (cobertura) – reportar como não verificável, não como erro"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "status": "APROVADA",
+      "aprovadoPor": "Roberto, 2026-10-30, com base em docs/NUCLEO-2 (manuais oficiais citados na regra ainda sem curadoria T011)",
+      "dependeDe": [],
+      "implementacao": "DETERMINISTICA",
+      "testes": [
+        "CenariosNfeEfdTests.Consistente_SemAchados",
+        "CenariosNfeEfdTests.CanceladaEscrituradaRegular_M1P02_M1R01",
+        "CenariosNfeEfdTests.Incompleto_NfeReprovada_AusenciaDeEvidencias"
+      ]
+    },
+    {
+      "id": "M1-R02",
+      "titulo": "C100 cancelado tem evento de cancelamento homologado",
+      "tipo": "CRUZAMENTO",
+      "relacao": "PRE_REVERSA",
+      "obrigacoes": {
+        "NFE": [],
+        "EFD_ICMS_IPI": []
+      },
+      "evidencia": "DERIVADA",
+      "severidades": {
+        "padrao": "ERRO_GRAVE"
+      },
+      "resultadoEsperado": "NF-e {chave} informada como cancelada na EFD, mas está autorizada sem evento de cancelamento. Débito de ICMS de R$ {vICMS} omitido.",
+      "fontes": [
+        {
+          "emissor": "Projeto infis-agente-parecer-tributário",
+          "documento": "docs/NUCLEO-2-mapas-bidirecionais.md",
+          "versao": "2026-10-30",
+          "localizacao": "M1.2 / M1-R02",
+          "conferida": true
+        }
+      ],
+      "hipotesesLegitimas": [
+        "Nenhuma hipótese legítima prevista nos leiautes para esta divergência – solicitar justificativa documental ao contribuinte"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "status": "APROVADA",
+      "aprovadoPor": "Roberto, 2026-10-30, com base em docs/NUCLEO-2 (manuais oficiais citados na regra ainda sem curadoria T011)",
+      "dependeDe": [],
+      "implementacao": "DETERMINISTICA",
+      "testes": [
+        "CenariosNfeEfdTests.Consistente_SemAchados",
+        "CenariosNfeEfdTests.CanceladoSemEvento_M1R02",
+        "CenariosNfeEfdTests.Incompleto_NfeReprovada_AusenciaDeEvidencias"
+      ]
+    },
+    {
+      "id": "M1-R03",
+      "titulo": "C100 de emissão própria pertence ao estabelecimento",
+      "tipo": "CRUZAMENTO",
+      "relacao": "IDT",
+      "obrigacoes": {
+        "NFE": [],
+        "EFD_ICMS_IPI": []
+      },
+      "evidencia": "DERIVADA",
+      "severidades": {
+        "padrao": "ERRO_GRAVE"
+      },
+      "resultadoEsperado": "NF-e {chave} escriturada como emissão própria de {cnpjEfd}, mas o emitente é {cnpjXml}.",
+      "fontes": [
+        {
+          "emissor": "Projeto infis-agente-parecer-tributário",
+          "documento": "docs/NUCLEO-2-mapas-bidirecionais.md",
+          "versao": "2026-10-30",
+          "localizacao": "M1.2 / M1-R03",
+          "conferida": true
+        }
+      ],
+      "hipotesesLegitimas": [
+        "Nenhuma hipótese legítima prevista nos leiautes para esta divergência – solicitar justificativa documental ao contribuinte"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "status": "APROVADA",
+      "aprovadoPor": "Roberto, 2026-10-30, com base em docs/NUCLEO-2 (manuais oficiais citados na regra ainda sem curadoria T011)",
+      "dependeDe": [],
+      "implementacao": "DETERMINISTICA",
+      "testes": [
+        "CenariosNfeEfdTests.Consistente_SemAchados",
+        "CenariosNfeEfdTests.DocumentoDeOutroEstabelecimento_M1R03_M1R04",
+        "CenariosNfeEfdTests.Incompleto_NfeReprovada_AusenciaDeEvidencias"
+      ]
+    },
+    {
+      "id": "M1-R04",
+      "titulo": "C100 de entrada de terceiros é destinado ao estabelecimento",
+      "tipo": "CRUZAMENTO",
+      "relacao": "IDT",
+      "obrigacoes": {
+        "NFE": [],
+        "EFD_ICMS_IPI": []
+      },
+      "evidencia": "DERIVADA",
+      "severidades": {
+        "padrao": "ERRO_GRAVE"
+      },
+      "resultadoEsperado": "Entrada {chave} escriturada por {cnpjEfd}, mas a NF-e é destinada a {cnpjDest}. Crédito sem lastro.",
+      "fontes": [
+        {
+          "emissor": "Projeto infis-agente-parecer-tributário",
+          "documento": "docs/NUCLEO-2-mapas-bidirecionais.md",
+          "versao": "2026-10-30",
+          "localizacao": "M1.2 / M1-R04",
+          "conferida": true
+        }
+      ],
+      "hipotesesLegitimas": [
+        "Nenhuma hipótese legítima prevista nos leiautes para esta divergência – solicitar justificativa documental ao contribuinte"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "status": "APROVADA",
+      "aprovadoPor": "Roberto, 2026-10-30, com base em docs/NUCLEO-2 (manuais oficiais citados na regra ainda sem curadoria T011)",
+      "dependeDe": [],
+      "implementacao": "DETERMINISTICA",
+      "testes": [
+        "CenariosNfeEfdTests.Consistente_SemAchados",
+        "CenariosNfeEfdTests.DocumentoDeOutroEstabelecimento_M1R03_M1R04",
+        "CenariosNfeEfdTests.Incompleto_NfeReprovada_AusenciaDeEvidencias"
+      ]
+    },
+    {
+      "id": "M1-I01",
+      "titulo": "Identificação do documento igual (modelo/série/número/data)",
+      "tipo": "CRUZAMENTO",
+      "relacao": "IDT",
+      "obrigacoes": {
+        "NFE": [],
+        "EFD_ICMS_IPI": []
+      },
+      "evidencia": "DERIVADA",
+      "severidades": {
+        "padrao": "ERRO_GRAVE",
+        "data": "ALERTA"
+      },
+      "resultadoEsperado": "NF-e {chave}: {campo} escriturado {valorEfd} x XML {valorXml}.",
+      "fontes": [
+        {
+          "emissor": "Projeto infis-agente-parecer-tributário",
+          "documento": "docs/NUCLEO-2-mapas-bidirecionais.md",
+          "versao": "2026-10-30",
+          "localizacao": "M1.3 / M1-I01",
+          "conferida": true
+        }
+      ],
+      "hipotesesLegitimas": [
+        "Nenhuma hipótese legítima prevista nos leiautes para esta divergência – solicitar justificativa documental ao contribuinte"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "status": "APROVADA",
+      "aprovadoPor": "Roberto, 2026-10-30, com base em docs/NUCLEO-2 (manuais oficiais citados na regra ainda sem curadoria T011)",
+      "dependeDe": [
+        "M1-P01"
+      ],
+      "implementacao": "DETERMINISTICA",
+      "testes": [
+        "CenariosNfeEfdTests.Consistente_SemAchados",
+        "CenariosNfeEfdTests.IdentificacaoDivergente_M1I01",
+        "CenariosNfeEfdTests.Incompleto_NfeReprovada_AusenciaDeEvidencias"
+      ]
+    },
+    {
+      "id": "M1-I03",
+      "titulo": "Valor total do documento igual",
+      "tipo": "CRUZAMENTO",
+      "relacao": "IDT",
+      "obrigacoes": {
+        "NFE": [],
+        "EFD_ICMS_IPI": []
+      },
+      "evidencia": "DERIVADA",
+      "severidades": {
+        "padrao": "ERRO_GRAVE"
+      },
+      "resultadoEsperado": "NF-e {chave}: VL_DOC escriturado R$ {vlDoc} x vNF R$ {vNF} (diferença R$ {dif}).",
+      "fontes": [
+        {
+          "emissor": "Projeto infis-agente-parecer-tributário",
+          "documento": "docs/NUCLEO-2-mapas-bidirecionais.md",
+          "versao": "2026-10-30",
+          "localizacao": "M1.3 / M1-I03",
+          "conferida": true
+        }
+      ],
+      "hipotesesLegitimas": [
+        "Nenhuma hipótese legítima prevista nos leiautes para esta divergência – solicitar justificativa documental ao contribuinte"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "status": "APROVADA",
+      "aprovadoPor": "Roberto, 2026-10-30, com base em docs/NUCLEO-2 (manuais oficiais citados na regra ainda sem curadoria T011)",
+      "dependeDe": [],
+      "implementacao": "DETERMINISTICA",
+      "testes": [
+        "CenariosNfeEfdTests.Consistente_SemAchados",
+        "CenariosNfeEfdTests.ValoresDivergentes_M1I03_M1I05",
+        "CenariosNfeEfdTests.Incompleto_NfeReprovada_AusenciaDeEvidencias"
+      ]
+    },
+    {
+      "id": "M1-I05",
+      "titulo": "ICMS próprio da saída própria igual ao destacado",
+      "tipo": "CRUZAMENTO",
+      "relacao": "IDT",
+      "obrigacoes": {
+        "NFE": [],
+        "EFD_ICMS_IPI": []
+      },
+      "evidencia": "DERIVADA",
+      "severidades": {
+        "padrao": "ERRO_GRAVE"
+      },
+      "resultadoEsperado": "NF-e {chave}: ICMS escriturado R$ {vlIcms} x destacado R$ {vICMS}.",
+      "fontes": [
+        {
+          "emissor": "Projeto infis-agente-parecer-tributário",
+          "documento": "docs/NUCLEO-2-mapas-bidirecionais.md",
+          "versao": "2026-10-30",
+          "localizacao": "M1.3 / M1-I05",
+          "conferida": true
+        }
+      ],
+      "hipotesesLegitimas": [
+        "Nenhuma hipótese legítima prevista nos leiautes para esta divergência – solicitar justificativa documental ao contribuinte"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "status": "APROVADA",
+      "aprovadoPor": "Roberto, 2026-10-30, com base em docs/NUCLEO-2 (manuais oficiais citados na regra ainda sem curadoria T011)",
+      "dependeDe": [],
+      "implementacao": "DETERMINISTICA",
+      "testes": [
+        "CenariosNfeEfdTests.Consistente_SemAchados",
+        "CenariosNfeEfdTests.ValoresDivergentes_M1I03_M1I05",
+        "CenariosNfeEfdTests.Incompleto_NfeReprovada_AusenciaDeEvidencias"
+      ]
+    },
+    {
+      "id": "M1-I06",
+      "titulo": "Crédito de ICMS na entrada não excede o destacado",
+      "tipo": "CRUZAMENTO",
+      "relacao": "LIM",
+      "obrigacoes": {
+        "NFE": [],
+        "EFD_ICMS_IPI": []
+      },
+      "evidencia": "NORMA",
+      "severidades": {
+        "padrao": "ERRO_GRAVE"
+      },
+      "resultadoEsperado": "Entrada {chave}: crédito escriturado R$ {vlIcms} supera o ICMS destacado R$ {vICMS}.",
+      "fontes": [
+        {
+          "emissor": "Projeto infis-agente-parecer-tributário",
+          "documento": "docs/NUCLEO-2-mapas-bidirecionais.md",
+          "versao": "2026-10-30",
+          "localizacao": "M1.3 / M1-I06",
+          "conferida": true
+        }
+      ],
+      "hipotesesLegitimas": [
+        "Ajuste de crédito por documento em C197 com fundamento legal"
+      ],
+      "vigenciaInicio": "2025-01-01",
+      "status": "APROVADA",
+      "aprovadoPor": "Roberto, 2026-10-30, com base em docs/NUCLEO-2 (manuais oficiais citados na regra ainda sem curadoria T011)",
+      "dependeDe": [],
+      "implementacao": "DETERMINISTICA",
+      "testes": [
+        "CenariosNfeEfdTests.Consistente_SemAchados",
+        "CenariosNfeEfdTests.CreditoAcimaDoDestacado_M1I06",
+        "CenariosNfeEfdTests.Incompleto_NfeReprovada_AusenciaDeEvidencias"
       ]
     }
   ]

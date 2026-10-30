@@ -11,7 +11,7 @@ public sealed class OpcoesParecer
 
     public string Modelo { get; set; } = string.Empty;
 
-    public string VersaoPrompt { get; set; } = "1.0.0";
+    public string VersaoPrompt { get; set; } = "1.1.0";
 
     public int TimeoutSegundos { get; set; } = 60;
 
