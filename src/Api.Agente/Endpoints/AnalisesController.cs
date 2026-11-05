@@ -1,8 +1,6 @@
 using Api.Agente.Application.Analise;
-using Api.Agente.Application.Conhecimento;
 using Api.Agente.Application.Contratos.Entrada;
 using Api.Agente.Application.Parecer;
-using Api.Agente.Domain;
 using Api.Agente.Endpoints.Documentacao;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,14 +14,10 @@ namespace Api.Agente.Endpoints;
 [Authorize]
 [Produces("application/json")]
 [Tags("Análises")]
-public sealed partial class AnalisesController(
-    LeitorLote leitor,
-    ServicoAnalise servico,
-    ServicoFundamentacao fundamentacao,
-    ServicoParecer parecer,
+public sealed class AnalisesController(
+    ServicoExecucaoAnalise execucao,
     IOptions<OpcoesParecer> opcoesParecer,
     IOptions<OpcoesEntrada> opcoesEntrada,
-    ILogger<AnalisesController> logger,
     TimeProvider relogio) : ControllerBase
 {
     /// <summary>Analisa um lote de obrigações e emite o parecer técnico.</summary>
@@ -33,7 +27,10 @@ public sealed partial class AnalisesController(
     /// `contracts/saida/parecer.v1.schema.json`.
     ///
     /// O corpo segue `contracts/entrada/lote.v1.schema.json` e é lido de forma estrita: campos não previstos,
-    /// comentários e números como texto rejeitam o lote inteiro.
+    /// comentários e números como texto rejeitam o lote inteiro. O exemplo da requisição (`exemplos/lote-exemplo.json`)
+    /// cobre o escopo do produto: NFE, NFSE, EFD_ICMS_IPI, EFD_CONTRIBUICOES, DIMP, ECD e ECF (sem NFC-e).
+    /// Contrato para o orquestrador: `docs/contrato-entrada-orquestrador.md`. Casos negativos ficam em `exemplos/cenarios/`.
+    /// A SOFIA chama o mesmo pipeline por A2A (`POST /a2a`, Agent Card em `/.well-known/agent-card.json`).
     ///
     /// Obrigação inválida não rejeita o lote: ela aparece em `resultado.aptidao` e gera achado de pré-condição.
     /// </remarks>
@@ -56,25 +53,15 @@ public sealed partial class AnalisesController(
                 new ErroPadronizado("LOTE_EXCEDE_TAMANHO", $"O lote excede {limite} bytes.")));
         }
 
-        var leitura = leitor.Ler(corpo);
-        if (leitura.Lote is not { } lote)
+        var gerado = await execucao
+            .ExecutarAsync(corpo, Correlacao.Execucao(HttpContext), Correlacao.DaRequisicao(HttpContext), cancelamento)
+            .ConfigureAwait(false);
+        if (gerado.Erro is { } erro)
         {
-            LogLoteRejeitado(logger, leitura.Erro!.Codigo);
-            return BadRequest(Envelope(inicio, null, StatusTecnico.Rejeitado, null,
-                new ErroPadronizado(leitura.Erro!.Codigo, leitura.Erro.Mensagem)));
+            return BadRequest(Envelope(inicio, null, StatusTecnico.Rejeitado, null, new ErroPadronizado(erro.Codigo, erro.Mensagem)));
         }
 
-        var correlacao = Correlacao.DaRequisicao(HttpContext);
-        var fundamentado = await fundamentacao
-            .FundamentarAsync(servico.Analisar(lote), correlacao, cancelamento)
-            .ConfigureAwait(false);
-        var gerado = await parecer
-            .GerarAsync(fundamentado, Correlacao.Execucao(HttpContext), correlacao, cancelamento)
-            .ConfigureAwait(false);
-        var resultado = gerado.Resultado;
-        var raizMascarada = Mascaramento.Documento(lote.RaizCnpj);
-        LogAnalise(logger, raizMascarada, lote.Obrigacoes.Count, resultado.Status, resultado.Achados.Count);
-        return Ok(Envelope(inicio, lote.VersaoContrato, StatusTecnico.Processado, resultado, null) with
+        return Ok(Envelope(inicio, gerado.Lote!.VersaoContrato, StatusTecnico.Processado, gerado.Resultado, null) with
         {
             Parecer = gerado.Parecer,
             Consumo = gerado.Consumo,
@@ -95,7 +82,7 @@ public sealed partial class AnalisesController(
         return new EnvelopeAnalise(
             EnvelopeAnalise.Versao,
             versaoContrato,
-            servico.VersaoCatalogo,
+            execucao.VersaoCatalogo,
             Correlacao.Execucao(HttpContext),
             Correlacao.DaRequisicao(HttpContext),
             statusTecnico,
@@ -107,10 +94,4 @@ public sealed partial class AnalisesController(
             Parecer: null,
             Consumo: []);
     }
-
-    [LoggerMessage(Level = LogLevel.Warning, Message = "Lote rejeitado: {Codigo}")]
-    private static partial void LogLoteRejeitado(ILogger logger, string codigo);
-
-    [LoggerMessage(Level = LogLevel.Information, Message = "Análise concluída para contribuinte {Raiz}: {Obrigacoes} obrigações, status {Status}, {Achados} achados")]
-    private static partial void LogAnalise(ILogger logger, string raiz, int obrigacoes, StatusAnalise status, int achados);
 }

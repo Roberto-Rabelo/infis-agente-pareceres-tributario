@@ -1,0 +1,16 @@
+**/bin/
+**/obj/
+.git
+**/.vs
+artifacts/
+TestResults/
+**/TestResults/
+.env
+.env.*
+!.env.example
+skill/
+docs/
+specs/
+tests/
+**/.cursor
+*.http

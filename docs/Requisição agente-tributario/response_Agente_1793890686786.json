@@ -1,0 +1,510 @@
+{
+  "versaoEnvelope": "1.1.0",
+  "versaoContratoEntrada": "1.0.0",
+  "versaoCatalogo": "0.2.0",
+  "execucaoId": "186b7b9369d342539a65e5e4f45d9fc2",
+  "correlacaoId": "b0552af6bdd64fad98f92bb05bb50f34",
+  "statusTecnico": "PROCESSADO",
+  "inicio": "2026-11-05T15:34:45.8605322+00:00",
+  "fim": "2026-11-05T15:34:57.8299674+00:00",
+  "duracaoMs": 11969,
+  "resultado": {
+    "status": "CONCLUIDA",
+    "raizCnpj": "11222333",
+    "periodo": {
+      "inicio": "2026-03-01",
+      "fim": "2026-03-31"
+    },
+    "aptidao": [
+      {
+        "obrigacaoId": "efd-icms-2026-03",
+        "tipo": "EFD_ICMS_IPI",
+        "apta": true,
+        "regrasNaoAtendidas": [],
+        "motivoDescarte": null,
+        "advertenciasOrigem": []
+      },
+      {
+        "obrigacaoId": "nfe-venda-1",
+        "tipo": "NFE",
+        "apta": true,
+        "regrasNaoAtendidas": [],
+        "motivoDescarte": null,
+        "advertenciasOrigem": []
+      },
+      {
+        "obrigacaoId": "nfe-compra-2",
+        "tipo": "NFE",
+        "apta": true,
+        "regrasNaoAtendidas": [],
+        "motivoDescarte": null,
+        "advertenciasOrigem": []
+      },
+      {
+        "obrigacaoId": "nfse-1",
+        "tipo": "NFSE",
+        "apta": true,
+        "regrasNaoAtendidas": [],
+        "motivoDescarte": null,
+        "advertenciasOrigem": []
+      },
+      {
+        "obrigacaoId": "efd-contrib-2026-03",
+        "tipo": "EFD_CONTRIBUICOES",
+        "apta": true,
+        "regrasNaoAtendidas": [],
+        "motivoDescarte": null,
+        "advertenciasOrigem": []
+      },
+      {
+        "obrigacaoId": "dimp-2026-03",
+        "tipo": "DIMP",
+        "apta": true,
+        "regrasNaoAtendidas": [],
+        "motivoDescarte": null,
+        "advertenciasOrigem": []
+      },
+      {
+        "obrigacaoId": "ecd-2026",
+        "tipo": "ECD",
+        "apta": true,
+        "regrasNaoAtendidas": [],
+        "motivoDescarte": null,
+        "advertenciasOrigem": []
+      },
+      {
+        "obrigacaoId": "ecf-2026",
+        "tipo": "ECF",
+        "apta": true,
+        "regrasNaoAtendidas": [],
+        "motivoDescarte": null,
+        "advertenciasOrigem": []
+      }
+    ],
+    "cobertura": [
+      {
+        "obrigacaoId": "efd-icms-2026-03",
+        "tipo": "EFD_ICMS_IPI",
+        "cnpj": "11222333000181",
+        "inscricaoEstadual": "110042490114",
+        "periodo": {
+          "inicio": "2026-03-01",
+          "fim": "2026-03-31"
+        },
+        "apta": true
+      },
+      {
+        "obrigacaoId": "nfe-venda-1",
+        "tipo": "NFE",
+        "cnpj": "11222333000181",
+        "inscricaoEstadual": "110042490114",
+        "periodo": {
+          "inicio": "2026-03-10",
+          "fim": "2026-03-10"
+        },
+        "apta": true
+      },
+      {
+        "obrigacaoId": "nfe-compra-2",
+        "tipo": "NFE",
+        "cnpj": "11222333000181",
+        "inscricaoEstadual": "110042490114",
+        "periodo": {
+          "inicio": "2026-03-12",
+          "fim": "2026-03-12"
+        },
+        "apta": true
+      },
+      {
+        "obrigacaoId": "nfse-1",
+        "tipo": "NFSE",
+        "cnpj": "11222333000181",
+        "inscricaoEstadual": null,
+        "periodo": {
+          "inicio": "2026-03-20",
+          "fim": "2026-03-20"
+        },
+        "apta": true
+      },
+      {
+        "obrigacaoId": "efd-contrib-2026-03",
+        "tipo": "EFD_CONTRIBUICOES",
+        "cnpj": "11222333000181",
+        "inscricaoEstadual": null,
+        "periodo": {
+          "inicio": "2026-03-01",
+          "fim": "2026-03-31"
+        },
+        "apta": true
+      },
+      {
+        "obrigacaoId": "dimp-2026-03",
+        "tipo": "DIMP",
+        "cnpj": "11222333000181",
+        "inscricaoEstadual": null,
+        "periodo": {
+          "inicio": "2026-03-01",
+          "fim": "2026-03-31"
+        },
+        "apta": true
+      },
+      {
+        "obrigacaoId": "ecd-2026",
+        "tipo": "ECD",
+        "cnpj": "11222333000181",
+        "inscricaoEstadual": null,
+        "periodo": {
+          "inicio": "2026-01-01",
+          "fim": "2026-12-31"
+        },
+        "apta": true
+      },
+      {
+        "obrigacaoId": "ecf-2026",
+        "tipo": "ECF",
+        "cnpj": "11222333000181",
+        "inscricaoEstadual": null,
+        "periodo": {
+          "inicio": "2026-01-01",
+          "fim": "2026-12-31"
+        },
+        "apta": true
+      }
+    ],
+    "achados": [
+      {
+        "regraId": "M1-I03",
+        "natureza": "INCONSISTENCIA_CRUZAMENTO",
+        "severidade": "ERRO_GRAVE",
+        "descricao": "NF-e 35260311222333000181550010000000011000000010: VL_DOC escriturado R$ 900.00 x vNF R$ 1000.00. Critério: Valor total do documento igual (M1-I03).",
+        "evidencias": [
+          {
+            "obrigacaoId": "efd-icms-2026-03",
+            "registro": "C100",
+            "ocorrencia": 0,
+            "campo": "VL_DOC",
+            "linha": 5,
+            "valor": "900.00"
+          },
+          {
+            "obrigacaoId": "nfe-venda-1",
+            "registro": "ICMSTot",
+            "ocorrencia": 0,
+            "campo": "vNF",
+            "linha": null,
+            "valor": "1000.00"
+          }
+        ],
+        "valorOrigem": 900,
+        "valorDestino": 1000,
+        "diferenca": -100,
+        "toleranciaAplicada": 0,
+        "hipotesesLegitimas": [],
+        "obrigacoesFaltantes": []
+      },
+      {
+        "regraId": "M1-I05",
+        "natureza": "INCONSISTENCIA_CRUZAMENTO",
+        "severidade": "ERRO_GRAVE",
+        "descricao": "NF-e 35260311222333000181550010000000011000000010: VL_BC_ICMS escriturado R$ 500.00 x vBC R$ 1000.00. Critério: ICMS próprio da saída própria igual ao destacado (M1-I05).",
+        "evidencias": [
+          {
+            "obrigacaoId": "efd-icms-2026-03",
+            "registro": "C100",
+            "ocorrencia": 0,
+            "campo": "VL_BC_ICMS",
+            "linha": 5,
+            "valor": "500.00"
+          },
+          {
+            "obrigacaoId": "nfe-venda-1",
+            "registro": "ICMSTot",
+            "ocorrencia": 0,
+            "campo": "vBC",
+            "linha": null,
+            "valor": "1000.00"
+          }
+        ],
+        "valorOrigem": 500,
+        "valorDestino": 1000,
+        "diferenca": -500,
+        "toleranciaAplicada": 0,
+        "hipotesesLegitimas": [],
+        "obrigacoesFaltantes": []
+      },
+      {
+        "regraId": "M1-I05",
+        "natureza": "INCONSISTENCIA_CRUZAMENTO",
+        "severidade": "ERRO_GRAVE",
+        "descricao": "NF-e 35260311222333000181550010000000011000000010: VL_ICMS escriturado R$ 90.00 x vICMS R$ 180.00. Critério: ICMS próprio da saída própria igual ao destacado (M1-I05).",
+        "evidencias": [
+          {
+            "obrigacaoId": "efd-icms-2026-03",
+            "registro": "C100",
+            "ocorrencia": 0,
+            "campo": "VL_ICMS",
+            "linha": 5,
+            "valor": "90.00"
+          },
+          {
+            "obrigacaoId": "nfe-venda-1",
+            "registro": "ICMSTot",
+            "ocorrencia": 0,
+            "campo": "vICMS",
+            "linha": null,
+            "valor": "180.00"
+          }
+        ],
+        "valorOrigem": 90,
+        "valorDestino": 180,
+        "diferenca": -90,
+        "toleranciaAplicada": 0,
+        "hipotesesLegitimas": [],
+        "obrigacoesFaltantes": []
+      }
+    ],
+    "regras": [
+      {
+        "regraId": "M1-P01",
+        "situacao": "EXECUTADA",
+        "motivo": null,
+        "obrigatoria": true
+      },
+      {
+        "regraId": "M1-P02",
+        "situacao": "EXECUTADA",
+        "motivo": null,
+        "obrigatoria": true
+      },
+      {
+        "regraId": "M1-R01",
+        "situacao": "EXECUTADA",
+        "motivo": null,
+        "obrigatoria": true
+      },
+      {
+        "regraId": "M1-R02",
+        "situacao": "EXECUTADA",
+        "motivo": null,
+        "obrigatoria": true
+      },
+      {
+        "regraId": "M1-I01",
+        "situacao": "EXECUTADA",
+        "motivo": null,
+        "obrigatoria": true
+      },
+      {
+        "regraId": "M1-I03",
+        "situacao": "COM_INCONSISTENCIA",
+        "motivo": null,
+        "obrigatoria": true
+      },
+      {
+        "regraId": "M1-I05",
+        "situacao": "COM_INCONSISTENCIA",
+        "motivo": null,
+        "obrigatoria": true
+      },
+      {
+        "regraId": "M1-R03",
+        "situacao": "EXECUTADA",
+        "motivo": null,
+        "obrigatoria": true
+      },
+      {
+        "regraId": "M1-R04",
+        "situacao": "EXECUTADA",
+        "motivo": null,
+        "obrigatoria": true
+      },
+      {
+        "regraId": "M1-I06",
+        "situacao": "EXECUTADA",
+        "motivo": null,
+        "obrigatoria": true
+      }
+    ],
+    "parametros": {
+      "tolerancia": 0,
+      "materialidade": null
+    },
+    "revisaoHumana": {
+      "requerida": true,
+      "motivos": [
+        "Há erro grave."
+      ]
+    },
+    "fundamentacao": [
+      {
+        "regraId": "M1-I03",
+        "referencias": [
+          {
+            "trechoId": "01a18e1b-9424-748a-a380-9499c5dde0c0",
+            "documentoChave": "docs/nucleo-2-mapas-bidirecionais.md",
+            "documentoTitulo": "NÚCLEO 2 – Mapas Bidirecionais (campo a campo)",
+            "tipoDocumento": "BASE_REGRAS_INTERNA",
+            "documentoVersao": "sha256-acbf28a1206fa380",
+            "origem": "docs/NUCLEO-2-mapas-bidirecionais.md",
+            "hashDocumento": "acbf28a1206fa3809cd1c2383b89457623904bd85e1f7f70550b80e65bad7f99",
+            "secao": "NÚCLEO 2 – Mapas Bidirecionais (campo a campo) > M1. NF-e/NFC-e ⇄ EFD ICMS/IPI > M1.3 De-para – cabeçalho (`C100` ↔ XML)",
+            "linhaInicio": 48,
+            "linhaFim": 48,
+            "texto": "| EFD `C100` | NF-e | Relação | Regra / exceção | Severidade |\n|---|---|---|---|---|\n| M1-I03: `VL_DOC` | `total/ICMSTot/vNF` | IDT | — | ESCRITURACAO_GRAVE |",
+            "regraIds": [
+              "M1-I03"
+            ],
+            "regraPrincipal": "M1-I03",
+            "motivo": "REGRA",
+            "similaridade": null
+          }
+        ]
+      },
+      {
+        "regraId": "M1-I05",
+        "referencias": [
+          {
+            "trechoId": "01a18e1b-9424-783f-b4c4-ef5ec533af8e",
+            "documentoChave": "docs/nucleo-2-mapas-bidirecionais.md",
+            "documentoTitulo": "NÚCLEO 2 – Mapas Bidirecionais (campo a campo)",
+            "tipoDocumento": "BASE_REGRAS_INTERNA",
+            "documentoVersao": "sha256-acbf28a1206fa380",
+            "origem": "docs/NUCLEO-2-mapas-bidirecionais.md",
+            "hashDocumento": "acbf28a1206fa3809cd1c2383b89457623904bd85e1f7f70550b80e65bad7f99",
+            "secao": "NÚCLEO 2 – Mapas Bidirecionais (campo a campo) > M1. NF-e/NFC-e ⇄ EFD ICMS/IPI > M1.3 De-para – cabeçalho (`C100` ↔ XML)",
+            "linhaInicio": 54,
+            "linhaFim": 54,
+            "texto": "| EFD `C100` | NF-e | Relação | Regra / exceção | Severidade |\n|---|---|---|---|---|\n| M1-I05 (própria) e M1-I06 (terceiros): `VL_BC_ICMS` / `VL_ICMS` | `vBC` / `vICMS` | **Própria: IDT.** Terceiros: `LIM` (EFD ≤ XML) | Na entrada, o informante escritura o **crédito a que tem direito** (pode ser menor ou zero, ex.: uso e consumo) | Própria a menor: ESCRITURACAO_GRAVE; terceiros acima do XML: ESCRITURACAO_GRAVE |",
+            "regraIds": [
+              "M1-I05",
+              "M1-I06"
+            ],
+            "regraPrincipal": "M1-I05",
+            "motivo": "REGRA",
+            "similaridade": null
+          }
+        ]
+      }
+    ],
+    "limitacoes": []
+  },
+  "erro": null,
+  "parecer": {
+    "status": "CONCLUIDA",
+    "identificacao": "Contribuinte 11****33, período de 2026-03-01 a 2026-03-31, obrigações analisadas: EFD ICMS IPI, NF-e, NFSe, EFD Contribuições, DIMP, ECD, ECF.",
+    "escopoELimitacoes": "Obrigações recebidas: 8; aptas ao cruzamento: 8. Regras de cruzamento executadas: 10 de 10. Este parecer cobre somente essas regras e não atesta a regularidade do contribuinte.",
+    "sintese": "Foram identificadas inconsistências entre os valores informados na NF-e e na EFD ICMS/IPI destacando erros graves nos valores relacionados ao documento fiscal.",
+    "achados": [
+      {
+        "achadoId": "A001",
+        "regraId": "M1-I03",
+        "natureza": "INCONSISTENCIA_CRUZAMENTO",
+        "severidade": "ERRO_GRAVE",
+        "hipotesesLegitimas": [],
+        "analise": "Constatou-se que o valor total do documento (VL_DOC) na EFD ICMS/IPI foi escriturado como R$ 900,00, enquanto o valor final da NF-e (vNF) foi declarado como R$ 1000,00. A diferença de R$ -100,00 é superior à tolerância aplicada de R$ 0,00, apontando uma inconsistência grave. O registro relacionado à EFD ICMS/IPI está no campo VL_DOC da linha 5 e na NF-e no campo vNF. Critério: Valor total do documento igual (M1-I03).",
+        "referencias": [
+          "01a18e1b-9424-748a-a380-9499c5dde0c0"
+        ]
+      },
+      {
+        "achadoId": "A002",
+        "regraId": "M1-I05",
+        "natureza": "INCONSISTENCIA_CRUZAMENTO",
+        "severidade": "ERRO_GRAVE",
+        "hipotesesLegitimas": [],
+        "analise": "Verificou-se que o valor da base de cálculo do ICMS (VL_BC_ICMS) escriturado na EFD ICMS/IPI foi de R$ 500,00, enquanto o valor informado na NF-e (vBC) foi de R$ 1000,00. Isso resulta em uma diferença de R$ -500,00. Este registro está no campo VL_BC_ICMS na linha 5 da EFD. O critério aplicado foi que o ICMS próprio da saída deve ser igual ao destacado (M1-I05).",
+        "referencias": [
+          "01a18e1b-9424-783f-b4c4-ef5ec533af8e"
+        ]
+      },
+      {
+        "achadoId": "A003",
+        "regraId": "M1-I05",
+        "natureza": "INCONSISTENCIA_CRUZAMENTO",
+        "severidade": "ERRO_GRAVE",
+        "hipotesesLegitimas": [],
+        "analise": "Observou-se que o valor do ICMS (VL_ICMS) na EFD ICMS/IPI foi de R$ 90,00 e, na NF-e, o valor informado (vICMS) foi R$ 180,00. A diferença de R$ -90,00 e a ausência de tolerância mostram uma grave divergência nos dados. O registro está no campo VL_ICMS na linha 5 da EFD e no campo vICMS da NF-e. O critério utilizado é que o ICMS próprio da saída deve ser igual ao destacado (M1-I05).",
+        "referencias": [
+          "01a18e1b-9424-783f-b4c4-ef5ec533af8e"
+        ]
+      }
+    ],
+    "indiciosIa": [],
+    "fontesCitadas": [
+      "01a18e1b-9424-748a-a380-9499c5dde0c0",
+      "01a18e1b-9424-783f-b4c4-ef5ec533af8e"
+    ],
+    "limitacoes": [],
+    "revisaoHumana": {
+      "requerida": true,
+      "motivos": [
+        "H\u001erro grave."
+      ]
+    }
+  },
+  "consumo": [
+    {
+      "id": "01a1ac59-536e-763b-99de-bf91522e5820",
+      "execucaoId": "186b7b9369d342539a65e5e4f45d9fc2",
+      "correlacaoId": "b0552af6bdd64fad98f92bb05bb50f34",
+      "servico": "Api.Agente",
+      "provedor": "OpenAI",
+      "modelo": "gpt-4o-mini",
+      "operacao": "PARECER",
+      "tentativa": 1,
+      "inicio": "2026-11-05T15:34:46.5592981+00:00",
+      "fim": "2026-11-05T15:34:57.6436562+00:00",
+      "duracaoMs": 11084,
+      "status": "SUCESSO",
+      "resultado": "RESPOSTA_VALIDA",
+      "tokensEntrada": 3987,
+      "tokensSaida": 808,
+      "codigoErro": null,
+      "custoEstimado": null,
+      "tabelaPrecos": null
+    }
+  ],
+  "versaoContratoParecer": "1.0.0",
+  "versaoPrompt": "1.1.0",
+  "trechosCitados": [
+    {
+      "trechoId": "01a18e1b-9424-748a-a380-9499c5dde0c0",
+      "documentoChave": "docs/nucleo-2-mapas-bidirecionais.md",
+      "documentoTitulo": "NÚCLEO 2 – Mapas Bidirecionais (campo a campo)",
+      "tipoDocumento": "BASE_REGRAS_INTERNA",
+      "documentoVersao": "sha256-acbf28a1206fa380",
+      "origem": "docs/NUCLEO-2-mapas-bidirecionais.md",
+      "hashDocumento": "acbf28a1206fa3809cd1c2383b89457623904bd85e1f7f70550b80e65bad7f99",
+      "secao": "NÚCLEO 2 – Mapas Bidirecionais (campo a campo) > M1. NF-e/NFC-e ⇄ EFD ICMS/IPI > M1.3 De-para – cabeçalho (`C100` ↔ XML)",
+      "linhaInicio": 48,
+      "linhaFim": 48,
+      "texto": "| EFD `C100` | NF-e | Relação | Regra / exceção | Severidade |\n|---|---|---|---|---|\n| M1-I03: `VL_DOC` | `total/ICMSTot/vNF` | IDT | — | ESCRITURACAO_GRAVE |",
+      "regraIds": [
+        "M1-I03"
+      ],
+      "regraPrincipal": "M1-I03",
+      "motivo": "REGRA",
+      "similaridade": null
+    },
+    {
+      "trechoId": "01a18e1b-9424-783f-b4c4-ef5ec533af8e",
+      "documentoChave": "docs/nucleo-2-mapas-bidirecionais.md",
+      "documentoTitulo": "NÚCLEO 2 – Mapas Bidirecionais (campo a campo)",
+      "tipoDocumento": "BASE_REGRAS_INTERNA",
+      "documentoVersao": "sha256-acbf28a1206fa380",
+      "origem": "docs/NUCLEO-2-mapas-bidirecionais.md",
+      "hashDocumento": "acbf28a1206fa3809cd1c2383b89457623904bd85e1f7f70550b80e65bad7f99",
+      "secao": "NÚCLEO 2 – Mapas Bidirecionais (campo a campo) > M1. NF-e/NFC-e ⇄ EFD ICMS/IPI > M1.3 De-para – cabeçalho (`C100` ↔ XML)",
+      "linhaInicio": 54,
+      "linhaFim": 54,
+      "texto": "| EFD `C100` | NF-e | Relação | Regra / exceção | Severidade |\n|---|---|---|---|---|\n| M1-I05 (própria) e M1-I06 (terceiros): `VL_BC_ICMS` / `VL_ICMS` | `vBC` / `vICMS` | **Própria: IDT.** Terceiros: `LIM` (EFD ≤ XML) | Na entrada, o informante escritura o **crédito a que tem direito** (pode ser menor ou zero, ex.: uso e consumo) | Própria a menor: ESCRITURACAO_GRAVE; terceiros acima do XML: ESCRITURACAO_GRAVE |",
+      "regraIds": [
+        "M1-I05",
+        "M1-I06"
+      ],
+      "regraPrincipal": "M1-I05",
+      "motivo": "REGRA",
+      "similaridade": null
+    }
+  ]
+}

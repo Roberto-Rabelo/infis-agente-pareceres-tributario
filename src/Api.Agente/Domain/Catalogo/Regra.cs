@@ -67,15 +67,25 @@ public sealed record Regra
             RegraId = Id,
             Natureza = Natureza.InconsistenciaCruzamento,
             Severidade = severidade,
-            Descricao = descricao,
+            Descricao = Descrever(descricao),
             Evidencias = evidencias,
             ValorOrigem = valorOrigem,
             ValorDestino = valorDestino,
             Diferenca = valorOrigem is not null && valorDestino is not null ? valorOrigem - valorDestino : null,
             ToleranciaAplicada = toleranciaAplicada,
-            HipotesesLegitimas = HipotesesLegitimas,
+            HipotesesLegitimas = HipotesesReais(),
         };
     }
+
+    private string Descrever(string descricao) =>
+        descricao.Contains(Id, StringComparison.Ordinal)
+            ? descricao
+            : $"{descricao} Critério: {Titulo} ({Id}).";
+
+    private IReadOnlyList<string> HipotesesReais() =>
+        [.. HipotesesLegitimas.Where(h =>
+            !string.IsNullOrWhiteSpace(h)
+            && !h.Contains("Nenhuma hipótese legítima prevista nos leiautes", StringComparison.OrdinalIgnoreCase))];
 }
 
 public sealed record CatalogoRegras(string Versao, IReadOnlyList<Regra> Regras)

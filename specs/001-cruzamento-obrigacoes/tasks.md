@@ -188,9 +188,9 @@ Pode começar em paralelo à Fase 5 após a Fase 3.
 
 ## Fase 10 – US8: A2A (P3)
 
-- [ ] T084 [P] [US8] Testes: Agent Card com versões dos contratos; chamada sem autenticação rejeitada; REST × A2A com achados idênticos → SC-007
-- [ ] T085 [US8] Servidor A2A reutilizando o mesmo pipeline e autorizações da API REST (ADR D14)
-- [ ] T086 [US8] Publicar Agent Card versionado
+- [x] T084 [P] [US8] Testes: Agent Card com versões dos contratos; chamada sem autenticação rejeitada; REST × A2A com achados idênticos → SC-007 (feature `specs/002-sofia-a2a`)
+- [x] T085 [US8] Servidor A2A reutilizando o mesmo pipeline e autorizações da API REST (ADR D14)
+- [x] T086 [US8] Publicar Agent Card versionado (`GET /.well-known/agent-card.json`)
 
 ---
 

@@ -31,6 +31,13 @@
 | [notebooklm/INSTRUCOES-NOTEBOOKLM.md](notebooklm/INSTRUCOES-NOTEBOOKLM.md) | Fontes a enviar, instrução do chat, roteiro de estudo, prompt do resumo em áudio |
 | [notebooklm/catalogo-regras-legivel.md](notebooklm/catalogo-regras-legivel.md) | As 158 regras do catálogo JSON em texto legível |
 
+**Mapeamento da aplicação (lote, LLM, bancos):**
+
+| Arquivo | Conteúdo |
+|---|---|
+| [contrato-entrada-orquestrador.md](contrato-entrada-orquestrador.md) | Contrato de entrada para o orquestrador: envelope, 8 tipos, PRE, o que depende dos arquivos enviados |
+| [mapeamento-projeto.html](mapeamento-projeto.html) | Visão da aplicação: lote parcial vs completo, papel do LLM/RAG (desligado por padrão) e como ligar os Postgres (rag na 5433 e consumo do agente) |
+
 **Referência e apoio:**
 
 | Arquivo | Conteúdo |

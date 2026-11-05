@@ -35,9 +35,9 @@
     },
     {
       "id": "PRE-002",
-      "titulo": "Versão de layout informada, suportada e vigente",
+      "titulo": "Layout já validado na origem — não impede o cruzamento",
       "tipo": "PRE_CONDICAO",
-      "resultadoEsperado": "A versão de layout informada pelo agente de origem consta de catalog/versoes-layout.json como conferida e vigente para o período da obrigação.",
+      "resultadoEsperado": "A versão de layout não é critério de aptidão neste agente. Agentes de origem e orquestrador validam o leiaute; aqui só há cruzamento, parecer e ações de revisão.",
       "fontes": [
         {
           "emissor": "Projeto infis-agente-parecer-tributário",
@@ -59,9 +59,9 @@
       "aprovadoPor": "Constitution 2.0.0 (P6) – confirmar responsável",
       "implementacao": "DETERMINISTICA",
       "testes": [
-        "PreCondicoesTests.Pre002_SemVersao_NaoApta",
-        "PreCondicoesTests.Pre002_VersaoNaoSuportada_NaoApta",
-        "PreCondicoesTests.Pre002_VersaoForaDeVigencia_NaoApta",
+        "PreCondicoesTests.Pre002_SemVersao_AindaApta",
+        "PreCondicoesTests.Pre002_VersaoNaoSuportada_AindaApta",
+        "PreCondicoesTests.Pre002_VersaoForaDeVigencia_AindaApta",
         "PreCondicoesTests.ObrigacoesConsistentes_Aptas"
       ]
     },
@@ -290,9 +290,7 @@
           "conferida": true
         }
       ],
-      "hipotesesLegitimas": [
-        "Nenhuma hipótese legítima prevista nos leiautes para esta divergência – solicitar justificativa documental ao contribuinte"
-      ],
+      "hipotesesLegitimas": [],
       "vigenciaInicio": "2025-01-01",
       "status": "APROVADA",
       "aprovadoPor": "Roberto, 2026-10-30, com base em docs/NUCLEO-2 (manuais oficiais citados na regra ainda sem curadoria T011)",
@@ -327,9 +325,7 @@
           "conferida": true
         }
       ],
-      "hipotesesLegitimas": [
-        "Nenhuma hipótese legítima prevista nos leiautes para esta divergência – solicitar justificativa documental ao contribuinte"
-      ],
+      "hipotesesLegitimas": [],
       "vigenciaInicio": "2025-01-01",
       "status": "APROVADA",
       "aprovadoPor": "Roberto, 2026-10-30, com base em docs/NUCLEO-2 (manuais oficiais citados na regra ainda sem curadoria T011)",
@@ -364,9 +360,7 @@
           "conferida": true
         }
       ],
-      "hipotesesLegitimas": [
-        "Nenhuma hipótese legítima prevista nos leiautes para esta divergência – solicitar justificativa documental ao contribuinte"
-      ],
+      "hipotesesLegitimas": [],
       "vigenciaInicio": "2025-01-01",
       "status": "APROVADA",
       "aprovadoPor": "Roberto, 2026-10-30, com base em docs/NUCLEO-2 (manuais oficiais citados na regra ainda sem curadoria T011)",
@@ -402,9 +396,7 @@
           "conferida": true
         }
       ],
-      "hipotesesLegitimas": [
-        "Nenhuma hipótese legítima prevista nos leiautes para esta divergência – solicitar justificativa documental ao contribuinte"
-      ],
+      "hipotesesLegitimas": [],
       "vigenciaInicio": "2025-01-01",
       "status": "APROVADA",
       "aprovadoPor": "Roberto, 2026-10-30, com base em docs/NUCLEO-2 (manuais oficiais citados na regra ainda sem curadoria T011)",
@@ -441,9 +433,7 @@
           "conferida": true
         }
       ],
-      "hipotesesLegitimas": [
-        "Nenhuma hipótese legítima prevista nos leiautes para esta divergência – solicitar justificativa documental ao contribuinte"
-      ],
+      "hipotesesLegitimas": [],
       "vigenciaInicio": "2025-01-01",
       "status": "APROVADA",
       "aprovadoPor": "Roberto, 2026-10-30, com base em docs/NUCLEO-2 (manuais oficiais citados na regra ainda sem curadoria T011)",
@@ -478,9 +468,7 @@
           "conferida": true
         }
       ],
-      "hipotesesLegitimas": [
-        "Nenhuma hipótese legítima prevista nos leiautes para esta divergência – solicitar justificativa documental ao contribuinte"
-      ],
+      "hipotesesLegitimas": [],
       "vigenciaInicio": "2025-01-01",
       "status": "APROVADA",
       "aprovadoPor": "Roberto, 2026-10-30, com base em docs/NUCLEO-2 (manuais oficiais citados na regra ainda sem curadoria T011)",

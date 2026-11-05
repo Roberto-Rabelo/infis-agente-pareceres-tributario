@@ -1,0 +1,21 @@
+# Api.Agente na rede compartilhada com a SOFIA (criar antes: docker network create agentes-network).
+# A SOFIA chama http://agente-parecer:8080 (DNS do compose), não localhost da porta publicada.
+# JWT e ConnectionStrings vêm do ambiente; não versionar segredos.
+services:
+  agente-parecer:
+    build:
+      context: .
+      dockerfile: src/Api.Agente/Dockerfile
+    environment:
+      ASPNETCORE_URLS: "http://+:8080"
+      ASPNETCORE_ENVIRONMENT: "Development"
+      A2A__Url: "http://agente-parecer:8080/a2a"
+      Cors__AllowedOrigins__0: "http://localhost:4200"
+    ports:
+      - "8085:8080"
+    networks:
+      - agentes-network
+
+networks:
+  agentes-network:
+    external: true

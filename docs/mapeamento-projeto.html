@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mapeamento do projeto — Agente de parecer tributário</title>
+  <style>
+    :root {
+      --bg: #f7f7f5;
+      --surface: #fff;
+      --text: #1a1a18;
+      --muted: #5c5c57;
+      --faint: #8a8a84;
+      --line: #e4e4de;
+      --fill: #f0f0eb;
+      --accent: #2563eb;
+      --ok: #166534;
+      --ok-bg: #dcfce7;
+      --warn: #92400e;
+      --warn-bg: #fef3c7;
+      --info: #1d4ed8;
+      --info-bg: #dbeafe;
+      --danger: #991b1b;
+      --danger-bg: #fee2e2;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+    main {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 32px 24px 64px;
+    }
+    h1 { font-size: 24px; font-weight: 650; margin: 0; letter-spacing: -0.02em; }
+    h2 { font-size: 18px; font-weight: 650; margin: 36px 0 10px; }
+    h3 { font-size: 14px; font-weight: 650; margin: 0 0 8px; }
+    p { margin: 0 0 12px; }
+    .muted { color: var(--muted); }
+    .faint { color: var(--faint); font-size: 12px; }
+    .small { font-size: 13.5px; }
+    code {
+      font-family: Consolas, "Cascadia Mono", monospace;
+      font-size: 0.92em;
+      background: var(--fill);
+      padding: 0 4px;
+      border-radius: 3px;
+    }
+    .head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 6px; }
+    .pill {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: var(--fill);
+      color: var(--muted);
+      border: 1px solid var(--line);
+    }
+    .pill.info { background: var(--info-bg); color: var(--info); border-color: transparent; }
+    .pill.ok { background: var(--ok-bg); color: var(--ok); border-color: transparent; }
+    .pill.warn { background: var(--warn-bg); color: var(--warn); border-color: transparent; }
+    .pill.danger { background: var(--danger-bg); color: var(--danger); border-color: transparent; }
+    .callout {
+      border: 1px solid var(--line);
+      background: var(--surface);
+      padding: 14px 16px;
+      border-radius: 8px;
+      margin: 16px 0;
+    }
+    .callout.info { border-left: 3px solid var(--accent); }
+    .callout.warn { border-left: 3px solid #d97706; }
+    .callout strong { display: block; margin-bottom: 4px; }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin: 16px 0 8px;
+    }
+    .stat {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px 16px;
+    }
+    .stat .v { font-size: 26px; font-weight: 650; letter-spacing: -0.03em; line-height: 1.1; }
+    .stat .l { font-size: 12px; color: var(--muted); margin-top: 4px; }
+    .stat.info .v { color: var(--info); }
+    .stat.ok .v { color: var(--ok); }
+    .stat.warn .v { color: var(--warn); }
+    .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .card-h {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 14px;
+      font-size: 12px;
+      font-weight: 650;
+      border-bottom: 1px solid var(--line);
+      background: var(--fill);
+    }
+    .card-b { padding: 14px; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+      font-size: 13.5px;
+      margin: 8px 0 16px;
+    }
+    th, td { text-align: left; padding: 8px 12px; vertical-align: top; border-bottom: 1px solid var(--line); }
+    th { background: var(--fill); font-weight: 650; font-size: 12px; color: var(--muted); }
+    tr:last-child td { border-bottom: 0; }
+    tbody tr:nth-child(even) { background: #fafaf8; }
+    .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 8px; background: #a3a3a3; }
+    .dot.ok { background: #16a34a; }
+    .pills { display: flex; gap: 8px; flex-wrap: wrap; margin: 8px 0 12px; }
+    .bar-wrap { margin: 8px 0 20px; }
+    .bar-labels { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); margin-bottom: 6px; gap: 12px; }
+    .bar {
+      display: flex;
+      height: 10px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: var(--fill);
+    }
+    .bar span { display: block; height: 100%; }
+    .flow {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      overflow-x: auto;
+      padding: 8px 0 16px;
+    }
+    .node {
+      flex: 0 0 auto;
+      width: 148px;
+      background: var(--fill);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 8px 10px;
+      text-align: center;
+    }
+    .node .c { font-size: 10px; color: var(--faint); }
+    .node .n { font-size: 12px; font-weight: 650; }
+    .arrow { flex: 1 1 24px; min-width: 24px; height: 1px; background: #b4b4ae; margin: 0 4px; position: relative; }
+    .arrow::after {
+      content: "";
+      position: absolute;
+      right: 0; top: -3px;
+      border: 4px solid transparent;
+      border-left: 6px solid #b4b4ae;
+    }
+    .toc { display: flex; flex-wrap: wrap; gap: 8px 16px; margin: 8px 0 16px; font-size: 13px; }
+    .toc a { color: var(--accent); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    pre.cmd {
+      background: var(--fill);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 12px 14px;
+      font-size: 12px;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      font-family: Consolas, "Cascadia Mono", monospace;
+    }
+    details {
+      border-bottom: 1px solid var(--line);
+      padding: 10px 0;
+    }
+    summary { cursor: pointer; font-weight: 650; font-size: 14px; }
+    summary .cnt { color: var(--faint); font-weight: 500; margin-left: 8px; font-size: 12px; }
+    details p { margin: 8px 0 0; }
+    .charts { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin: 8px 0 16px; }
+    .legend { list-style: none; margin: 0; padding: 0; font-size: 12px; color: var(--muted); }
+    .legend li { display: flex; justify-content: space-between; gap: 12px; padding: 2px 0; }
+    .sw { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 6px; }
+    hr { border: 0; border-top: 1px solid var(--line); margin: 32px 0 12px; }
+    @media (max-width: 800px) {
+      .stats, .cols, .charts { grid-template-columns: 1fr; }
+    }
+    @media print {
+      body { background: #fff; }
+      .card, table, .stat, .callout { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="head">
+      <h1>Agente de parecer tributário</h1>
+      <span class="pill info">correlação, não estrutura</span>
+    </div>
+    <p class="muted small">infis-agente-pareceres-tributario · branch feat/regras-m1-nfe-efd · catálogo de estudo v1.0.0 (158 regras) · motor em produção v0.2.0 (15 regras)</p>
+  </header>
+
+  <div class="callout info">
+    <strong>O que este agente é</strong>
+    <p class="small" style="margin:0">Recebe ECD, ECF, NF-e/NFC-e, NFS-e, SPED Fiscal (EFD ICMS/IPI), SPED Contribuições e DIMP já validados em estrutura por agentes de origem. Cruza os fatos econômicos entre essas obrigações com um catálogo de regras e devolve um laudo técnico (achados determinísticos + parecer) para o time de tax compliance revisar. Não certifica regularidade e não aplica multa.</p>
+  </div>
+  <nav class="toc" aria-label="Perguntas deste mapeamento">
+    <a href="#lote-parcial">1. Lote parcial vs completo</a>
+    <a href="#papel-llm">2. Papel do LLM e RAG</a>
+    <a href="#acesso-bancos">3. Acesso aos bancos</a>
+  </nav>
+
+  <div class="stats">
+    <div class="stat"><div class="v">158</div><div class="l">Regras no catálogo de estudo</div></div>
+    <div class="stat info"><div class="v">15</div><div class="l">Regras no motor (.NET)</div></div>
+    <div class="stat ok"><div class="v">10</div><div class="l">Validadores M1 NF-e × EFD</div></div>
+    <div class="stat warn"><div class="v">~6%</div><div class="l">Cobertura do domínio no código</div></div>
+  </div>
+
+  <h2>Papel no ecossistema</h2>
+  <p>A complementaridade é o núcleo: o mesmo fato (venda, crédito, saldo, retenção) deve aparecer onde o leiaute oficial exige, com a mesma chave e o mesmo valor (ou a soma correta). Descendo a cadeia, falta é omissão; subindo, valor sem documento é falta de lastro.</p>
+  <div class="flow" role="img" aria-label="Cadeia de complementaridade: DIMP, documentos, escriturações, ECD, ECF">
+    <div class="node"><div class="c">Camada 0</div><div class="n">DIMP</div></div>
+    <div class="arrow"></div>
+    <div class="node"><div class="c">Camada 1</div><div class="n">NF-e / NFS-e</div></div>
+    <div class="arrow"></div>
+    <div class="node"><div class="c">Camada 2</div><div class="n">EFD Fiscal / Contrib</div></div>
+    <div class="arrow"></div>
+    <div class="node"><div class="c">Camada 3</div><div class="n">ECD</div></div>
+    <div class="arrow"></div>
+    <div class="node"><div class="c">Camada 4</div><div class="n">ECF</div></div>
+  </div>
+  <p class="faint">Fonte: docs/NUCLEO-1 · cinco camadas de complementaridade. Arestas descendentes = PRE direta; ascendentes = PRE reversa.</p>
+
+  <div class="cols">
+    <div class="card">
+      <div class="card-h">Agentes de origem <span class="pill">outros agentes</span></div>
+      <div class="card-b">
+        <p class="small">Leem XML/SPED brutos. Validam layout, PVA e regras internas (INT-*). Entregam JSON normalizado + relatório de validação (APROVADO / erros).</p>
+        <p class="small muted" style="margin:0">Falha estrutural não chega aqui como cruzamento: vira pré-condição não atendida.</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-h">Agente de parecer <span class="pill ok">este repositório</span></div>
+      <div class="card-b">
+        <p class="small">Não relê arquivo original nem refaz PVA. Aplica PRE-001 a PRE-005, depois o motor de cruzamento. LLM só explica achados já produzidos.</p>
+        <p class="small muted" style="margin:0">Sem insumo: ausência de evidências — nunca omissão presumida.</p>
+      </div>
+    </div>
+  </div>
+
+  <h2>Pipeline de uma análise</h2>
+  <p class="muted small">POST /api/v1/analises · JWT · contrato lote.v1 · envelope 1.1.0</p>
+  <table>
+    <thead><tr><th>Etapa</th><th>Onde</th><th>O que decide</th></tr></thead>
+    <tbody>
+      <tr><td>1. Leitura do lote</td><td>LeitorLote</td><td>JSON estrito; rejeita extra properties e contrato inválido</td></tr>
+      <tr><td>2. Pré-condições</td><td>VerificadorPreCondicoes</td><td>PRE-001 a 005: contrato, leiaute, PVA origem, CNPJ/período, aptidão</td></tr>
+      <tr><td>3. Motor</td><td>MotorRegras + ValidadoresNfeEfd</td><td>Só regras APROVADAS de CRUZAMENTO; ordem PAR → EXC → PRE → IDT → AGR/LIM → CNT</td></tr>
+      <tr><td>4. Fundamentação</td><td>ServicoFundamentacao → MCP</td><td>Busca trechos no Api.RAG por regraId de cada achado</td></tr>
+      <tr><td>5. Parecer (opcional)</td><td>ServicoParecer + SK</td><td>Desligado por padrão. Explica; não cria regra nem muda achado</td></tr>
+      <tr><td>6. Envelope</td><td>AnalisesController</td><td>resultado + parecer + consumo + trechos citados</td></tr>
+    </tbody>
+  </table>
+
+  <h2 id="lote-parcial">Lote com todas as obrigações vs 2–3</h2>
+  <p>O contrato e o motor já tratam lote incompleto. Não é obrigatório enviar as sete obrigações. O JSON exige <code>obrigacoes</code> com mínimo 1 item (<code>contracts/entrada/lote.v1.schema.json</code>); o teto é <code>Entrada:MaximoObrigacoesPorLote</code> = 500. Faltar ECD, DIMP ou NFS-e <strong>não rejeita</strong> o lote: cada obrigação entra em <code>resultado.cobertura</code> / <code>aptidao</code>.</p>
+  <p class="small muted">Não há flag “modo lote completo vs parcial”. A diferenciação é por regra, conforme o que veio no JSON. Falta de insumo nunca vira omissão do contribuinte: vira <code>AUSENCIA_EVIDENCIAS</code> e revisão humana. Código: <code>MotorRegras.ExecutarRegra</code>.</p>
+  <table>
+    <thead><tr><th>Decisão da regra</th><th>Quando</th><th>Efeito no status</th></tr></thead>
+    <tbody>
+      <tr><td>NaoAplicavel</td><td>Nenhuma obrigação da regra está no lote (ex.: regra M1 num lote só de ECD+ECF)</td><td>Se nenhuma regra de cruzamento executar → INCONCLUSIVA</td></tr>
+      <tr><td>AusenciaEvidencias</td><td>Pelo menos um lado da regra chegou, mas o outro não está apto (ex.: só NF-e, sem EFD)</td><td>CONCLUIDA_PARCIAL + revisão humana</td></tr>
+      <tr><td>Executada / ComInconsistencia</td><td>Os dois lados aptos existem e o validador rodou</td><td>CONCLUIDA se não houver pendência obrigatória</td></tr>
+    </tbody>
+  </table>
+  <p class="small muted">Comportamento prático hoje (catálogo runtime só tem PRE-* + M1 NF-e × EFD):</p>
+  <table>
+    <thead><tr><th>O que chega no POST /api/v1/analises</th><th>O que acontece</th></tr></thead>
+    <tbody>
+      <tr><td>NF-e + EFD ICMS/IPI (2 obrigações)</td><td>M1 roda. Status pode ser CONCLUIDA se tudo apto.</td></tr>
+      <tr><td>Só NF-e, ou só EFD</td><td>M1 vira AUSENCIA_EVIDENCIAS (um lado falta). Teste: ServicoAnaliseTests.LoteComUmaUnicaObrigacao_Inconclusiva.</td></tr>
+      <tr><td>ECD + ECF, sem NF-e/EFD</td><td>Regras M1 = NaoAplicavel. Nenhuma regra de cruzamento executa → INCONCLUSIVA. Não há validador M9 ainda.</td></tr>
+      <tr><td>Lote “completo” (7 tipos)</td><td>Só M1 cruza de fato. ECD/ECF/DIMP/NFS-e entram na cobertura, mas não geram cruzamento até existirem regras APROVADAS + validadores.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Obrigações no contrato de entrada</h2>
+  <table>
+    <thead><tr><th>Tipo no lote</th><th>Obrigação</th><th>Papel complementar</th></tr></thead>
+    <tbody>
+      <tr><td>NFE / NFCE</td><td>NF-e / NFC-e</td><td>Documento de mercadoria; chave 44 → C100; pag → DIMP/1601</td></tr>
+      <tr><td>NFSE</td><td>NFS-e Nacional</td><td>Serviços; chave → A100; ISS só em casos específicos (DF / 1601)</td></tr>
+      <tr><td>DIMP</td><td>DIMP v10</td><td>Evidência de terceiros sobre recebimentos eletrônicos</td></tr>
+      <tr><td>EFD_ICMS_IPI</td><td>SPED Fiscal</td><td>Escrituração mensal por estabelecimento (CNPJ+IE)</td></tr>
+      <tr><td>EFD_CONTRIBUICOES</td><td>SPED Contribuições</td><td>PIS/COFINS na matriz; blocos C e A</td></tr>
+      <tr><td>ECD</td><td>ECD</td><td>Contabilidade anual; ponte fiscal → contábil</td></tr>
+      <tr><td>ECF</td><td>ECF</td><td>IRPJ/CSLL; deve recuperar hash da ECD (Bloco C)</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Modelo de regra</h2>
+  <p>O LLM não inventa regra. Catálogo JSON é dado versionado. Tipos de relação (vocabulário do NÚCLEO-1):</p>
+  <table>
+    <thead><tr><th>Tipo</th><th>Significado para o cruzamento</th></tr></thead>
+    <tbody>
+      <tr><td>PRE_DIRETA</td><td>Existe em A ⇒ deve existir em B (falta = omissão)</td></tr>
+      <tr><td>PRE_REVERSA</td><td>Existe em B ⇒ deve ter origem em A (falta = sem lastro)</td></tr>
+      <tr><td>IDT</td><td>Mesmo fato, mesmo valor na chave de junção</td></tr>
+      <tr><td>AGR</td><td>Soma de vários registros = um valor no destino</td></tr>
+      <tr><td>LIM</td><td>Um lado não pode exceder o outro (ex.: crédito ≤ destacado)</td></tr>
+      <tr><td>CNT</td><td>Saldo final do mês t = saldo inicial t+1</td></tr>
+      <tr><td>PAR</td><td>Compatibilidade de regime / parâmetros</td></tr>
+      <tr><td>EXC</td><td>Exclusividade legítima — filtro antes da PRE</td></tr>
+    </tbody>
+  </table>
+  <div class="pills">
+    <span class="pill danger">ESTRUTURA_GRAVE</span>
+    <span class="pill warn">ESCRITURACAO_GRAVE</span>
+    <span class="pill warn">ALERTA</span>
+    <span class="pill info">INFO</span>
+    <span class="pill">evidência PVA / MANUAL / NORMA / DERIVADA</span>
+  </div>
+  <p class="small muted">Regra DERIVADA não conclui irregularidade sozinha: o parecer lista hipóteses legítimas. Achados do motor: PRE_CONDICAO_NAO_ATENDIDA, INCONSISTENCIA_CRUZAMENTO, AUSENCIA_EVIDENCIAS, FALHA_TECNICA.</p>
+
+  <h2>Cobertura: estudo vs motor</h2>
+  <div class="bar-wrap">
+    <div class="bar-labels">
+      <span>10 regras M1 no código + 5 PRE · 148 ainda só no catálogo docs/regras</span>
+      <span>15 / 158 no runtime catalog/regras.json</span>
+    </div>
+    <div class="bar" title="5 PRE, 10 M1, 143 restantes no catálogo de estudo">
+      <span style="width:3.16%;background:#2563eb" title="PRE: 5"></span>
+      <span style="width:6.33%;background:#16a34a" title="M1: 10"></span>
+      <span style="width:90.51%;background:#c4c4bc" title="Catálogo apenas: 143"></span>
+    </div>
+  </div>
+
+  <div class="charts">
+    <div>
+      <h3>Regras no catálogo de estudo, por grupo</h3>
+      <svg viewBox="0 0 520 220" width="100%" height="220" role="img" aria-label="Barras: regras por grupo do catálogo">
+        <g font-family="Segoe UI, sans-serif" font-size="11" fill="#5c5c57">
+          <text x="168" y="22" text-anchor="end">Docs × escrit. (51)</text>
+          <rect x="176" y="10" width="255" height="16" fill="#3b82f6"/>
+          <text x="437" y="22">51</text>
+          <text x="168" y="54" text-anchor="end">PAR/EXC/ENT (39)</text>
+          <rect x="176" y="42" width="195" height="16" fill="#2563eb"/>
+          <text x="377" y="54">39</text>
+          <text x="168" y="86" text-anchor="end">EFD × EFD (33)</text>
+          <rect x="176" y="74" width="165" height="16" fill="#1d4ed8"/>
+          <text x="347" y="86">33</text>
+          <text x="168" y="118" text-anchor="end">Contábil × ECF (21)</text>
+          <rect x="176" y="106" width="105" height="16" fill="#1e40af"/>
+          <text x="287" y="118">21</text>
+          <text x="168" y="150" text-anchor="end">DIMP (8)</text>
+          <rect x="176" y="138" width="40" height="16" fill="#1e3a8a"/>
+          <text x="222" y="150">8</text>
+          <text x="168" y="182" text-anchor="end">Continuidade (6)</text>
+          <rect x="176" y="170" width="30" height="16" fill="#172554"/>
+          <text x="212" y="182">6</text>
+        </g>
+      </svg>
+      <p class="faint">Fonte: docs/regras/README.md · catálogo v1.0.0 · 158 regras. Eixo: grupo · valor: quantidade de regras.</p>
+    </div>
+    <div>
+      <h3>Tipos de relação no catálogo</h3>
+      <div style="display:flex;gap:16px;align-items:center">
+        <svg viewBox="0 0 160 160" width="160" height="160" role="img" aria-label="Rosca: tipos de relação">
+          <circle cx="80" cy="80" r="54" fill="none" stroke="#e4e4de" stroke-width="22"/>
+          <!-- 158 total; dasharray = value/158 * 339.3 -->
+          <g transform="rotate(-90 80 80)" fill="none" stroke-width="22">
+            <circle cx="80" cy="80" r="54" stroke="#3b82f6" stroke-dasharray="100.9 339.3"/>
+            <circle cx="80" cy="80" r="54" stroke="#2563eb" stroke-dasharray="64.4 339.3" stroke-dashoffset="-100.9"/>
+            <circle cx="80" cy="80" r="54" stroke="#1d4ed8" stroke-dasharray="51.6 339.3" stroke-dashoffset="-165.3"/>
+            <circle cx="80" cy="80" r="54" stroke="#7c3aed" stroke-dasharray="30.1 339.3" stroke-dashoffset="-216.9"/>
+            <circle cx="80" cy="80" r="54" stroke="#a855f7" stroke-dasharray="27.9 339.3" stroke-dashoffset="-247.0"/>
+            <circle cx="80" cy="80" r="54" stroke="#0d9488" stroke-dasharray="23.6 339.3" stroke-dashoffset="-274.9"/>
+            <circle cx="80" cy="80" r="54" stroke="#ca8a04" stroke-dasharray="21.5 339.3" stroke-dashoffset="-298.5"/>
+            <circle cx="80" cy="80" r="54" stroke="#64748b" stroke-dasharray="19.3 339.3" stroke-dashoffset="-320.0"/>
+          </g>
+          <text x="80" y="76" text-anchor="middle" font-size="18" font-weight="650" fill="#1a1a18">158</text>
+          <text x="80" y="94" text-anchor="middle" font-size="10" fill="#8a8a84">regras</text>
+        </svg>
+        <ul class="legend">
+          <li><span><i class="sw" style="background:#3b82f6"></i>IDT</span><b>47</b></li>
+          <li><span><i class="sw" style="background:#2563eb"></i>PRE_DIRETA</span><b>30</b></li>
+          <li><span><i class="sw" style="background:#1d4ed8"></i>AGR</span><b>24</b></li>
+          <li><span><i class="sw" style="background:#7c3aed"></i>PAR</span><b>14</b></li>
+          <li><span><i class="sw" style="background:#a855f7"></i>EXC</span><b>13</b></li>
+          <li><span><i class="sw" style="background:#0d9488"></i>LIM</span><b>11</b></li>
+          <li><span><i class="sw" style="background:#ca8a04"></i>PRE_REVERSA</span><b>10</b></li>
+          <li><span><i class="sw" style="background:#64748b"></i>CNT</span><b>9</b></li>
+        </ul>
+      </div>
+      <p class="faint">Fonte: docs/regras/README.md · distribuição por tipoRelacao</p>
+    </div>
+  </div>
+
+  <h2>Mapas bidirecionais M1–M12</h2>
+  <table>
+    <thead><tr><th>Mapa</th><th>De</th><th>Para</th><th>Estado no código</th></tr></thead>
+    <tbody>
+      <tr><td><span class="dot ok"></span>M1</td><td>NF-e / NFC-e</td><td>EFD ICMS/IPI</td><td>Implementado (10 regras)</td></tr>
+      <tr><td><span class="dot"></span>M2</td><td>NF-e / NFC-e</td><td>EFD-Contribuições</td><td>Catálogo apenas</td></tr>
+      <tr><td><span class="dot"></span>M3</td><td>EFD ICMS/IPI</td><td>EFD-Contribuições</td><td>Catálogo apenas</td></tr>
+      <tr><td><span class="dot"></span>M4</td><td>NFS-e</td><td>EFD-Contribuições</td><td>Catálogo apenas</td></tr>
+      <tr><td><span class="dot"></span>M5</td><td>NFS-e</td><td>EFD ICMS/IPI</td><td>Catálogo apenas (DF / 1601 ISS)</td></tr>
+      <tr><td><span class="dot"></span>M6</td><td>DIMP</td><td>Docs, 1601, F525, ECD</td><td>Catálogo apenas</td></tr>
+      <tr><td><span class="dot"></span>M7</td><td>EFD ICMS/IPI</td><td>ECD</td><td>Catálogo apenas</td></tr>
+      <tr><td><span class="dot"></span>M8</td><td>EFD-Contribuições</td><td>ECD</td><td>Catálogo apenas</td></tr>
+      <tr><td><span class="dot"></span>M9</td><td>ECD</td><td>ECF</td><td>Catálogo apenas</td></tr>
+      <tr><td><span class="dot"></span>M10</td><td>EFD-Contribuições</td><td>ECF</td><td>Catálogo apenas</td></tr>
+      <tr><td><span class="dot"></span>M11</td><td>EFD ICMS/IPI</td><td>ECF</td><td>Catálogo apenas</td></tr>
+      <tr><td><span class="dot"></span>M12</td><td>NF-e / NFS-e</td><td>ECD / ECF</td><td>Catálogo apenas</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Cadeias de valor (pontos de controle)</h2>
+  <p>Quebra em um ponto de controle marca os seguintes como não conclusivos. Ordem em <code>docs/regras/cadeias.json</code>.</p>
+  <table>
+    <thead><tr><th>Cadeia</th><th>Foco para o time de tax</th></tr></thead>
+    <tbody>
+      <tr><td>C1 Receita</td><td>DIMP → docs → EFDs → ECD → base IRPJ/CSLL na ECF</td></tr>
+      <tr><td>C2 ICMS</td><td>Documento → C190 → E110 → ECD → DRE ECF</td></tr>
+      <tr><td>C3 IPI</td><td>Quando IND_ATIV = 0</td></tr>
+      <tr><td>C4 PIS/COFINS débito</td><td>Débito nas contribuições</td></tr>
+      <tr><td>C5 PIS/COFINS crédito</td><td>Não cumulativo</td></tr>
+      <tr><td>C6 Estoque</td><td>Blocos H/K → ECD → ECF</td></tr>
+      <tr><td>C7 Ativo / CIAP</td><td>Imobilizado</td></tr>
+      <tr><td>C8 Retenções</td><td>NFS-e → F600 / Y570</td></tr>
+      <tr><td>C9 Recebimentos</td><td>DIMP / registro 1601</td></tr>
+      <tr><td>C10 Resultado</td><td>ECD → e-Lalur → blocos N/P</td></tr>
+    </tbody>
+  </table>
+
+  <h2>O que o laudo entrega ao tax compliance</h2>
+  <p>Saída em duas camadas: resultado determinístico (sempre) e parecer LLM (se habilitado). Status possíveis: CONCLUIDA, CONCLUIDA_PARCIAL, INCONCLUSIVA, FALHA_TECNICA — nenhum significa “empresa regular”.</p>
+  <div class="cols">
+    <div>
+      <h3>O sistema decide</h3>
+      <p class="small">Aptidão por obrigação, achados com regraId, valores dos dois lados, hipóteses legítimas, escopo/limitações, se revisão humana é obrigatória.</p>
+    </div>
+    <div>
+      <h3>O LLM redige</h3>
+      <p class="small">Narrativa técnica citando trechos RAG. Não cria achado, não muda severidade, não cita multa/fraude, não determina providência ao contribuinte — só o que o analista deve revisar.</p>
+    </div>
+  </div>
+  <div class="callout warn">
+    <strong>Ações para o time (por desenho)</strong>
+    <p class="small" style="margin:0">Confirmar hipóteses legítimas, completar obrigação/período faltante, corrigir escrituração ou documento apontado pelo achado, tratar AUSENCIA_EVIDENCIAS como lacuna de cobertura — não como culpa. O prompt v1.1.0 proíbe o modelo de prescrever sanção ou obrigação de retificar.</p>
+  </div>
+
+  <h2 id="papel-llm">Papel do LLM (e por que não está ativado)</h2>
+  <p>O cruzamento <strong>não é feito pelo LLM</strong>. Ordem em <code>AnalisesController</code>: motor determinístico → fundamentação RAG por <code>regraId</code> → parecer LLM (só se habilitado).</p>
+  <table>
+    <thead><tr><th>Pode</th><th>Não pode</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>Explicar achados já gerados; citar trechos (<code>trechoId</code>); pedir trechos extras via ferramenta <code>base_conhecimento-consultar</code> (máx. 3); redigir o JSON do contrato de parecer.</td>
+        <td>Criar, apagar ou reclassificar achados; decidir conformidade; usar a RAG para “refazer” o cruzamento dos dados; aplicar multa ou mandar retificar.</td>
+      </tr>
+    </tbody>
+  </table>
+  <p class="small muted">Prompt: <code>prompts/parecer/v1.1.0.md</code>. Plugin: <code>PluginBaseConhecimento</code>.</p>
+  <div class="callout warn">
+    <strong>Desligado por configuração</strong>
+    <p class="small" style="margin:0"><code>Parecer:Habilitado</code> = false em <code>src/Api.Agente/appsettings.json</code>. Development só liga o Swagger. Sem <code>OpenAI:ApiKey</code> + <code>ConnectionStrings:Agente</code>, o <code>Program.cs</code> nem registra o chat. A API ainda devolve o motor com a limitação: “Parecer por LLM desabilitado; retornados apenas os resultados determinísticos.”</p>
+  </div>
+  <p>A fundamentação RAG (<code>ServicoFundamentacao</code>) independe do LLM: consulta MCP <code>consultar_base_conhecimento</code> por cada achado (exceto PRE-*). Hoje também não fala com banco: <code>BaseConhecimento:Endpoint</code> e <code>TokenAcesso</code> vazios → “base não configurada”.</p>
+  <p class="small muted">A ideia “LLM consulta a RAG com as regras para análise” está parcialmente no desenho: a RAG fundamenta e o LLM pode consultar de novo. Quem analisa o cruzamento dos dados é o motor, não o modelo.</p>
+
+  <h2>Arquitetura de software</h2>
+  <div class="cols">
+    <div class="card">
+      <div class="card-h">Api.Agente <span class="pill info">5117</span></div>
+      <div class="card-b">
+        <p class="small" style="margin:0">Motor, PRE, parecer Semantic Kernel, cliente MCP. Sem referência de projeto a Api.RAG (P12). Catálogo em catalog/regras.json.</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-h">Api.RAG <span class="pill info">5203</span></div>
+      <div class="card-b">
+        <p class="small" style="margin:0">Ingestão de manuais/base interna, PgVector, ferramenta MCP consultar_base_conhecimento. Postgres local na 5433.</p>
+      </div>
+    </div>
+  </div>
+  <p class="small muted">Contratos: contracts/entrada/lote.v1.schema.json e contracts/saida/parecer.v1.schema.json. Prompt atual: prompts/parecer/v1.1.0.md.</p>
+
+  <h2 id="acesso-bancos">Acesso aos bancos</h2>
+  <p>São dois Postgres. Nenhum tem connection string versionada (senha via ambiente). Não há banco de obrigações: o lote entra no POST e não é persistido.</p>
+  <table>
+    <thead><tr><th>Banco</th><th>Quem usa</th><th>Como subir</th><th>Connection string</th></tr></thead>
+    <tbody>
+      <tr><td>rag (PgVector, porta 5433)</td><td>Api.RAG — trechos, embeddings, MCP</td><td>docker-compose.rag.yml</td><td>ConnectionStrings:Rag / ConnectionStrings__Rag</td></tr>
+      <tr><td>agente (consumo LLM)</td><td>Api.Agente — tabela agente_consumo_llm</td><td>não há compose próprio no repositório</td><td>ConnectionStrings:Agente</td></tr>
+    </tbody>
+  </table>
+  <h3>Passos para ter RAG local</h3>
+  <pre class="cmd">$env:RAG_POSTGRES_PASSWORD = '&lt;senha&gt;'
+docker compose -f docker-compose.rag.yml up -d
+$env:ConnectionStrings__Rag = "Host=localhost;Port=5433;Database=rag;Username=rag;Password=$env:RAG_POSTGRES_PASSWORD"</pre>
+  <ol class="small">
+    <li>Subir a Api.RAG (Development: http://localhost:5203).</li>
+    <li>Ingerir a base de estudo: definir <code>RAG_TOKEN_ADMIN</code> (papel <code>rag.admin</code>) e executar <code>scripts/ingerir-base-regras.ps1 -ApiRag http://localhost:5203</code>.</li>
+    <li>No Agente, apontar <code>BaseConhecimento:Endpoint</code> para a URL do <code>/mcp</code> da RAG e <code>BaseConhecimento:TokenAcesso</code> com JWT de papel <code>rag.consulta</code>.</li>
+    <li>Só então a fundamentação (e o LLM, se ligado) enxergam as regras na base.</li>
+  </ol>
+  <p class="small muted">Para ligar o parecer em Development, além da RAG: <code>Parecer:Habilitado=true</code>, <code>OpenAI:ApiKey</code> e <code>ConnectionStrings:Agente</code> (Postgres de consumo). Sem isso o chat nem é registrado.</p>
+
+  <h2>Já entregue vs pendente</h2>
+  <details open>
+    <summary>Incremento 1 — feito <span class="cnt">8</span></summary>
+    <p class="small muted">Solution .NET 10, domínio, motor, PRE-001–005, REST de análise, JWT, envelope, 10 validadores NF-e × EFD, 10 cenários em exemplos/cenarios, RAG + MCP, validador de parecer, prompt 1.1.0. Parecer LLM desligado por padrão.</p>
+  </details>
+  <details>
+    <summary>Ainda não no motor <span class="cnt">7</span></summary>
+    <p class="small muted">PAR/ENT/EXC, M2–M12, NFS-e, EFD-Contribuições, ECD×ECF, DIMP, continuidade mensal, A2A, LGPD/observabilidade, CI (T015), ingestão dos manuais oficiais (T011).</p>
+  </details>
+  <details>
+    <summary>Bloqueios de produção do catálogo <span class="cnt">4</span></summary>
+    <p class="small muted">parametros.json todo nulo (tolerâncias, materialidade, tabela CFOP, contas por função) — motor deve recusar produção até preencher. 34 regras com conferirCampo. Fontes sem verificação em primária. Reforma IBS/CBS 2026 ainda como ALERTA.</p>
+  </details>
+
+  <hr>
+  <p class="faint">Levantamento a partir do repositório local em 05/11/2026: docs/, catalog/regras.json, specs/001-cruzamento-obrigacoes, src/Api.Agente, src/Api.RAG, prompts/parecer/v1.1.0.md.</p>
+  <p class="faint">Artefato de entendimento — não altera o código da aplicação.</p>
+</main>
+</body>
+</html>

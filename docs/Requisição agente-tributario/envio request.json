@@ -1,0 +1,199 @@
+{
+  "versaoContrato": "1.0.0",
+  "loteId": "lote-modelo-orquestrador",
+  "contribuinte": { "cnpj": "11222333" },
+  "periodo": { "inicio": "2026-03-01", "fim": "2026-03-31" },
+  "obrigacoes": [
+    {
+      "id": "efd-icms-2026-03",
+      "tipo": "EFD_ICMS_IPI",
+      "versaoLayout": "020",
+      "contribuinte": { "cnpj": "11222333000181", "inscricaoEstadual": "110042490114", "uf": "SP" },
+      "periodo": { "inicio": "2026-03-01", "fim": "2026-03-31" },
+      "finalidade": "ORIGINAL",
+      "identificacao": { "recibo": "REC-EFD-ICMS-2026-03", "hash": "HASH-EFD-ICMS-2026-03" },
+      "validacaoOrigem": {
+        "agente": "agente-origem-efd-icms",
+        "versaoValidador": "1.0.0",
+        "dataValidacao": "2026-04-10T10:00:00-03:00",
+        "status": "APROVADO",
+        "ocorrencias": []
+      },
+      "registros": {
+        "0000": [{ "linha": 1, "campos": { "COD_VER": "020", "CNPJ": "11222333000181", "DT_INI": "2026-03-01", "DT_FIN": "2026-03-31", "UF": "SP", "IE": "110042490114" } }],
+        "0150": [
+          { "linha": 2, "campos": { "COD_PART": "CLI001", "NOME": "CLIENTE FICTICIO LTDA", "CNPJ": "11444777000161" } },
+          { "linha": 3, "campos": { "COD_PART": "FOR001", "NOME": "FORNECEDOR FICTICIO LTDA", "CNPJ": "11444777000242" } },
+          { "linha": 4, "campos": { "COD_PART": "IP001", "NOME": "INSTITUICAO DE PAGAMENTO FICTICIA", "CNPJ": "00000000000191" } }
+        ],
+        "C100": [
+          {
+            "linha": 5,
+            "campos": {
+              "IND_OPER": "1", "IND_EMIT": "0", "COD_PART": "CLI001", "COD_MOD": "55", "COD_SIT": "00",
+              "SER": "1", "NUM_DOC": "1", "CHV_NFE": "35260311222333000181550010000000011000000010",
+              "DT_DOC": "2026-03-10", "VL_DOC": "900.00", "VL_BC_ICMS": "500.00", "VL_ICMS": "90.00"
+            }
+          },
+          {
+            "linha": 6,
+            "campos": {
+              "IND_OPER": "0", "IND_EMIT": "1", "COD_PART": "FOR001", "COD_MOD": "55", "COD_SIT": "00",
+              "SER": "1", "NUM_DOC": "2", "CHV_NFE": "35260311444777000242550010000000021000000020",
+              "DT_DOC": "2026-03-12", "VL_DOC": "500.00", "VL_BC_ICMS": "500.00", "VL_ICMS": "60.00"
+            }
+          }
+        ],
+        "1601": [{ "linha": 7, "campos": { "COD_PART_IP": "IP001", "TOT_VS": "1000.00", "TOT_ISS": "0.00", "TOT_OUTROS": "0.00" } }]
+      }
+    },
+    {
+      "id": "nfe-venda-1",
+      "tipo": "NFE",
+      "versaoLayout": "4.00",
+      "contribuinte": { "cnpj": "11222333000181", "inscricaoEstadual": "110042490114", "uf": "SP" },
+      "periodo": { "inicio": "2026-03-10", "fim": "2026-03-10" },
+      "finalidade": "ORIGINAL",
+      "identificacao": { "chaveAcesso": "35260311222333000181550010000000011000000010" },
+      "validacaoOrigem": {
+        "agente": "agente-origem-nfe",
+        "versaoValidador": "1.0.0",
+        "dataValidacao": "2026-04-10T10:00:00-03:00",
+        "status": "APROVADO",
+        "ocorrencias": []
+      },
+      "registros": {
+        "ide": [{ "linha": null, "campos": { "mod": "55", "serie": "1", "nNF": "1", "dhEmi": "2026-03-10T09:00:00-03:00", "tpNF": "1" } }],
+        "emit": [{ "linha": null, "campos": { "CNPJ": "11222333000181", "UF": "SP" } }],
+        "dest": [{ "linha": null, "campos": { "CNPJ": "11444777000161", "UF": "SP" } }],
+        "ICMSTot": [{ "linha": null, "campos": { "vBC": "1000.00", "vICMS": "180.00", "vNF": "1000.00" } }],
+        "detPag": [{ "linha": null, "campos": { "tPag": "03", "vPag": "1000.00" } }]
+      }
+    },
+    {
+      "id": "nfe-compra-2",
+      "tipo": "NFE",
+      "versaoLayout": "4.00",
+      "contribuinte": { "cnpj": "11222333000181", "inscricaoEstadual": "110042490114", "uf": "SP" },
+      "periodo": { "inicio": "2026-03-12", "fim": "2026-03-12" },
+      "finalidade": "ORIGINAL",
+      "identificacao": { "chaveAcesso": "35260311444777000242550010000000021000000020" },
+      "validacaoOrigem": {
+        "agente": "agente-origem-nfe",
+        "versaoValidador": "1.0.0",
+        "dataValidacao": "2026-04-10T10:00:00-03:00",
+        "status": "APROVADO",
+        "ocorrencias": []
+      },
+      "registros": {
+        "ide": [{ "linha": null, "campos": { "mod": "55", "serie": "1", "nNF": "2", "dhEmi": "2026-03-12T09:00:00-03:00", "tpNF": "1" } }],
+        "emit": [{ "linha": null, "campos": { "CNPJ": "11444777000242", "UF": "SP" } }],
+        "dest": [{ "linha": null, "campos": { "CNPJ": "11222333000181", "UF": "SP" } }],
+        "ICMSTot": [{ "linha": null, "campos": { "vBC": "500.00", "vICMS": "60.00", "vNF": "500.00" } }]
+      }
+    },
+    {
+      "id": "nfse-1",
+      "tipo": "NFSE",
+      "versaoLayout": "1.01",
+      "contribuinte": { "cnpj": "11222333000181", "uf": "SP" },
+      "periodo": { "inicio": "2026-03-20", "fim": "2026-03-20" },
+      "finalidade": "ORIGINAL",
+      "identificacao": { "chaveAcesso": "35260311222333000181A00100000000410000000410" },
+      "validacaoOrigem": {
+        "agente": "agente-origem-nfse",
+        "versaoValidador": "1.0.0",
+        "dataValidacao": "2026-04-10T10:00:00-03:00",
+        "status": "APROVADO",
+        "ocorrencias": []
+      },
+      "registros": {
+        "infNFSe": [{ "linha": null, "campos": { "dhEmi": "2026-03-20T10:00:00-03:00", "dCompet": "2026-03-20", "nDPS": "4", "vServ": "300.00" } }],
+        "prestador": [{ "linha": null, "campos": { "CNPJ": "11222333000181" } }],
+        "tomador": [{ "linha": null, "campos": { "CNPJ": "11444777000161" } }]
+      }
+    },
+    {
+      "id": "efd-contrib-2026-03",
+      "tipo": "EFD_CONTRIBUICOES",
+      "versaoLayout": "006",
+      "contribuinte": { "cnpj": "11222333000181", "uf": "SP" },
+      "periodo": { "inicio": "2026-03-01", "fim": "2026-03-31" },
+      "finalidade": "ORIGINAL",
+      "identificacao": { "recibo": "REC-EFD-CONTRIB-2026-03", "hash": "HASH-EFD-CONTRIB-2026-03" },
+      "validacaoOrigem": {
+        "agente": "agente-origem-efd-contrib",
+        "versaoValidador": "1.0.0",
+        "dataValidacao": "2026-04-10T10:00:00-03:00",
+        "status": "APROVADO",
+        "ocorrencias": []
+      },
+      "registros": {
+        "0000": [{ "linha": 1, "campos": { "COD_VER": "006", "CNPJ": "11222333000181", "DT_INI": "2026-03-01", "DT_FIN": "2026-03-31" } }],
+        "A100": [{ "linha": 2, "campos": { "IND_OPER": "1", "CHV_NFSE": "35260311222333000181A00100000000410000000410", "DT_DOC": "2026-03-20", "VL_DOC": "300.00" } }],
+        "C180": [{ "linha": 3, "campos": { "COD_MOD": "55", "DT_DOC_INI": "2026-03-01", "DT_DOC_FIN": "2026-03-31", "VL_DOC": "1000.00" } }]
+      }
+    },
+    {
+      "id": "dimp-2026-03",
+      "tipo": "DIMP",
+      "versaoLayout": "09",
+      "contribuinte": { "cnpj": "11222333000181", "uf": "SP" },
+      "periodo": { "inicio": "2026-03-01", "fim": "2026-03-31" },
+      "finalidade": "ORIGINAL",
+      "identificacao": { "recibo": "REC-DIMP-2026-03", "hash": "HASH-DIMP-2026-03" },
+      "validacaoOrigem": {
+        "agente": "agente-origem-dimp",
+        "versaoValidador": "1.0.0",
+        "dataValidacao": "2026-04-10T10:00:00-03:00",
+        "status": "APROVADO",
+        "ocorrencias": []
+      },
+      "registros": {
+        "cabecalho": [{ "linha": 1, "campos": { "VERSAO": "09", "CNPJ": "11222333000181", "DT_INI": "2026-03-01", "DT_FIN": "2026-03-31" } }],
+        "totais": [{ "linha": 2, "campos": { "CNPJ_IP": "00000000000191", "VL_CARTAO": "1000.00", "VL_PIX": "0.00" } }]
+      }
+    },
+    {
+      "id": "ecd-2026",
+      "tipo": "ECD",
+      "versaoLayout": "9.00",
+      "contribuinte": { "cnpj": "11222333000181", "uf": "SP" },
+      "periodo": { "inicio": "2026-01-01", "fim": "2026-12-31" },
+      "finalidade": "ORIGINAL",
+      "identificacao": { "recibo": "REC-ECD-2026", "hash": "HASH-ECD-2026" },
+      "validacaoOrigem": {
+        "agente": "agente-origem-ecd",
+        "versaoValidador": "1.0.0",
+        "dataValidacao": "2027-05-10T10:00:00-03:00",
+        "status": "APROVADO",
+        "ocorrencias": []
+      },
+      "registros": {
+        "0000": [{ "linha": 1, "campos": { "CNPJ": "11222333000181", "DT_INI": "2026-01-01", "DT_FIN": "2026-12-31" } }],
+        "I010": [{ "linha": 2, "campos": { "IND_ESC": "G", "COD_VER_LC": "9.00" } }],
+        "I155": [{ "linha": 3, "campos": { "COD_CTA": "3.1.01", "DT_INI": "2026-03-01", "DT_FIN": "2026-03-31", "VL_SLD_FIN": "1000.00", "IND_DC_FIN": "C" } }]
+      }
+    },
+    {
+      "id": "ecf-2026",
+      "tipo": "ECF",
+      "versaoLayout": "012",
+      "contribuinte": { "cnpj": "11222333000181", "uf": "SP" },
+      "periodo": { "inicio": "2026-01-01", "fim": "2026-12-31" },
+      "finalidade": "ORIGINAL",
+      "identificacao": { "recibo": "REC-ECF-2026", "hash": "HASH-ECF-2026" },
+      "validacaoOrigem": {
+        "agente": "agente-origem-ecf",
+        "versaoValidador": "1.0.0",
+        "dataValidacao": "2027-07-10T10:00:00-03:00",
+        "status": "APROVADO",
+        "ocorrencias": []
+      },
+      "registros": {
+        "0000": [{ "linha": 1, "campos": { "COD_VER": "012", "CNPJ": "11222333000181", "DT_INI": "2026-01-01", "DT_FIN": "2026-12-31" } }],
+        "C040": [{ "linha": 2, "campos": { "HASH_ECD": "HASH-ECD-2026" } }]
+      }
+    }
+  ]
+}

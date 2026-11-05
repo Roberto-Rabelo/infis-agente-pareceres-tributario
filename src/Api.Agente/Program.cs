@@ -1,3 +1,4 @@
+using Api.Agente.Application.A2A;
 using Api.Agente.Application.Analise;
 using Api.Agente.Application.Conhecimento;
 using Api.Agente.Application.Parecer;
@@ -11,8 +12,10 @@ using Api.Agente.Application.PreCondicoes;
 using Api.Agente.Domain.Catalogo;
 using Api.Agente.Domain.Motor;
 using Api.Agente.Endpoints;
+using Api.Agente.Endpoints.A2A;
 using Api.Agente.Endpoints.Documentacao;
 using Api.Agente.Infrastructure.Catalogo;
+using Api.Agente.Infrastructure.Hospedagem;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 
@@ -24,7 +27,11 @@ builder.Services.Configure<OpcoesCatalogo>(builder.Configuration.GetSection(Opco
 
 var tamanhoMaximo = builder.Configuration.GetSection(OpcoesEntrada.Secao).Get<OpcoesEntrada>()?.TamanhoMaximoBytes
     ?? new OpcoesEntrada().TamanhoMaximoBytes;
-builder.WebHost.ConfigureKestrel(k => k.Limits.MaxRequestBodySize = tamanhoMaximo);
+builder.WebHost.ConfigureKestrel(k =>
+{
+    k.Limits.MaxRequestBodySize = tamanhoMaximo;
+    k.Limits.KeepAliveTimeout = TimeSpan.FromMinutes(10);
+});
 
 builder.Services.AddSingleton(TimeProvider.System);
 builder.Services.AddSingleton(sp => new LeitorLote(sp.GetRequiredService<IOptions<OpcoesEntrada>>().Value));
@@ -47,7 +54,11 @@ builder.Services.AddSingleton<MotorRegras>();
 builder.Services.AddSingleton<ServicoAnalise>();
 
 builder.Services.Configure<OpcoesBaseConhecimento>(builder.Configuration.GetSection(OpcoesBaseConhecimento.Secao));
-builder.Services.AddHttpClient(ClienteMcpBaseConhecimento.NomeHttp);
+builder.Services.AddHttpClient(ClienteMcpBaseConhecimento.NomeHttp, (sp, http) =>
+{
+    var segundos = sp.GetRequiredService<IOptions<OpcoesBaseConhecimento>>().Value.TimeoutSegundos;
+    http.Timeout = TimeSpan.FromSeconds(Math.Max(segundos + 5, 15));
+});
 builder.Services.AddSingleton<IBaseConhecimento, ClienteMcpBaseConhecimento>();
 builder.Services.AddSingleton<ServicoFundamentacao>();
 
@@ -82,6 +93,8 @@ else
 }
 
 builder.Services.AddSingleton<ServicoParecer>();
+builder.Services.Configure<OpcoesA2A>(builder.Configuration.GetSection(OpcoesA2A.Secao));
+builder.Services.AddSingleton<ServicoExecucaoAnalise>();
 
 builder.Services.AddControllers().AddJsonOptions(o => OpcoesJsonSaida.Configurar(o.JsonSerializerOptions));
 builder.Services.AdicionarDocumentacaoApi();
@@ -91,6 +104,16 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 builder.Services.AddOptions<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme)
     .Configure<IConfiguration, IHostEnvironment>(AutenticacaoJwt.Configurar);
 builder.Services.AddAuthorization();
+LimitadorRequisicoes.AdicionarSeConfigurado(builder.Services, builder.Configuration);
+
+var origensCors = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? [];
+if (origensCors.Length > 0)
+{
+    builder.Services.AddCors(opcoes => opcoes.AddPolicy(A2AEndpoints.PoliticaCors, politica =>
+        politica.WithOrigins(origensCors)
+            .WithMethods("GET", "POST", "OPTIONS")
+            .WithHeaders("Content-Type", "Authorization")));
+}
 
 var app = builder.Build();
 
@@ -107,13 +130,21 @@ app.UseExceptionHandler(erro => erro.Run(async contexto =>
     contexto.Response.StatusCode = StatusCodes.Status500InternalServerError;
     await contexto.Response.WriteAsJsonAsync(new ErroPadronizado("ERRO_INTERNO", "Falha técnica no processamento.")).ConfigureAwait(false);
 }));
+app.UseRouting();
+if (origensCors.Length > 0)
+{
+    app.UseCors(A2AEndpoints.PoliticaCors);
+}
+
 app.UsarCorrelacao();
 app.UsarDocumentacaoApi();
+LimitadorRequisicoes.UsarSeConfigurado(app, app.Configuration);
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapHealthChecks("/health").AllowAnonymous();
-app.MapControllers();
+app.MapServidorA2A();
+LimitadorRequisicoes.ComLimiteSeConfigurado(app.MapControllers(), app.Configuration);
 
 await app.RunAsync().ConfigureAwait(false);
 

@@ -35,7 +35,6 @@
         "GP_EFD_CONTRIB"
       ],
       "hipotesesLegitimas": [
-        "Nenhuma hipótese legítima prevista nos leiautes para esta divergência – solicitar justificativa documental ao contribuinte"
       ],
       "dependeDe": [
         "ENT-001"
@@ -68,7 +67,6 @@
         "GP_EFD_CONTRIB"
       ],
       "hipotesesLegitimas": [
-        "Nenhuma hipótese legítima prevista nos leiautes para esta divergência – solicitar justificativa documental ao contribuinte"
       ],
       "vigenciaInicio": "2025-01-01",
       "mensagemParecer": "Documento {chave} cancelado em uma EFD e regular na outra."
@@ -781,7 +779,6 @@
         "MANUAL_ECD_L9"
       ],
       "hipotesesLegitimas": [
-        "Nenhuma hipótese legítima prevista nos leiautes para esta divergência – solicitar justificativa documental ao contribuinte"
       ],
       "cadeias": [
         "C5",
