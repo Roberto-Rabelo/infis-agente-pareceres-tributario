@@ -39,13 +39,43 @@
       "vigenciaFim": null,
       "conferido": true,
       "fonte": "Manual de Orientação do Leiaute 9 – ADE Cofis nº 1/2026; I010.COD_VER_LC (docs/README.md §2)"
+    },
+    {
+      "tipo": "EFD_CONTRIBUICOES",
+      "versao": "006",
+      "vigenciaInicio": null,
+      "vigenciaFim": null,
+      "conferido": true,
+      "fonte": "Guia Prático EFD-Contribuições v1.35; 0000.COD_VER (docs/README.md §2)"
+    },
+    {
+      "tipo": "ECF",
+      "versao": "012",
+      "vigenciaInicio": null,
+      "vigenciaFim": null,
+      "conferido": true,
+      "fonte": "Manual de Orientação do Leiaute 12 – ADE Cofis nº 2/2026; 0000.COD_VER (docs/README.md §2)"
+    },
+    {
+      "tipo": "DIMP",
+      "versao": "09",
+      "vigenciaInicio": null,
+      "vigenciaFim": "2026-05-31",
+      "conferido": true,
+      "fonte": "Ato COTEPE/ICMS 65/18 – versão anterior à v10 (docs/README.md §2)"
+    },
+    {
+      "tipo": "DIMP",
+      "versao": "10",
+      "vigenciaInicio": "2026-06-01",
+      "vigenciaFim": null,
+      "conferido": true,
+      "fonte": "Ato COTEPE/ICMS 65/18, redação do Ato COTEPE/ICMS 124/25 – Versão 10 a partir de 01/06/2026 (docs/README.md §2)"
     }
   ],
   "pendencias": [
-    "EFD_CONTRIBUICOES: valor literal de 0000.COD_VER correspondente ao Guia Prático v1.35 não consta dos docs; obrigações deste tipo ficam não aptas até a curadoria (T011).",
-    "ECF: valor literal de 0000.COD_VER do Leiaute 12 não consta dos docs; idem.",
-    "DIMP: valor literal da Versão 10 (a partir de 2026-06-01) e da Versão 09 no arquivo não consta dos docs; idem.",
+    "EFD_CONTRIBUICOES 006 e ECF 012: COD_VER alinhado ao leiaute vigente citado nos docs; conferir o campo no PDF oficial (T011) se o PVA divergir.",
     "EFD_ICMS_IPI: leiautes de anos anteriores a 2026 e o leiaute 2027 (Ato COTEPE/ICMS 69/2026) não foram cadastrados.",
-    "NFE/NFCE/NFSE/ECD: início de vigência das versões não consta dos docs; cadastradas sem limite de vigência."
+    "NFE/NFSE/ECD: início de vigência das versões não consta dos docs; cadastradas sem limite de vigência."
   ]
 }

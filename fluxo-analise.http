@@ -111,7 +111,7 @@ Content-Type: application/json
 # 3. Api.Agente – análise (POST /api/v1/analises)
 ###############################################################################
 
-### 3.1 Lote de exemplo: EFD apta; NF-e reprovada na origem → achado PRE-003
+### 3.1 Lote-modelo (NFE, NFSE, EFD ICMS/IPI, EFD-Contrib, DIMP, ECD, ECF); M1 com divergência de valor
 # @name analiseExemplo
 POST {{agente}}/api/v1/analises
 Authorization: Bearer {{tokenAgente}}
@@ -119,6 +119,14 @@ Content-Type: application/json
 X-Correlation-Id: http-exemplo-{{$timestamp}}
 
 < ./exemplos/lote-exemplo.json
+
+### 3.1b NF-e reprovada na origem → PRE-003, obrigação não apta (não é o exemplo da API)
+POST {{agente}}/api/v1/analises
+Authorization: Bearer {{tokenAgente}}
+Content-Type: application/json
+X-Correlation-Id: http-pre003-{{$timestamp}}
+
+< ./exemplos/cenarios/10-nfe-reprovada-na-origem.json
 
 ### 3.2 Duas obrigações aptas → sem achado de pré-condição; dados mínimos geram ausência de evidências (cenários completos em analise-obrigacoes.http)
 POST {{agente}}/api/v1/analises
@@ -164,11 +172,11 @@ X-Correlation-Id: http-aptas-{{$timestamp}}
   ]
 }
 
-### 3.3 PRE-002: obrigação sem versaoLayout → 200 com pré-condição não atendida (não rejeita o lote)
+### 3.3 PRE-003: obrigação sem validacaoOrigem → 200 com pré-condição não atendida (não rejeita o lote). Layout (PRE-002) não recusa cruzamento.
 POST {{agente}}/api/v1/analises
 Authorization: Bearer {{tokenAgente}}
 Content-Type: application/json
-X-Correlation-Id: http-pre002-{{$timestamp}}
+X-Correlation-Id: http-pre003-{{$timestamp}}
 
 {
   "versaoContrato": "1.0.0",
@@ -176,13 +184,13 @@ X-Correlation-Id: http-pre002-{{$timestamp}}
   "periodo": { "inicio": "2026-03-01", "fim": "2026-03-31" },
   "obrigacoes": [
     {
-      "id": "efd-sem-versao",
+      "id": "efd-sem-origem",
       "tipo": "EFD_ICMS_IPI",
+      "versaoLayout": "020",
       "contribuinte": { "cnpj": "11222333000181" },
       "periodo": { "inicio": "2026-03-01", "fim": "2026-03-31" },
       "finalidade": "ORIGINAL",
       "identificacao": { "recibo": "REC-1" },
-      "validacaoOrigem": { "agente": "agente-validador-teste", "versaoValidador": "1.0.0", "dataValidacao": "2026-04-10T10:00:00-03:00", "status": "APROVADO", "ocorrencias": [] },
       "registros": { "0000": [ { "linha": 1, "campos": { "COD_VER": "020" } } ] }
     }
   ]
@@ -304,3 +312,34 @@ Content-Type: application/json
 X-Correlation-Id: <script>
 
 < ./exemplos/lote-exemplo.json
+
+###############################################################################
+# 5. SOFIA / A2A v0.3.x (Agent Card anônimo; RPC com JWT)
+###############################################################################
+
+### 5.1 Agent Card
+GET {{agente}}/.well-known/agent-card.json
+
+### 5.2 Preflight CORS origem autorizada
+OPTIONS {{agente}}/a2a
+Origin: http://localhost:4200
+Access-Control-Request-Method: POST
+Access-Control-Request-Headers: content-type,authorization
+
+### 5.3 Preflight CORS origem bloqueada (não deve ecoar Allow-Origin dessa origem)
+OPTIONS {{agente}}/api/v1/analises
+Origin: https://site-nao-autorizado.example
+Access-Control-Request-Method: POST
+
+### 5.4 message/send com lote.v1 no TextPart
+POST {{agente}}/a2a
+Authorization: Bearer {{tokenAgente}}
+Content-Type: application/json
+
+< ./exemplos/a2a-message-send.json
+
+### 5.5 A2A sem token → 401
+POST {{agente}}/a2a
+Content-Type: application/json
+
+< ./exemplos/a2a-message-send.json

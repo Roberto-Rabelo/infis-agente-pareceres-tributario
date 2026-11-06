@@ -67,33 +67,40 @@ public class PreCondicoesTests
     }
 
     [Fact]
-    public void Pre002_SemVersao_NaoApta()
+    public void Pre002_SemVersao_AindaApta()
     {
         var efd = EfdIcmsIpi();
         efd.Remove("versaoLayout");
 
-        AssertNaoApta(Analisar(Lote(efd)), "efd-icms-1", "PRE-002");
+        var resultado = Analisar(Lote(efd));
+
+        Assert.True(Aptidao(resultado, "efd-icms-1").Apta);
+        Assert.DoesNotContain(resultado.Achados, a => a.RegraId == "PRE-002");
     }
 
     [Fact]
-    public void Pre002_VersaoNaoSuportada_NaoApta()
+    public void Pre002_VersaoNaoSuportada_AindaApta()
     {
         var efd = EfdIcmsIpi();
         efd["versaoLayout"] = "019";
 
         var resultado = Analisar(Lote(efd, EfdContribuicoes()));
 
-        AssertNaoApta(resultado, "efd-icms-1", "PRE-002");
-        AssertNaoApta(resultado, "efd-contrib-1", "PRE-002");
+        Assert.True(Aptidao(resultado, "efd-icms-1").Apta);
+        Assert.True(Aptidao(resultado, "efd-contrib-1").Apta);
+        Assert.DoesNotContain(resultado.Achados, a => a.RegraId == "PRE-002");
     }
 
     [Fact]
-    public void Pre002_VersaoForaDeVigencia_NaoApta()
+    public void Pre002_VersaoForaDeVigencia_AindaApta()
     {
         var efd = EfdIcmsIpi();
         efd["periodo"] = new JsonObject { ["inicio"] = "2025-03-01", ["fim"] = "2025-03-31" };
 
-        AssertNaoApta(Analisar(Lote("11222333", "2025-01-01", "2026-12-31", efd)), "efd-icms-1", "PRE-002");
+        var resultado = Analisar(Lote("11222333", "2025-01-01", "2026-12-31", efd));
+
+        Assert.True(Aptidao(resultado, "efd-icms-1").Apta);
+        Assert.DoesNotContain(resultado.Achados, a => a.RegraId == "PRE-002");
     }
 
     [Fact]

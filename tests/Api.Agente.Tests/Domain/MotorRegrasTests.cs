@@ -181,7 +181,27 @@ public class MotorRegrasTests
         Assert.Equal(Severidade.Alerta, temporal.Severidade);
         Assert.Equal(3m, temporal.Diferenca);
         Assert.Equal(["Hipótese de teste."], temporal.HipotesesLegitimas);
+        Assert.Contains("CRZ-TST-001", padrao.Descricao, StringComparison.Ordinal);
         Assert.Throws<InvalidOperationException>(() => regra.CriarInconsistencia("x", [], "inexistente"));
+    }
+
+    [Fact]
+    public void Inconsistencia_NaoPropagaHipoteseGenericaDeLayout()
+    {
+        var regra = Cruzamento("CRZ-TST-001") with
+        {
+            HipotesesLegitimas =
+            [
+                "Nenhuma hipótese legítima prevista nos leiautes para esta divergência – solicitar justificativa documental ao contribuinte",
+                "Devolução com CFOP 5.202",
+            ],
+        };
+
+        var achado = regra.CriarInconsistencia("NF-e X: VL_DOC escriturado R$ 900 x vNF R$ 1000.", []);
+
+        Assert.Equal(["Devolução com CFOP 5.202"], achado.HipotesesLegitimas);
+        Assert.Contains("VL_DOC", achado.Descricao, StringComparison.Ordinal);
+        Assert.Contains("CRZ-TST-001", achado.Descricao, StringComparison.Ordinal);
     }
 
     [Fact]

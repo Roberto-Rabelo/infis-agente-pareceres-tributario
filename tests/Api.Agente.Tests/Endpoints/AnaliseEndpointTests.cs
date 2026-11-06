@@ -24,6 +24,9 @@ public sealed class FabricaApi : WebApplicationFactory<Program>
     {
         builder.UseEnvironment(Ambiente);
         builder.UseSetting("Entrada:TamanhoMaximoBytes", "200000");
+        builder.UseSetting("Cors:AllowedOrigins:0", "http://localhost:4200");
+        builder.UseSetting("Cors:AllowedOrigins:1", "http://localhost:5173");
+        builder.UseSetting("A2A:Url", "http://localhost/a2a");
         builder.ConfigureTestServices(servicos => servicos
             .AddAuthentication(o =>
             {
@@ -131,14 +134,14 @@ public class AnaliseEndpointTests(FabricaApi fabrica) : IClassFixture<FabricaApi
     {
         using var cliente = Autenticado();
         var efd = EfdIcmsIpi();
-        efd.Remove("versaoLayout");
+        efd.Remove("validacaoOrigem");
 
         using var resposta = await cliente.PostAsync(Rota, Conteudo(Bytes(Lote(efd))));
         using var json = await Json(resposta);
 
         Assert.Equal(HttpStatusCode.OK, resposta.StatusCode);
         var achado = json.RootElement.GetProperty("resultado").GetProperty("achados")[0];
-        Assert.Equal("PRE-002", achado.GetProperty("regraId").GetString());
+        Assert.Equal("PRE-003", achado.GetProperty("regraId").GetString());
         Assert.Equal("PRE_CONDICAO_NAO_ATENDIDA", achado.GetProperty("natureza").GetString());
     }
 

@@ -22,9 +22,9 @@ Relatório de Impacto de Sincronização
 
 # Constitution — infis-agente-parecer-tributário
 
-**Versão:** 2.0.0
+**Versão:** 2.1.0
 **Data de ratificação:** 2026-10-29
-**Última alteração:** 2026-10-29
+**Última alteração:** 2026-11-05
 
 Termos normativos:
 
@@ -422,8 +422,10 @@ Regras do fluxo:
 ### 3.5 Integrações
 
 - MCP é o único meio de comunicação funcional entre Api.Agente e Api.RAG (P12).
-- A2A é a interface para outros agentes e orquestradores, inclusive os agentes de origem que entregam as obrigações validadas. Mensagens recebidas por A2A DEVEM passar pelas mesmas autorizações, validações e contratos da API REST.
-- Transporte, autenticação entre serviços e versão dos protocolos MCP e A2A são decisões pendentes (Seção 9).
+- A2A é a interface para outros agentes e orquestradores. Este agente é **servidor** A2A (não cliente/orquestrador).
+- Perfil A2A: **v0.3.x JSON-RPC 2.0**, método `message/send`. Descoberta em `GET /.well-known/agent-card.json`. O campo `url` do card é o endpoint RPC (não o caminho do card).
+- Mensagens A2A DEVEM passar pelas mesmas autorizações JWT, validações e contrato de lote (`lote.v1`) da API REST. O TextPart PODE ser o JSON do lote ou o envelope SOFIA v1 (`SolicitacaoAnaliseSofia`) com o lote em `documentos[].texto`.
+- CORS aplica-se somente a origens de navegador configuradas; chamadas backend-backend da SOFIA NÃO dependem de CORS.
 
 ---
 
@@ -510,7 +512,7 @@ Regras:
 
 ### 5.1 Segurança e privacidade
 
-- Endpoints REST, MCP e A2A DEVEM exigir autenticação e autorização, exceto endpoints de saúde explicitamente declarados.
+- Endpoints REST, MCP e o RPC A2A DEVEM exigir autenticação e autorização, exceto endpoints de saúde explicitamente declarados e o Agent Card `GET /.well-known/agent-card.json` (descoberta A2A v0.3.x).
 - Segredos (chaves da OpenAI, strings de conexão) NÃO DEVEM estar no código-fonte nem em arquivos versionados.
 - Obrigações recebidas contêm dados fiscais e pessoais. O tratamento DEVE seguir a LGPD, com política de retenção e exclusão definida na especificação.
 - Dados sensíveis NÃO DEVEM ser registrados em logs sem mascaramento.
@@ -616,7 +618,7 @@ Nenhum item abaixo é requisito aprovado. Cada um DEVE ser resolvido na etapa in
 | D11 | Modelo de embeddings, dimensão, métrica de distância e estratégia de busca (vetorial ou híbrida) | Plano técnico | ADR |
 | D12 | Tamanho de chunk, sobreposição, topK, limiares e conjunto de avaliação de recuperação | Plano técnico | Plano + avaliação |
 | D13 | Transporte e autenticação do MCP entre Api.Agente e Api.RAG | Plano técnico | ADR |
-| D14 | Versão do protocolo A2A, Agent Card e autenticação de agentes externos | Plano técnico | ADR |
+| D14 | Resolvido em `docs/adr/D14-a2a.md` (A2A v0.3.x JSON-RPC, Agent Card anônimo, JWT no RPC) | — | ADR |
 | D15 | Provedor de identidade, modelo de autorização e suporte a múltiplas organizações | Plano técnico | ADR |
 | D16 | Ferramentas externas permitidas e suas políticas | Especificação | Especificação + catálogo de ferramentas |
 | D17 | Política de retentativas (quantidade, intervalo) para LLM e ferramentas | Plano técnico | Plano |

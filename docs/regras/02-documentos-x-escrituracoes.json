@@ -295,7 +295,6 @@
         "MOC_NFE"
       ],
       "hipotesesLegitimas": [
-        "Nenhuma hipótese legítima prevista nos leiautes para esta divergência – solicitar justificativa documental ao contribuinte"
       ],
       "cadeias": [
         "C1"
@@ -328,7 +327,6 @@
         "GP_EFD_ICMS_IPI"
       ],
       "hipotesesLegitimas": [
-        "Nenhuma hipótese legítima prevista nos leiautes para esta divergência – solicitar justificativa documental ao contribuinte"
       ],
       "vigenciaInicio": "2025-01-01",
       "mensagemParecer": "NF-e {chave} escriturada como emissão própria de {cnpjEfd}, mas o emitente é {cnpjXml}."
@@ -359,7 +357,6 @@
         "LC_87_96"
       ],
       "hipotesesLegitimas": [
-        "Nenhuma hipótese legítima prevista nos leiautes para esta divergência – solicitar justificativa documental ao contribuinte"
       ],
       "cadeias": [
         "C2"
@@ -422,7 +419,6 @@
         "LC_87_96"
       ],
       "hipotesesLegitimas": [
-        "Nenhuma hipótese legítima prevista nos leiautes para esta divergência – solicitar justificativa documental ao contribuinte"
       ],
       "cadeias": [
         "C7"
@@ -460,7 +456,6 @@
         "MOC_NFE"
       ],
       "hipotesesLegitimas": [
-        "Nenhuma hipótese legítima prevista nos leiautes para esta divergência – solicitar justificativa documental ao contribuinte"
       ],
       "dependeDe": [
         "M1-P01"
@@ -523,7 +518,6 @@
         "MOC_NFE"
       ],
       "hipotesesLegitimas": [
-        "Nenhuma hipótese legítima prevista nos leiautes para esta divergência – solicitar justificativa documental ao contribuinte"
       ],
       "cadeias": [
         "C1"
@@ -589,7 +583,6 @@
         "MOC_NFE"
       ],
       "hipotesesLegitimas": [
-        "Nenhuma hipótese legítima prevista nos leiautes para esta divergência – solicitar justificativa documental ao contribuinte"
       ],
       "cadeias": [
         "C2"
@@ -658,7 +651,6 @@
         "MOC_NFE"
       ],
       "hipotesesLegitimas": [
-        "Nenhuma hipótese legítima prevista nos leiautes para esta divergência – solicitar justificativa documental ao contribuinte"
       ],
       "cadeias": [
         "C2"
@@ -925,7 +917,6 @@
         "MOC_NFE"
       ],
       "hipotesesLegitimas": [
-        "Nenhuma hipótese legítima prevista nos leiautes para esta divergência – solicitar justificativa documental ao contribuinte"
       ],
       "cadeias": [
         "C1"
@@ -1163,7 +1154,6 @@
         "GP_EFD_CONTRIB"
       ],
       "hipotesesLegitimas": [
-        "Nenhuma hipótese legítima prevista nos leiautes para esta divergência – solicitar justificativa documental ao contribuinte"
       ],
       "cadeias": [
         "C5"
@@ -1280,7 +1270,6 @@
         "MOC_NFE"
       ],
       "hipotesesLegitimas": [
-        "Nenhuma hipótese legítima prevista nos leiautes para esta divergência – solicitar justificativa documental ao contribuinte"
       ],
       "vigenciaInicio": "2025-01-01",
       "mensagemParecer": "NF-e {chave}: {campo} na EFD-Contribuições {efd} x XML {xml}."
@@ -1658,7 +1647,6 @@
         "NFSE_ANEXO_I"
       ],
       "hipotesesLegitimas": [
-        "Nenhuma hipótese legítima prevista nos leiautes para esta divergência – solicitar justificativa documental ao contribuinte"
       ],
       "dependeDe": [
         "M4-R01"

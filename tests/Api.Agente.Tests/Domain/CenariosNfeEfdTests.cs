@@ -65,6 +65,12 @@ public class CenariosNfeEfdTests
         Assert.Equal(1000m, total.ValorDestino);
         Assert.Equal(-100m, total.Diferenca);
         Assert.Equal(0m, total.ToleranciaAplicada);
+        Assert.Contains("VL_DOC", total.Descricao, StringComparison.Ordinal);
+        Assert.Contains("vNF", total.Descricao, StringComparison.Ordinal);
+        Assert.Contains("M1-I03", total.Descricao, StringComparison.Ordinal);
+        Assert.Empty(total.HipotesesLegitimas);
+        Assert.DoesNotContain(resultado.Achados, a => a.HipotesesLegitimas.Any(h =>
+            h.Contains("Nenhuma hipótese legítima", StringComparison.OrdinalIgnoreCase)));
 
         var icms = resultado.Achados.Where(a => a.RegraId == "M1-I05").ToList();
         Assert.Equal(2, icms.Count);

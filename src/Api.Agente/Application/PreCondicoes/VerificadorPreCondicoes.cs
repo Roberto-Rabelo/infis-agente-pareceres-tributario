@@ -40,13 +40,8 @@ public sealed class VerificadorPreCondicoes
 
     public static readonly IReadOnlyList<string> Todas = [Contrato, Versao, ValidacaoDeOrigem, EscrituracaoVigente, GrupoCruzamento];
 
-    private const int TamanhoMaximoEco = 20;
-
-    private readonly CatalogoVersoesLayout _versoes;
-
-    public VerificadorPreCondicoes(CatalogoVersoesLayout versoes)
+    public VerificadorPreCondicoes(CatalogoVersoesLayout _)
     {
-        _versoes = versoes;
     }
 
     public ResultadoPreCondicoes Verificar(LoteLido lote, IReadOnlyList<ObrigacaoMapeada> mapeadas)
@@ -70,11 +65,6 @@ public sealed class VerificadorPreCondicoes
             {
                 Registrar(achados, falhas, Achado.PreCondicao(Contrato, "Contrato de entrada não atendido: " + string.Join(" ", mapeada.Erros), new LocalizacaoEvidencia(mapeada.Id)));
                 continue;
-            }
-
-            if (VerificarVersao(obrigacao) is { } erroVersao)
-            {
-                Registrar(achados, falhas, Achado.PreCondicao(Versao, erroVersao, new LocalizacaoEvidencia(obrigacao.Id, Campo: "versaoLayout", Valor: Eco(obrigacao.VersaoLayout))));
             }
 
             if (VerificarValidacaoOrigem(obrigacao) is { } erroValidacao)
@@ -114,24 +104,6 @@ public sealed class VerificadorPreCondicoes
             Advertencias(m.Obrigacao))).ToList();
 
         return new ResultadoPreCondicoes(aptas, aptidao, achados);
-    }
-
-    private string? VerificarVersao(ObrigacaoRecebida obrigacao)
-    {
-        if (obrigacao.VersaoLayout is null)
-        {
-            return "Versão de layout não informada pelo agente de origem.";
-        }
-
-        var suportadas = _versoes.Suportadas(obrigacao.Tipo).Where(v => v.Versao == obrigacao.VersaoLayout).ToList();
-        if (suportadas.Count == 0)
-        {
-            return "Versão de layout não suportada pelo catálogo para este tipo de obrigação.";
-        }
-
-        return suportadas.Any(v => v.VigenteEm(obrigacao.Periodo))
-            ? null
-            : "Versão de layout não vigente para o período da obrigação.";
     }
 
     /// <summary>Critério de aptidão proposto (D25): relatório presente, APROVADO e sem ocorrências do tipo ERRO.</summary>
@@ -214,7 +186,4 @@ public sealed class VerificadorPreCondicoes
         achados.Add(achado);
         falhas.Add(achado.RegraId);
     }
-
-    private static string? Eco(string? valor) =>
-        valor is null ? null : valor.Length <= TamanhoMaximoEco ? valor : valor[..TamanhoMaximoEco];
 }
