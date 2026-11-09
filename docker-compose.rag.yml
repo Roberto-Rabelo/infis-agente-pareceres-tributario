@@ -1,7 +1,10 @@
-# PostgreSQL + PgVector local para a Api.RAG. A senha vem do ambiente (nunca versionar).
-#   $env:RAG_POSTGRES_PASSWORD = '<senha>'
+# Bancos locais + pgAdmin para inspecionar consultas e consumo.
+# Senhas no arquivo .env da raiz (gitignored). Subir:
 #   docker compose -f docker-compose.rag.yml up -d
-#   $env:ConnectionStrings__Rag = "Host=localhost;Port=5433;Database=rag;Username=rag;Password=$env:RAG_POSTGRES_PASSWORD"
+# pgAdmin: http://localhost:5055  (PGADMIN_DEFAULT_EMAIL / PGADMIN_DEFAULT_PASSWORD)
+# Connection strings para as APIs:
+#   ConnectionStrings__Rag=Host=localhost;Port=5433;Database=rag;Username=rag;Password=...
+#   ConnectionStrings__Agente=Host=localhost;Port=5434;Database=agente;Username=agente;Password=...
 services:
   rag-postgres:
     image: pgvector/pgvector:pg17
@@ -13,5 +16,48 @@ services:
       - "5433:5432"
     volumes:
       - rag-dados:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U rag -d rag"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  agente-postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: agente
+      POSTGRES_USER: agente
+      POSTGRES_PASSWORD: ${AGENTE_POSTGRES_PASSWORD:?defina AGENTE_POSTGRES_PASSWORD}
+    ports:
+      - "5434:5432"
+    volumes:
+      - agente-dados:/var/lib/postgresql/data
+      - ./deploy/neon-agente.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U agente -d agente"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  pgadmin:
+    image: dpage/pgadmin4:8
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-admin@local.dev}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:?defina PGADMIN_DEFAULT_PASSWORD}
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: "False"
+    ports:
+      - "5055:80"
+    volumes:
+      - pgadmin-dados:/var/lib/pgadmin
+      - ./deploy/pgadmin/servers.json:/pgadmin4/servers.json:ro
+    depends_on:
+      rag-postgres:
+        condition: service_healthy
+      agente-postgres:
+        condition: service_healthy
+
 volumes:
   rag-dados:
+  agente-dados:
+  pgadmin-dados:

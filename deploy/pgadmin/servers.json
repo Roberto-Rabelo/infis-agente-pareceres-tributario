@@ -1,0 +1,24 @@
+{
+  "Servers": {
+    "1": {
+      "Name": "RAG — documentos, trechos, embeddings",
+      "Group": "Parecer tributário",
+      "Host": "rag-postgres",
+      "Port": 5432,
+      "MaintenanceDB": "rag",
+      "Username": "rag",
+      "SSLMode": "prefer",
+      "ConnectNow": true
+    },
+    "2": {
+      "Name": "Agente — consumo do parecer LLM",
+      "Group": "Parecer tributário",
+      "Host": "agente-postgres",
+      "Port": 5432,
+      "MaintenanceDB": "agente",
+      "Username": "agente",
+      "SSLMode": "prefer",
+      "ConnectNow": true
+    }
+  }
+}
