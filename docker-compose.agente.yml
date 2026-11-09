@@ -1,6 +1,9 @@
 # Api.Agente na rede compartilhada com a SOFIA (criar antes: docker network create agentes-network).
 # A SOFIA chama http://agente-parecer:8080 (DNS do compose), não localhost da porta publicada.
 # JWT e ConnectionStrings vêm do ambiente; não versionar segredos.
+# Requer docker-compose.rag.yml no ar (agente-postgres na rede default do projeto, api-rag na agentes-network).
+# Valores do .env: OPENAI_API_KEY, AGENTE_POSTGRES_PASSWORD e RAG_TOKEN_CONSULTA (papel rag.consulta).
+# Com o parecer ligado, cada análise com status 200 chama a OpenAI e gera custo (PARECER_HABILITADO=false desliga).
 services:
   agente-parecer:
     build:
@@ -11,9 +14,18 @@ services:
       ASPNETCORE_ENVIRONMENT: "Development"
       A2A__Url: "http://agente-parecer:8080/a2a"
       Cors__AllowedOrigins__0: "http://localhost:4200"
+      Parecer__Habilitado: "${PARECER_HABILITADO:-true}"
+      OpenAI__ApiKey: "${OPENAI_API_KEY:-}"
+      ConnectionStrings__Agente: "Host=agente-postgres;Port=5432;Database=agente;Username=agente;Password=${AGENTE_POSTGRES_PASSWORD}"
+      BaseConhecimento__Endpoint: "http://api-rag:8080/mcp"
+      BaseConhecimento__TokenAcesso: "${RAG_TOKEN_CONSULTA:-}"
+    # Chaves do `dotnet user-jwts` (só valem em Development); somente leitura.
+    volumes:
+      - ${HOME}/.microsoft/usersecrets:/root/.microsoft/usersecrets:ro
     ports:
       - "8085:8080"
     networks:
+      - default
       - agentes-network
 
 networks:
