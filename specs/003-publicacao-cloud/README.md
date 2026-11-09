@@ -20,7 +20,7 @@ Este agente **não publica** na sua conta. Você importa o GitHub e cola as vari
 
 ## Dois projetos Vercel (obrigatório para RAG + parecer)
 
-1. **Agente** — `Dockerfile.vercel` na raiz, env de `.env.example`. `vercel.json` pede `maxDuration` 300 s (Hobby pode capar; se a análise cortar, o log da Vercel mostra timeout).
+1. **Agente** — `Dockerfile.vercel` na raiz, env de `.env.example`. O container escuta na porta 80 (padrão da Vercel, que não injeta `PORT`). Duração por requisição: padrão de 300 s da plataforma; `vercel.json` não define `maxDuration` (a chave de primeiro nível não é documentada). Se a análise cortar, o log da Vercel mostra timeout.
 2. **RAG** — no dashboard, Dockerfile = `deploy/Dockerfile.vercel.rag`, env de `deploy/.env.rag.example`. Depois copie a URL HTTPS para `BaseConhecimento__Endpoint=https://…/mcp`.
 
 Neon: dois databases (`agente` e `rag`), SSL. A RAG cria `vector` sozinha na migração.

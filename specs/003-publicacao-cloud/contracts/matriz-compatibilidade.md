@@ -13,7 +13,7 @@
 | Swagger em Production | OK | já bloqueado |
 | Postgres consumo (`ConnectionStrings:Agente`) | Adaptação | Neon + `SSL Mode=Require` |
 | RAG pgvector (`ConnectionStrings:Rag`) | Adaptação | **outro** container/projeto; MCP HTTP |
-| Parecer LLM (timeout 60s + retentativas) | OK no teste primário | `Parecer__Habilitado=true` + OpenAI + Neon. `vercel.json` `maxDuration` 300 s; Hobby pode capar abaixo disso |
+| Parecer LLM (timeout 60s + retentativas) | OK no teste primário | `Parecer__Habilitado=true` + OpenAI + Neon. duração padrão da plataforma (300 s); `vercel.json` sem `maxDuration` |
 | Lote até 50 MB | Adaptação | limite de body da Vercel pode ser menor |
 | MongoDB Atlas | Bloqueio funcional | memória D9 **não implementada**; não criar variável inventada |
 | Worker / disco durável | OK (ausente) | |
