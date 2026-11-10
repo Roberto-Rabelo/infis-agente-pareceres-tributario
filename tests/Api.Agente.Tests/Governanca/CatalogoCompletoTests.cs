@@ -1,4 +1,8 @@
+using System.Text.Json.Nodes;
 using Api.Agente.Application.Analise;
+using Api.Agente.Application.Contratos.Entrada;
+using Api.Agente.Application.PreCondicoes;
+using Api.Agente.Infrastructure.Catalogo;
 using Api.Agente.Domain;
 using Api.Agente.Domain.Catalogo;
 using Api.Agente.Domain.Motor;
@@ -161,5 +165,41 @@ public class CatalogoCompletoTests
             resultado.Achados.Where(a => a.Natureza == Natureza.AusenciaEvidencias && a.ObrigacoesFaltantes.Count > 0),
             a => Assert.Contains(a.ObrigacoesFaltantes, f => f.Tipo == TipoObrigacao.EfdIcmsIpi));
         Assert.NotEqual(StatusAnalise.Concluida, resultado.Status);
+    }
+
+    /// <summary>
+    /// Constitution 4.x (falha de etapa registrada; as independentes seguem): obrigações ausentes, reprovadas ou um validador que
+    /// falha não impedem os cruzamentos que estão aptos. O que não rodou é sinalizado, e a análise termina sem exceção.
+    /// </summary>
+    [Fact]
+    public void LoteMisto_RodaOQueEstaAptoESinalizaORestanteSemQuebrar()
+    {
+        var lote = JsonNode.Parse(File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "exemplos", "cenarios", "01-consistente.json")))!.AsObject();
+        var reprovada = NFe("nfe-reprovada", "35260311222333000181550010000000091000000090");
+        reprovada["validacaoOrigem"] = Validacao("REPROVADO", ("ERRO", "Schema inválido."));
+        var obrigacoes = lote["obrigacoes"]!.AsArray();
+        obrigacoes.Add(Ecd());
+        obrigacoes.Add(EfdContribuicoes());
+        obrigacoes.Add(reprovada);
+
+        var validadores = ValidadoresNfeEfd.Todos().Where(v => v.RegraId != "M1-R03")
+            .Append(new ValidadorRegra("M1-R03", (_, _) => throw new InvalidOperationException("falha simulada")));
+        var leitura = new LeitorLote(new OpcoesEntrada()).Ler(Bytes(lote));
+        var servico = new ServicoAnalise(
+            Catalogo,
+            new VerificadorPreCondicoes(CarregadorCatalogo.CarregarVersoes(CarregadorCatalogo.ResolverDiretorio("catalog"))),
+            MotorRegras.Montar(validadores, Catalogo),
+            ParametrosComparacao.DoCatalogo(Catalogo.Parametros),
+            new LeitorLote(new OpcoesEntrada()));
+
+        var resultado = servico.Analisar(leitura.Lote!);
+        var situacoes = resultado.Regras.ToDictionary(r => r.RegraId, r => r.Situacao);
+
+        Assert.Equal(SituacaoRegra.FalhaTecnica, situacoes["M1-R03"]);
+        Assert.Contains(resultado.Achados, a => a.RegraId == "M1-R03" && a.Natureza == Natureza.FalhaTecnica);
+        Assert.All(AprovadasHoje.Where(id => id is not ("M1-R03")), id => Assert.Equal(SituacaoRegra.Executada, situacoes[id]));
+        Assert.Contains(resultado.Achados, a => a.Natureza == Natureza.PreCondicaoNaoAtendida && a.Evidencias.Any(e => e.ObrigacaoId == "nfe-reprovada"));
+        Assert.Contains(resultado.Cobertura, c => c.ObrigacaoId == "ecd-1" && c.Apta);
+        Assert.Equal(StatusAnalise.ConcluidaParcial, resultado.Status);
     }
 }
