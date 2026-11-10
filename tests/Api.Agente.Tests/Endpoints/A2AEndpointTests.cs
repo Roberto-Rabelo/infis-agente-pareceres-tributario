@@ -10,9 +10,9 @@ namespace Api.Agente.Tests.Endpoints;
 public class A2AEndpointTests(FabricaApi fabrica) : IClassFixture<FabricaApi>
 {
     [Fact]
-    public async Task AgentCard_Anonimo_ApontaParaRpc()
+    public async Task AgentCard_Autenticado_PerfilCompativelComSofia()
     {
-        using var cliente = fabrica.CreateClient();
+        using var cliente = Autenticado();
 
         using var resposta = await cliente.GetAsync("/.well-known/agent-card.json");
         using var json = await Json(resposta);
@@ -20,17 +20,27 @@ public class A2AEndpointTests(FabricaApi fabrica) : IClassFixture<FabricaApi>
         Assert.Equal(HttpStatusCode.OK, resposta.StatusCode);
         var raiz = json.RootElement;
         Assert.Equal("0.3.0", raiz.GetProperty("protocolVersion").GetString());
-        Assert.Equal("http://localhost/a2a", raiz.GetProperty("url").GetString());
-        Assert.DoesNotContain("agent-card", raiz.GetProperty("url").GetString(), StringComparison.Ordinal);
-        Assert.Equal("analisar_documentos", raiz.GetProperty("skills")[0].GetProperty("id").GetString());
         Assert.Equal("JSONRPC", raiz.GetProperty("preferredTransport").GetString());
-        var esquemas = raiz.GetProperty("securitySchemes");
-        Assert.Equal("http", esquemas.GetProperty("bearer").GetProperty("type").GetString());
-        Assert.Equal("bearer", esquemas.GetProperty("bearer").GetProperty("scheme").GetString());
-        Assert.Equal("apiKey", esquemas.GetProperty("apiKey").GetProperty("type").GetString());
-        Assert.Equal("X-API-Key", esquemas.GetProperty("apiKey").GetProperty("name").GetString());
-        Assert.True(raiz.GetProperty("security")[0].TryGetProperty("bearer", out _));
-        Assert.True(raiz.GetProperty("security")[1].TryGetProperty("apiKey", out _));
+        Assert.Equal("http://localhost/a2a", raiz.GetProperty("url").GetString());
+        Assert.Equal("Agente Parecer Tributário", raiz.GetProperty("name").GetString());
+        Assert.Equal("analisar_documentos", raiz.GetProperty("skills")[0].GetProperty("id").GetString());
+        Assert.Contains("text/plain", raiz.GetProperty("defaultInputModes").EnumerateArray().Select(e => e.GetString()));
+        Assert.Contains("text/plain", raiz.GetProperty("defaultOutputModes").EnumerateArray().Select(e => e.GetString()));
+        Assert.False(raiz.GetProperty("capabilities").GetProperty("streaming").GetBoolean());
+        var esquema = raiz.GetProperty("securitySchemes").GetProperty("sofiaService");
+        Assert.Equal(("http", "bearer"), (esquema.GetProperty("type").GetString(), esquema.GetProperty("scheme").GetString()));
+        Assert.True(raiz.GetProperty("security")[0].TryGetProperty("sofiaService", out _));
+        Assert.DoesNotContain("chave-sintetica", raiz.GetRawText(), StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public async Task AgentCard_SemAutenticacao_401()
+    {
+        using var cliente = fabrica.CreateClient();
+
+        using var resposta = await cliente.GetAsync("/.well-known/agent-card.json");
+
+        Assert.Equal(HttpStatusCode.Unauthorized, resposta.StatusCode);
     }
 
     [Fact]
@@ -74,7 +84,7 @@ public class A2AEndpointTests(FabricaApi fabrica) : IClassFixture<FabricaApi>
     [Fact]
     public async Task SemOrigin_AgentCard_200()
     {
-        using var cliente = fabrica.CreateClient();
+        using var cliente = Autenticado();
 
         using var resposta = await cliente.GetAsync("/.well-known/agent-card.json");
 
@@ -134,6 +144,93 @@ public class A2AEndpointTests(FabricaApi fabrica) : IClassFixture<FabricaApi>
     }
 
     [Fact]
+    public async Task MessageSend_ArtifactUnicoAnaliseSofiaV1()
+    {
+        using var cliente = Autenticado();
+
+        using var resposta = await cliente.PostAsync("/a2a", Rpc(Lote(EfdIcmsIpi(), NFe()), rpcId: "rpc-001"));
+        using var json = await Json(resposta);
+
+        Assert.Equal("rpc-001", json.RootElement.GetProperty("id").GetString());
+        var artifacts = json.RootElement.GetProperty("result").GetProperty("artifacts");
+        Assert.Equal(1, artifacts.GetArrayLength());
+        Assert.Equal("analise-sofia-v1", artifacts[0].GetProperty("name").GetString());
+        Assert.False(string.IsNullOrWhiteSpace(artifacts[0].GetProperty("artifactId").GetString()));
+        var partes = artifacts[0].GetProperty("parts");
+        Assert.Equal(1, partes.GetArrayLength());
+        Assert.Equal("text", partes[0].GetProperty("kind").GetString());
+    }
+
+    [Fact]
+    public async Task TasksGet_DevolveMesmaTarefaEContexto()
+    {
+        using var cliente = Autenticado();
+        using var envio = await cliente.PostAsync("/a2a", Rpc(Lote(EfdIcmsIpi(), NFe()), contextId: "ctx-get"));
+        using var jsonEnvio = await Json(envio);
+        var tarefa = jsonEnvio.RootElement.GetProperty("result");
+        var taskId = tarefa.GetProperty("id").GetString()!;
+
+        using var consulta = await cliente.PostAsync("/a2a", RpcTarefa("tasks/get", taskId));
+        using var jsonConsulta = await Json(consulta);
+
+        var obtida = jsonConsulta.RootElement.GetProperty("result");
+        Assert.Equal("rpc-tarefa", jsonConsulta.RootElement.GetProperty("id").GetString());
+        Assert.Equal(taskId, obtida.GetProperty("id").GetString());
+        Assert.Equal("ctx-get", obtida.GetProperty("contextId").GetString());
+        Assert.Equal("completed", obtida.GetProperty("status").GetProperty("state").GetString());
+        Assert.Equal(
+            tarefa.GetProperty("artifacts")[0].GetProperty("parts")[0].GetProperty("text").GetString(),
+            obtida.GetProperty("artifacts")[0].GetProperty("parts")[0].GetProperty("text").GetString());
+    }
+
+    [Fact]
+    public async Task TasksCancel_TarefaConcluida_ErroNaoCancelavel()
+    {
+        using var cliente = Autenticado();
+        using var envio = await cliente.PostAsync("/a2a", Rpc(Lote(EfdIcmsIpi(), NFe())));
+        using var jsonEnvio = await Json(envio);
+        var taskId = jsonEnvio.RootElement.GetProperty("result").GetProperty("id").GetString()!;
+
+        using var cancelamento = await cliente.PostAsync("/a2a", RpcTarefa("tasks/cancel", taskId));
+        using var json = await Json(cancelamento);
+
+        Assert.Equal(-32002, json.RootElement.GetProperty("error").GetProperty("code").GetInt32());
+        Assert.False(json.RootElement.TryGetProperty("result", out _));
+    }
+
+    [Theory]
+    [InlineData("tasks/get")]
+    [InlineData("tasks/cancel")]
+    public async Task Tarefas_IdInexistente_ErroTaskNotFound(string metodo)
+    {
+        using var cliente = Autenticado();
+
+        using var resposta = await cliente.PostAsync("/a2a", RpcTarefa(metodo, Guid.NewGuid().ToString()));
+        using var json = await Json(resposta);
+
+        Assert.Equal(-32001, json.RootElement.GetProperty("error").GetProperty("code").GetInt32());
+    }
+
+    [Theory]
+    [InlineData("{\"jsonrpc\":\"2.0\",\"id\":\"r1\",\"method\":\"tasks/inexistente\"}", -32601)]
+    [InlineData("{\"jsonrpc\":\"2.0\",\"id\":\"r1\",\"method\":\"tasks/get\",\"params\":{}}", -32602)]
+    [InlineData("{\"jsonrpc\":\"2.0\",\"id\":\"r1\",\"method\":\"message/send\",\"params\":{\"message\":{\"parts\":[]}}}", -32602)]
+    [InlineData("{nao e json", -32700)]
+    [InlineData("[1,2]", -32600)]
+    public async Task RpcInvalido_ErroJsonRpcSemStackTrace(string corpo, int codigo)
+    {
+        using var cliente = Autenticado();
+
+        using var resposta = await cliente.PostAsync("/a2a", Conteudo(System.Text.Encoding.UTF8.GetBytes(corpo)));
+        var texto = await resposta.Content.ReadAsStringAsync();
+        using var json = JsonDocument.Parse(texto);
+
+        Assert.Equal(codigo, json.RootElement.GetProperty("error").GetProperty("code").GetInt32());
+        Assert.DoesNotContain("   at ", texto, StringComparison.Ordinal);
+        Assert.DoesNotContain("Exception", texto, StringComparison.Ordinal);
+    }
+
+    [Fact]
     public async Task MessageSend_ContextIdDoCliente_Ecoado()
     {
         var sofia = EnvelopeSofia("8b2f0ad6-c2e4-4a68-8bdd-20f785bc798e", "e1b3a4cb-d729-4bd4-b796-b9c94be07b46", Lote(EfdIcmsIpi(), NFe()));
@@ -180,7 +277,7 @@ public class A2AEndpointTests(FabricaApi fabrica) : IClassFixture<FabricaApi>
         return cliente;
     }
 
-    private static ByteArrayContent Rpc(JsonNode payload, string? contextId = null)
+    private static ByteArrayContent Rpc(JsonNode payload, string? contextId = null, string rpcId = "rpc-1")
     {
         var mensagem = new JsonObject
         {
@@ -196,9 +293,21 @@ public class A2AEndpointTests(FabricaApi fabrica) : IClassFixture<FabricaApi>
         var envelope = new JsonObject
         {
             ["jsonrpc"] = "2.0",
-            ["id"] = 1,
+            ["id"] = rpcId,
             ["method"] = "message/send",
             ["params"] = new JsonObject { ["message"] = mensagem },
+        };
+        return Conteudo(System.Text.Encoding.UTF8.GetBytes(envelope.ToJsonString()));
+    }
+
+    private static ByteArrayContent RpcTarefa(string metodo, string taskId)
+    {
+        var envelope = new JsonObject
+        {
+            ["jsonrpc"] = "2.0",
+            ["id"] = "rpc-tarefa",
+            ["method"] = metodo,
+            ["params"] = new JsonObject { ["id"] = taskId },
         };
         return Conteudo(System.Text.Encoding.UTF8.GetBytes(envelope.ToJsonString()));
     }

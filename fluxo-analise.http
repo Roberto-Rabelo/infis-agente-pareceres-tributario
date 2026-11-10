@@ -314,10 +314,14 @@ X-Correlation-Id: <script>
 < ./exemplos/lote-exemplo.json
 
 ###############################################################################
-# 5. SOFIA / A2A v0.3.x (Agent Card anônimo; RPC com JWT)
+# 5. SOFIA / A2A v0.3.x (card e RPC com a chave Bearer da SOFIA ou JWT)
 ###############################################################################
 
-### 5.1 Agent Card
+### 5.1 Agent Card (Bearer obrigatório)
+GET {{agente}}/.well-known/agent-card.json
+Authorization: Bearer {{tokenAgente}}
+
+### 5.1b Agent Card sem token → 401
 GET {{agente}}/.well-known/agent-card.json
 
 ### 5.2 Preflight CORS origem autorizada

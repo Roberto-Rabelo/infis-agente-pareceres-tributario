@@ -93,7 +93,11 @@ else
 }
 
 builder.Services.AddSingleton<ServicoParecer>();
-builder.Services.Configure<OpcoesA2A>(builder.Configuration.GetSection(OpcoesA2A.Secao));
+// A chave compartilhada vem só de SOFIA_A2A_TOKEN (skill sofia-a2a-autenticacao), nunca da seção versionada.
+builder.Services.AddOptions<OpcoesA2A>()
+    .Bind(builder.Configuration.GetSection(OpcoesA2A.Secao))
+    .PostConfigure<IConfiguration>((opcoes, configuracao) => opcoes.ChaveIntegracao = configuracao[OpcoesA2A.VariavelToken]);
+builder.Services.AddSingleton<RepositorioTarefasA2A>();
 builder.Services.AddSingleton<ServicoExecucaoAnalise>();
 
 builder.Services.AddControllers().AddJsonOptions(o => OpcoesJsonSaida.Configurar(o.JsonSerializerOptions));
@@ -117,7 +121,7 @@ if (origensCors.Length > 0)
     builder.Services.AddCors(opcoes => opcoes.AddPolicy(A2AEndpoints.PoliticaCors, politica =>
         politica.WithOrigins(origensCors)
             .WithMethods("GET", "POST", "OPTIONS")
-            .WithHeaders("Content-Type", "Authorization", AutenticacaoChaveIntegracao.CabecalhoApiKey)));
+            .WithHeaders("Content-Type", "Authorization")));
 }
 
 var app = builder.Build();

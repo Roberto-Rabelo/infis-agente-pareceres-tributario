@@ -48,6 +48,8 @@ BaseConhecimento__Endpoint=$url/rag/mcp
 BaseConhecimento__TokenAcesso=$(token api-agente 90 rag.consulta)
 BaseConhecimento__TimeoutSegundos=30
 A2A__Url=$url/a2a
+# Chave Bearer compartilhada da SOFIA (valor fornecido pelo treinamento; protege card e /a2a).
+SOFIA_A2A_TOKEN=PREENCHER
 RateLimiting__PermitLimitPorMinuto=60
 
 # --- Só para uso local (não cadastrar na Vercel) ---
