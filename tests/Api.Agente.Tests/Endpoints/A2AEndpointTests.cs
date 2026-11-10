@@ -24,10 +24,13 @@ public class A2AEndpointTests(FabricaApi fabrica) : IClassFixture<FabricaApi>
         Assert.DoesNotContain("agent-card", raiz.GetProperty("url").GetString(), StringComparison.Ordinal);
         Assert.Equal("analisar_documentos", raiz.GetProperty("skills")[0].GetProperty("id").GetString());
         Assert.Equal("JSONRPC", raiz.GetProperty("preferredTransport").GetString());
-        var bearer = raiz.GetProperty("securitySchemes").GetProperty("bearer");
-        Assert.Equal("http", bearer.GetProperty("type").GetString());
-        Assert.Equal("bearer", bearer.GetProperty("scheme").GetString());
+        var esquemas = raiz.GetProperty("securitySchemes");
+        Assert.Equal("http", esquemas.GetProperty("bearer").GetProperty("type").GetString());
+        Assert.Equal("bearer", esquemas.GetProperty("bearer").GetProperty("scheme").GetString());
+        Assert.Equal("apiKey", esquemas.GetProperty("apiKey").GetProperty("type").GetString());
+        Assert.Equal("X-API-Key", esquemas.GetProperty("apiKey").GetProperty("name").GetString());
         Assert.True(raiz.GetProperty("security")[0].TryGetProperty("bearer", out _));
+        Assert.True(raiz.GetProperty("security")[1].TryGetProperty("apiKey", out _));
     }
 
     [Fact]

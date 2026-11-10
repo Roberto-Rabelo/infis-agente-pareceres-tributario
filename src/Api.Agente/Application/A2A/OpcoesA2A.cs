@@ -10,6 +10,9 @@ public sealed class OpcoesA2A
 
     public string Nome { get; set; } = "Agente Parecer Tributário";
 
+    /// <summary>Chave de integração do orquestrador para <c>/a2a</c> (segredo: só via ambiente, ex. <c>A2A__ChaveIntegracao</c>).</summary>
+    public string? ChaveIntegracao { get; set; }
+
     public string Descricao { get; set; } =
         "Cruzamento de obrigações fiscais já validadas na origem e parecer técnico. Não certifica conformidade.";
 }

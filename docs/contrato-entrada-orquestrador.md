@@ -76,7 +76,7 @@ O orquestrador envia **somente**:
 
 NFC-e **não entra** neste produto. O exemplo `exemplos/lote-exemplo.json` tem exatamente esses sete tipos (duas NF-e: saída e entrada, para o M1).
 
-A SOFIA descobre o agente em `GET /.well-known/agent-card.json` e envia o **mesmo JSON de lote** no TextPart de `POST /a2a` (`message/send`, JWT). O envelope SOFIA v1 também é aceito, com o lote em `documentos[].texto`. CORS não é necessário nessa chamada servidor-servidor.
+A SOFIA descobre o agente em `GET /.well-known/agent-card.json` e envia o **mesmo JSON de lote** no TextPart de `POST /a2a` (`message/send`, JWT ou a chave de integração em `Authorization: Bearer <chave>` / `X-API-Key: <chave>`). O envelope SOFIA v1 também é aceito, com o lote em `documentos[].texto`. CORS não é necessário nessa chamada servidor-servidor.
 
 Só o par **NF-e × EFD ICMS/IPI** tem validador hoje (M1). Os demais tipos, se APROVADOS e com o layout da tabela, ficam **aptos** em `cobertura` e aguardam M2–M12.
 

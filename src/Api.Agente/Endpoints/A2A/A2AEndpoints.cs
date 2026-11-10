@@ -48,9 +48,23 @@ public static class A2AEndpoints
             ["preferredTransport"] = "JSONRPC",
             ["securitySchemes"] = new JsonObject
             {
-                ["bearer"] = new JsonObject { ["type"] = "http", ["scheme"] = "bearer", ["bearerFormat"] = "JWT" },
+                ["bearer"] = new JsonObject
+                {
+                    ["type"] = "http",
+                    ["scheme"] = "bearer",
+                    ["description"] = "JWT emitido para o agente ou a chave de integração do orquestrador.",
+                },
+                ["apiKey"] = new JsonObject
+                {
+                    ["type"] = "apiKey",
+                    ["in"] = "header",
+                    ["name"] = AutenticacaoChaveIntegracao.CabecalhoApiKey,
+                    ["description"] = "Chave de integração do orquestrador.",
+                },
             },
-            ["security"] = new JsonArray(new JsonObject { ["bearer"] = new JsonArray() }),
+            ["security"] = new JsonArray(
+                new JsonObject { ["bearer"] = new JsonArray() },
+                new JsonObject { ["apiKey"] = new JsonArray() }),
         };
         return Results.Json(card);
     }
