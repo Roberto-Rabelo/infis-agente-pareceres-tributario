@@ -5,6 +5,7 @@ COPY src/Api.Agente/Api.Agente.csproj src/Api.Agente/
 RUN dotnet restore src/Api.Agente/Api.Agente.csproj
 COPY src/Api.Agente/ src/Api.Agente/
 COPY catalog/ catalog/
+COPY docs/regras/ docs/regras/
 COPY contracts/ contracts/
 COPY prompts/ prompts/
 COPY exemplos/lote-exemplo.json exemplos/lote-exemplo.json

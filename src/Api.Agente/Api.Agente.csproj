@@ -19,6 +19,8 @@
 
   <ItemGroup>
     <None Include="..\..\catalog\*.json" Link="catalog\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <!-- Catálogo de coesão (spec 004, D401): as 158 regras, aprovações, fontes, parâmetros e cadeias. -->
+    <None Include="..\..\docs\regras\*.json" Link="regras\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
     <None Include="..\..\contracts\saida\*.json" Link="contracts\saida\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
     <None Include="..\..\prompts\parecer\*.md" Link="prompts\parecer\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
     <None Include="..\..\exemplos\lote-exemplo.json" Link="exemplos\lote-exemplo.json" CopyToOutputDirectory="PreserveNewest" />

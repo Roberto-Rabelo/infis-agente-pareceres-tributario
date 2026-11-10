@@ -22,7 +22,6 @@ using Microsoft.Extensions.Options;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.Configure<OpcoesEntrada>(builder.Configuration.GetSection(OpcoesEntrada.Secao));
-builder.Services.Configure<OpcoesCruzamento>(builder.Configuration.GetSection(OpcoesCruzamento.Secao));
 builder.Services.Configure<OpcoesCatalogo>(builder.Configuration.GetSection(OpcoesCatalogo.Secao));
 
 var tamanhoMaximo = builder.Configuration.GetSection(OpcoesEntrada.Secao).Get<OpcoesEntrada>()?.TamanhoMaximoBytes
@@ -36,21 +35,18 @@ builder.WebHost.ConfigureKestrel(k =>
 builder.Services.AddSingleton(TimeProvider.System);
 builder.Services.AddSingleton(sp => new LeitorLote(sp.GetRequiredService<IOptions<OpcoesEntrada>>().Value));
 builder.Services.AddSingleton(sp => CarregadorCatalogo.CarregarRegras(
-    CarregadorCatalogo.ResolverDiretorio(sp.GetRequiredService<IOptions<OpcoesCatalogo>>().Value.Caminho)));
+    CarregadorCatalogo.ResolverDiretorio(sp.GetRequiredService<IOptions<OpcoesCatalogo>>().Value.CaminhoRegras)));
 builder.Services.AddSingleton(sp => CarregadorCatalogo.CarregarVersoes(
     CarregadorCatalogo.ResolverDiretorio(sp.GetRequiredService<IOptions<OpcoesCatalogo>>().Value.Caminho)));
-builder.Services.AddSingleton(sp =>
-{
-    var opcoes = sp.GetRequiredService<IOptions<OpcoesCruzamento>>().Value;
-    return new ParametrosComparacao(opcoes.Tolerancia, opcoes.Materialidade);
-});
+// Tolerância e materialidade vêm de docs/regras/parametros.json (spec 004, D403), não mais do appsettings.
+builder.Services.AddSingleton(sp => ParametrosComparacao.DoCatalogo(sp.GetRequiredService<CatalogoRegras>().Parametros));
 builder.Services.AddSingleton<VerificadorPreCondicoes>();
 foreach (var validador in ValidadoresNfeEfd.Todos())
 {
     builder.Services.AddSingleton(validador);
 }
 
-builder.Services.AddSingleton<MotorRegras>();
+builder.Services.AddSingleton(sp => MotorRegras.Montar(sp.GetServices<IValidadorCruzamento>(), sp.GetRequiredService<CatalogoRegras>()));
 builder.Services.AddSingleton<ServicoAnalise>();
 
 builder.Services.Configure<OpcoesBaseConhecimento>(builder.Configuration.GetSection(OpcoesBaseConhecimento.Secao));
@@ -126,7 +122,12 @@ if (origensCors.Length > 0)
 
 var app = builder.Build();
 
-_ = app.Services.GetRequiredService<CatalogoRegras>();
+var catalogoRegras = app.Services.GetRequiredService<CatalogoRegras>();
+if (app.Services.GetRequiredService<MotorRegras>().RegrasAprovadasSemExecutor(catalogoRegras) is { Count: > 0 } semExecutor)
+{
+    throw new CatalogoInvalidoException(semExecutor);
+}
+
 _ = app.Services.GetRequiredService<CatalogoVersoesLayout>();
 _ = app.Services.GetRequiredService<ServicoParecer>();
 if (!string.IsNullOrWhiteSpace(conexaoAgente) && app.Configuration.GetValue("Postgres:AplicarMigracoes", true))

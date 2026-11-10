@@ -7,15 +7,6 @@ using Api.Agente.Domain.Motor;
 
 namespace Api.Agente.Application.Analise;
 
-public sealed class OpcoesCruzamento
-{
-    public const string Secao = "Cruzamento";
-
-    public decimal Tolerancia { get; set; }
-
-    public decimal? Materialidade { get; set; }
-}
-
 public sealed record ItemCobertura(string ObrigacaoId, TipoObrigacao Tipo, string Cnpj, string? InscricaoEstadual, Periodo Periodo, bool Apta);
 
 public sealed record RevisaoHumana(bool Requerida, IReadOnlyList<string> Motivos);
@@ -90,7 +81,19 @@ public sealed class ServicoAnalise
             achados,
             motor.Regras,
             _parametros,
-            DeterminarRevisaoHumana(status, motor, achados));
+            DeterminarRevisaoHumana(status, motor, achados))
+        {
+            Limitacoes = [CoberturaCatalogo(_catalogo)],
+        };
+    }
+
+    /// <summary>FR-410: quanto do catálogo de coesão executa hoje. Regra proposta não executa até ser aprovada (FR-402).</summary>
+    internal static string CoberturaCatalogo(CatalogoRegras catalogo)
+    {
+        var coesao = catalogo.Regras.Where(r => r.Tipo == TipoRegra.Cruzamento).ToList();
+        var aprovadas = coesao.Count(r => r.Status == StatusRegra.Aprovada);
+        return $"Catálogo {catalogo.Versao}: {aprovadas} de {coesao.Count} regras de cruzamento aprovadas e executadas conforme as obrigações recebidas; "
+            + $"{coesao.Count - aprovadas} ainda propostas, não executadas até aprovação.";
     }
 
     /// <summary>P4 / FR-038 / FR-039: CONCLUIDA só quando todas as validações obrigatórias foram executadas.</summary>

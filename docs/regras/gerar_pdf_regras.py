@@ -13,8 +13,9 @@ def carregar(caminho):
 
 
 fontes = {f['id']: f for f in carregar(os.path.join(base, 'fontes.json'))['fontes']}
-motor = carregar(os.path.join(raiz, 'catalog', 'regras.json'))
-implementadas = {r['id'] for r in motor['regras'] if r.get('tipo') == 'CRUZAMENTO'}
+# Status de execução vem de aprovacoes.json (spec 004): só as APROVADA executam no motor.
+motor = carregar(os.path.join(base, 'aprovacoes.json'))
+implementadas = {a['id'] for a in motor['aprovacoes'] if a.get('status') == 'APROVADA'}
 
 NOMES = {"NFE": "NF-e/NFC-e", "NFCE": "NFC-e", "NFSE": "NFS-e", "DIMP": "DIMP", "EFD_ICMS_IPI": "EFD ICMS/IPI",
          "EFD_CONTRIB": "EFD-Contribuições", "ECD": "ECD", "ECF": "ECF", "EXTERNO": "Tabela externa"}
@@ -161,7 +162,7 @@ code {{ font-family: Consolas, monospace; font-size: 8.5pt; background: #f4f4f5;
 <p><b>infis-agente-parecer-tributário</b> · catálogo v1.0.0 · {len(regras)} regras</p>
 <p>Gerado a partir de <code>docs/regras/*.json</code>. Em caso de divergência, o JSON é a referência.
 O selo <span class='selo impl'>implementada no motor</span> indica as {len(implementadas)} regras de cruzamento já presentes em
-<code>catalog/regras.json</code> (v{e(motor['versao'])}); o selo <span class='selo conf'>campo a conferir</span> indica campo ainda a confirmar no PDF oficial.</p>
+<code>docs/regras/aprovacoes.json</code> (v{e(motor['versao'])}); o selo <span class='selo conf'>campo a conferir</span> indica campo ainda a confirmar no PDF oficial.</p>
 <h3>Por severidade</h3>
 <table class='resumo'><tr><th>Severidade</th><th>Qtd.</th><th>Critério</th></tr>{resumo_sev}</table>
 <h3>Por grupo</h3>

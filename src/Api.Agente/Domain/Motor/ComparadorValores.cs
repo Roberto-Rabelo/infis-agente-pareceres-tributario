@@ -4,6 +4,10 @@ namespace Api.Agente.Domain.Motor;
 public sealed record ParametrosComparacao(decimal Tolerancia, decimal? Materialidade)
 {
     public static ParametrosComparacao Exata { get; } = new(0m, null);
+
+    /// <summary>Parâmetros informados no envelope: tolerância por documento e materialidade de receita do catálogo de parâmetros.</summary>
+    public static ParametrosComparacao DoCatalogo(Catalogo.CatalogoParametros parametros) =>
+        new(parametros.Numero("TOL_VALOR_DOCUMENTO") ?? 0m, parametros.Numero("MATERIALIDADE_RECEITA"));
 }
 
 public sealed record ResultadoComparacao(decimal Origem, decimal Destino, decimal Diferenca, decimal ToleranciaAplicada, bool Diverge)

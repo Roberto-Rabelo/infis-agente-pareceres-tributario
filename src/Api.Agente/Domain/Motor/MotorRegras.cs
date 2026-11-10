@@ -17,6 +17,12 @@ public sealed record ResultadoRegra(string RegraId, SituacaoRegra Situacao, stri
 
 public sealed record ResultadoMotor(IReadOnlyList<Achado> Achados, IReadOnlyList<ResultadoRegra> Regras);
 
+/// <summary>Como cada regra do catálogo executaria: validador dedicado, executor genérico ou o motivo de não ter executor.</summary>
+public sealed record ExecutorDaRegra(string RegraId, StatusRegra Status, bool Dedicado, bool Generico, string? Motivo)
+{
+    public bool Executavel => Dedicado || Generico;
+}
+
 public sealed class MotorRegras
 {
     private readonly Dictionary<string, IValidadorCruzamento> _validadores;
@@ -26,6 +32,42 @@ public sealed class MotorRegras
         _validadores = validadores.ToDictionary(v => v.RegraId);
     }
 
+    /// <summary>
+    /// Validadores dedicados têm precedência (D406); as demais regras aprovadas usam o executor genérico da relação (D405).
+    /// </summary>
+    public static MotorRegras Montar(IEnumerable<IValidadorCruzamento> dedicados, CatalogoRegras catalogo)
+    {
+        var validadores = dedicados.ToDictionary(v => v.RegraId, StringComparer.Ordinal);
+        foreach (var regra in catalogo.Regras.Where(r => r.Tipo == TipoRegra.Cruzamento && r.Status == StatusRegra.Aprovada && !validadores.ContainsKey(r.Id)))
+        {
+            if (ExecutoresGenericos.Criar(regra, catalogo.Parametros).Validador is { } generico)
+            {
+                validadores[regra.Id] = generico;
+            }
+        }
+
+        return new MotorRegras(validadores.Values);
+    }
+
+    /// <summary>Executor de cada regra de cruzamento do catálogo, aprovada ou não (cobertura de execução, FR-410).</summary>
+    public IReadOnlyList<ExecutorDaRegra> Executores(CatalogoRegras catalogo) =>
+        [.. catalogo.Regras.Where(r => r.Tipo == TipoRegra.Cruzamento).Select(r =>
+        {
+            if (_validadores.TryGetValue(r.Id, out var validador))
+            {
+                return new ExecutorDaRegra(r.Id, r.Status, validador is not (ExecutorPresenca or ExecutorComparacao or ExecutorExclusao), validador is ExecutorPresenca or ExecutorComparacao or ExecutorExclusao, null);
+            }
+
+            var (generico, motivo) = ExecutoresGenericos.Criar(r, catalogo.Parametros);
+            return new ExecutorDaRegra(r.Id, r.Status, false, generico is not null, motivo);
+        })];
+
+    /// <summary>FR-404: regra aprovada sem executor impede a inicialização (antes só aparecia como falha técnica na análise).</summary>
+    public IReadOnlyList<string> RegrasAprovadasSemExecutor(CatalogoRegras catalogo) =>
+        [.. catalogo.Regras
+            .Where(r => r.Tipo == TipoRegra.Cruzamento && r.Status == StatusRegra.Aprovada && !_validadores.ContainsKey(r.Id))
+            .Select(r => $"Regra {r.Id}: aprovada sem validador dedicado nem executor genérico ({ExecutoresGenericos.Criar(r, catalogo.Parametros).Motivo})")];
+
     public ResultadoMotor Executar(CatalogoRegras catalogo, ContextoCruzamento contexto)
     {
         var achados = new List<Achado>();
@@ -33,7 +75,8 @@ public sealed class MotorRegras
 
         var aprovadas = catalogo.Regras
             .Where(r => r.Tipo == TipoRegra.Cruzamento && r.Status == StatusRegra.Aprovada)
-            .OrderBy(r => OrdemExecucao.De(r.Relacao!.Value))
+            .OrderBy(r => r.Passo)
+            .ThenBy(r => OrdemExecucao.De(r.Relacao!.Value))
             .ThenBy(r => r.Id, StringComparer.Ordinal)
             .ToList();
         var porId = aprovadas.ToDictionary(r => r.Id);

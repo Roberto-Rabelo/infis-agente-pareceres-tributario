@@ -1,0 +1,200 @@
+{
+  "versao": "0.3.0",
+  "descricao": "Status de execução das regras do catálogo de coesão (docs/regras/0*.json). Regra ausente daqui é PROPOSTA e não executa. Para APROVADA: aprovadoPor, testes e as fontes efetivamente conferidas; dependências do catálogo só podem ser dispensadas com motivo. A versão muda a cada aprovação e é a versão do catálogo informada no envelope.",
+  "aprovacoes": [
+    {
+      "id": "M1-P01",
+      "status": "APROVADA",
+      "aprovadoPor": "Roberto, 2026-10-30, com base em docs/NUCLEO-2 (manuais oficiais citados na regra ainda sem curadoria T011)",
+      "testes": [
+        "CenariosNfeEfdTests.Consistente_SemAchados",
+        "CenariosNfeEfdTests.Omissao_M1P01",
+        "CenariosNfeEfdTests.Incompleto_NfeReprovada_AusenciaDeEvidencias"
+      ],
+      "fontes": [
+        {
+          "emissor": "Projeto infis-agente-parecer-tributário",
+          "documento": "docs/NUCLEO-2-mapas-bidirecionais.md",
+          "versao": "2026-10-30",
+          "localizacao": "M1.1 / M1-P01",
+          "conferida": true
+        }
+      ],
+      "dependenciasDispensadas": {
+        "PAR-001": "Aprovada em 2026-10-30 sem pré-requisitos de regime (PAR-001 ainda proposta). Rever ao aprovar o bloco PAR/EXC/ENT (T437).",
+        "ENT-003": "Aprovada em 2026-10-30 sem pré-requisitos de entidade (ENT-003 ainda proposta). Rever ao aprovar o bloco PAR/EXC/ENT (T437)."
+      }
+    },
+    {
+      "id": "M1-P02",
+      "status": "APROVADA",
+      "aprovadoPor": "Roberto, 2026-10-30, com base em docs/NUCLEO-2 (manuais oficiais citados na regra ainda sem curadoria T011)",
+      "testes": [
+        "CenariosNfeEfdTests.Consistente_SemAchados",
+        "CenariosNfeEfdTests.CanceladaEscrituradaRegular_M1P02_M1R01",
+        "CenariosNfeEfdTests.Incompleto_NfeReprovada_AusenciaDeEvidencias"
+      ],
+      "fontes": [
+        {
+          "emissor": "Projeto infis-agente-parecer-tributário",
+          "documento": "docs/NUCLEO-2-mapas-bidirecionais.md",
+          "versao": "2026-10-30",
+          "localizacao": "M1.1 / M1-P02",
+          "conferida": true
+        }
+      ]
+    },
+    {
+      "id": "M1-R01",
+      "status": "APROVADA",
+      "aprovadoPor": "Roberto, 2026-10-30, com base em docs/NUCLEO-2 (manuais oficiais citados na regra ainda sem curadoria T011)",
+      "testes": [
+        "CenariosNfeEfdTests.Consistente_SemAchados",
+        "CenariosNfeEfdTests.CanceladaEscrituradaRegular_M1P02_M1R01",
+        "CenariosNfeEfdTests.Incompleto_NfeReprovada_AusenciaDeEvidencias"
+      ],
+      "fontes": [
+        {
+          "emissor": "Projeto infis-agente-parecer-tributário",
+          "documento": "docs/NUCLEO-2-mapas-bidirecionais.md",
+          "versao": "2026-10-30",
+          "localizacao": "M1.2 / M1-R01",
+          "conferida": true
+        }
+      ]
+    },
+    {
+      "id": "M1-R02",
+      "status": "APROVADA",
+      "aprovadoPor": "Roberto, 2026-10-30, com base em docs/NUCLEO-2 (manuais oficiais citados na regra ainda sem curadoria T011)",
+      "testes": [
+        "CenariosNfeEfdTests.Consistente_SemAchados",
+        "CenariosNfeEfdTests.CanceladoSemEvento_M1R02",
+        "CenariosNfeEfdTests.Incompleto_NfeReprovada_AusenciaDeEvidencias"
+      ],
+      "fontes": [
+        {
+          "emissor": "Projeto infis-agente-parecer-tributário",
+          "documento": "docs/NUCLEO-2-mapas-bidirecionais.md",
+          "versao": "2026-10-30",
+          "localizacao": "M1.2 / M1-R02",
+          "conferida": true
+        }
+      ]
+    },
+    {
+      "id": "M1-R03",
+      "status": "APROVADA",
+      "aprovadoPor": "Roberto, 2026-10-30, com base em docs/NUCLEO-2 (manuais oficiais citados na regra ainda sem curadoria T011)",
+      "testes": [
+        "CenariosNfeEfdTests.Consistente_SemAchados",
+        "CenariosNfeEfdTests.DocumentoDeOutroEstabelecimento_M1R03_M1R04",
+        "CenariosNfeEfdTests.Incompleto_NfeReprovada_AusenciaDeEvidencias"
+      ],
+      "fontes": [
+        {
+          "emissor": "Projeto infis-agente-parecer-tributário",
+          "documento": "docs/NUCLEO-2-mapas-bidirecionais.md",
+          "versao": "2026-10-30",
+          "localizacao": "M1.2 / M1-R03",
+          "conferida": true
+        }
+      ]
+    },
+    {
+      "id": "M1-R04",
+      "status": "APROVADA",
+      "aprovadoPor": "Roberto, 2026-10-30, com base em docs/NUCLEO-2 (manuais oficiais citados na regra ainda sem curadoria T011)",
+      "testes": [
+        "CenariosNfeEfdTests.Consistente_SemAchados",
+        "CenariosNfeEfdTests.DocumentoDeOutroEstabelecimento_M1R03_M1R04",
+        "CenariosNfeEfdTests.Incompleto_NfeReprovada_AusenciaDeEvidencias"
+      ],
+      "fontes": [
+        {
+          "emissor": "Projeto infis-agente-parecer-tributário",
+          "documento": "docs/NUCLEO-2-mapas-bidirecionais.md",
+          "versao": "2026-10-30",
+          "localizacao": "M1.2 / M1-R04",
+          "conferida": true
+        }
+      ]
+    },
+    {
+      "id": "M1-I01",
+      "status": "APROVADA",
+      "aprovadoPor": "Roberto, 2026-10-30, com base em docs/NUCLEO-2 (manuais oficiais citados na regra ainda sem curadoria T011)",
+      "testes": [
+        "CenariosNfeEfdTests.Consistente_SemAchados",
+        "CenariosNfeEfdTests.IdentificacaoDivergente_M1I01",
+        "CenariosNfeEfdTests.Incompleto_NfeReprovada_AusenciaDeEvidencias"
+      ],
+      "fontes": [
+        {
+          "emissor": "Projeto infis-agente-parecer-tributário",
+          "documento": "docs/NUCLEO-2-mapas-bidirecionais.md",
+          "versao": "2026-10-30",
+          "localizacao": "M1.3 / M1-I01",
+          "conferida": true
+        }
+      ]
+    },
+    {
+      "id": "M1-I03",
+      "status": "APROVADA",
+      "aprovadoPor": "Roberto, 2026-10-30, com base em docs/NUCLEO-2 (manuais oficiais citados na regra ainda sem curadoria T011)",
+      "testes": [
+        "CenariosNfeEfdTests.Consistente_SemAchados",
+        "CenariosNfeEfdTests.ValoresDivergentes_M1I03_M1I05",
+        "CenariosNfeEfdTests.Incompleto_NfeReprovada_AusenciaDeEvidencias"
+      ],
+      "fontes": [
+        {
+          "emissor": "Projeto infis-agente-parecer-tributário",
+          "documento": "docs/NUCLEO-2-mapas-bidirecionais.md",
+          "versao": "2026-10-30",
+          "localizacao": "M1.3 / M1-I03",
+          "conferida": true
+        }
+      ]
+    },
+    {
+      "id": "M1-I05",
+      "status": "APROVADA",
+      "aprovadoPor": "Roberto, 2026-10-30, com base em docs/NUCLEO-2 (manuais oficiais citados na regra ainda sem curadoria T011)",
+      "testes": [
+        "CenariosNfeEfdTests.Consistente_SemAchados",
+        "CenariosNfeEfdTests.ValoresDivergentes_M1I03_M1I05",
+        "CenariosNfeEfdTests.Incompleto_NfeReprovada_AusenciaDeEvidencias"
+      ],
+      "fontes": [
+        {
+          "emissor": "Projeto infis-agente-parecer-tributário",
+          "documento": "docs/NUCLEO-2-mapas-bidirecionais.md",
+          "versao": "2026-10-30",
+          "localizacao": "M1.3 / M1-I05",
+          "conferida": true
+        }
+      ]
+    },
+    {
+      "id": "M1-I06",
+      "status": "APROVADA",
+      "aprovadoPor": "Roberto, 2026-10-30, com base em docs/NUCLEO-2 (manuais oficiais citados na regra ainda sem curadoria T011)",
+      "testes": [
+        "CenariosNfeEfdTests.Consistente_SemAchados",
+        "CenariosNfeEfdTests.CreditoAcimaDoDestacado_M1I06",
+        "CenariosNfeEfdTests.Incompleto_NfeReprovada_AusenciaDeEvidencias"
+      ],
+      "fontes": [
+        {
+          "emissor": "Projeto infis-agente-parecer-tributário",
+          "documento": "docs/NUCLEO-2-mapas-bidirecionais.md",
+          "versao": "2026-10-30",
+          "localizacao": "M1.3 / M1-I06",
+          "conferida": true
+        }
+      ]
+    }
+  ]
+}

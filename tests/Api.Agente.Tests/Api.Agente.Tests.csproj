@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <IsPackable>false</IsPackable>
-    <!-- Nomes de teste no padrão Regra_Cenario_Resultado (rastreabilidade com catalog/regras.json). -->
+    <!-- Nomes de teste no padrão Regra_Cenario_Resultado (rastreabilidade com docs/regras/aprovacoes.json). -->
     <NoWarn>$(NoWarn);CA1707;CA1515;CA2007</NoWarn>
   </PropertyGroup>
 

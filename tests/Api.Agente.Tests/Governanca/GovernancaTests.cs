@@ -28,17 +28,15 @@ public class GovernancaTests
     [Fact]
     public void CatalogoReal_CarregaSemErros()
     {
-        var diretorio = CarregadorCatalogo.ResolverDiretorio("catalog");
-
-        Assert.NotEmpty(CarregadorCatalogo.CarregarRegras(diretorio).Regras);
-        Assert.NotEmpty(CarregadorCatalogo.CarregarVersoes(diretorio).Versoes);
+        Assert.NotEmpty(CarregadorCatalogo.CarregarRegras(CarregadorCatalogo.ResolverDiretorio("regras")).Regras);
+        Assert.NotEmpty(CarregadorCatalogo.CarregarVersoes(CarregadorCatalogo.ResolverDiretorio("catalog")).Versoes);
     }
 
     /// <summary>Rastreabilidade regra → teste (constitution 6.2): todo teste citado no catálogo existe.</summary>
     [Fact]
     public void CatalogoReal_TestesCitadosExistem()
     {
-        var catalogo = CarregadorCatalogo.CarregarRegras(CarregadorCatalogo.ResolverDiretorio("catalog"));
+        var catalogo = Lotes.CatalogoReal.Value;
         var testes = typeof(GovernancaTests).Assembly.GetTypes()
             .SelectMany(t => t.GetMethods().Where(m => m.GetCustomAttributes<FactAttribute>(true).Any()).Select(m => $"{t.Name}.{m.Name}"))
             .ToHashSet();

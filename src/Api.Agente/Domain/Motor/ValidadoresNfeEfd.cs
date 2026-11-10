@@ -12,7 +12,9 @@ public sealed class ValidadorRegra(string regraId, Func<ContextoCruzamento, Regr
 }
 
 /// <summary>
-/// Regras M1 do NUCLEO-2 (NF-e × EFD ICMS/IPI). O casamento é feito pela chave de acesso e o sentido por IND_OPER/IND_EMIT.
+/// Validadores dedicados das regras M1 do NUCLEO-2 (NF-e × EFD ICMS/IPI) que não cabem nos executores genéricos (spec 004, D406):
+/// mês de alocação, evento de cancelamento, papel do estabelecimento e normalização de modelo/série/número.
+/// M1-I03, M1-I05 e M1-I06 rodam pelo <see cref="ExecutorComparacao"/>. O casamento é pela chave de acesso e o sentido por IND_OPER/IND_EMIT.
 /// Cancelamento é lido do grupo <c>evento</c> da NF-e (<c>tpEvento</c> 110111). Dado ausente vira ausência de evidências, nunca erro (P5).
 /// </summary>
 public static class ValidadoresNfeEfd
@@ -31,9 +33,6 @@ public static class ValidadoresNfeEfd
         new ValidadorRegra("M1-R03", EmissaoPropriaDoEstabelecimento),
         new ValidadorRegra("M1-R04", EntradaDestinadaAoEstabelecimento),
         new ValidadorRegra("M1-I01", IdentificacaoIgual),
-        new ValidadorRegra("M1-I03", ValorTotalIgual),
-        new ValidadorRegra("M1-I05", IcmsProprioIgual),
-        new ValidadorRegra("M1-I06", CreditoLimitadoAoDestacado),
     ];
 
     private static IEnumerable<Achado> NotaPropriaEscriturada(ContextoCruzamento contexto, Regra regra)
@@ -159,61 +158,8 @@ public static class ValidadoresNfeEfd
                 yield return regra.CriarInconsistencia(
                     $"NF-e {nota.Chave}: DT_DOC escriturado {data:yyyy-MM-dd} x dhEmi {nota.Emissao:yyyy-MM-dd}.",
                     [lancamento.Evidencia("DT_DOC"), nota.Evidencia("ide", "dhEmi")],
-                    chaveSeveridade: "data");
+                    chaveSeveridade: "atenuada");
             }
-        }
-    }
-
-    private static IEnumerable<Achado> ValorTotalIgual(ContextoCruzamento contexto, Regra regra) =>
-        Pares(contexto, regra).SelectMany(p => CompararTotal(contexto, regra, p.Lancamento, p.Nota, "VL_DOC", "vNF"));
-
-    private static IEnumerable<Achado> IcmsProprioIgual(ContextoCruzamento contexto, Regra regra) =>
-        Pares(contexto, regra).Where(p => p.Lancamento.Proprio).SelectMany(p =>
-            CompararTotal(contexto, regra, p.Lancamento, p.Nota, "VL_BC_ICMS", "vBC")
-                .Concat(CompararTotal(contexto, regra, p.Lancamento, p.Nota, "VL_ICMS", "vICMS")));
-
-    private static IEnumerable<Achado> CreditoLimitadoAoDestacado(ContextoCruzamento contexto, Regra regra)
-    {
-        foreach (var (lancamento, nota) in Pares(contexto, regra).Where(p => p.Lancamento.EntradaDeTerceiros))
-        {
-            LocalizacaoEvidencia[] evidencias = [lancamento.Evidencia("VL_ICMS"), nota.Evidencia("ICMSTot", "vICMS")];
-            if (Valor(lancamento.Campo("VL_ICMS")) is not { } credito || Valor(nota.Campo("ICMSTot", "vICMS")) is not { } destacado)
-            {
-                yield return Ausencia(regra, $"NF-e {nota.Chave}: VL_ICMS ou vICMS não informados.", evidencias);
-                continue;
-            }
-
-            var limite = ComparadorValores.Limite(destacado, credito, contexto.Parametros);
-            if (limite.Diverge)
-            {
-                yield return regra.CriarInconsistencia(
-                    $"Entrada {nota.Chave}: crédito escriturado R$ {credito.ToString("0.00", CultureInfo.InvariantCulture)} supera o ICMS destacado R$ {destacado.ToString("0.00", CultureInfo.InvariantCulture)}.",
-                    evidencias,
-                    valorOrigem: destacado,
-                    valorDestino: credito,
-                    toleranciaAplicada: limite.ToleranciaAplicada);
-            }
-        }
-    }
-
-    private static IEnumerable<Achado> CompararTotal(ContextoCruzamento contexto, Regra regra, Lancamento lancamento, Nota nota, string campoEfd, string campoXml)
-    {
-        LocalizacaoEvidencia[] evidencias = [lancamento.Evidencia(campoEfd), nota.Evidencia("ICMSTot", campoXml)];
-        if (Valor(lancamento.Campo(campoEfd)) is not { } escriturado || Valor(nota.Campo("ICMSTot", campoXml)) is not { } documento)
-        {
-            yield return Ausencia(regra, $"NF-e {nota.Chave}: {campoEfd} ou {campoXml} não informados.", evidencias);
-            yield break;
-        }
-
-        var comparacao = ComparadorValores.Comparar(escriturado, documento, contexto.Parametros);
-        if (comparacao.Diverge)
-        {
-            yield return regra.CriarInconsistencia(
-                $"NF-e {nota.Chave}: {campoEfd} escriturado R$ {escriturado.ToString("0.00", CultureInfo.InvariantCulture)} x {campoXml} R$ {documento.ToString("0.00", CultureInfo.InvariantCulture)}.",
-                evidencias,
-                valorOrigem: escriturado,
-                valorDestino: documento,
-                toleranciaAplicada: comparacao.ToleranciaAplicada);
         }
     }
 
@@ -259,9 +205,6 @@ public static class ValidadoresNfeEfd
         var limpo = (valor ?? string.Empty).Trim().TrimStart('0');
         return limpo.Length == 0 ? "0" : limpo;
     }
-
-    private static decimal? Valor(string? texto) =>
-        decimal.TryParse(texto, NumberStyles.Number, CultureInfo.InvariantCulture, out var valor) ? valor : null;
 
     private static DateOnly? Data(string? texto) =>
         texto is { Length: >= 10 } && DateOnly.TryParseExact(texto[..10], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var data) ? data : null;

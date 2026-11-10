@@ -1,0 +1,162 @@
+{
+  "descricao": "Pré-condições de contrato (P5, P6, P18). Não são regras fiscais: ficam fora do catálogo de coesão (0*.json) e já entram aprovadas. Formato D21.",
+  "regras": [
+    {
+      "id": "PRE-001",
+      "titulo": "Obrigação aderente ao contrato de entrada",
+      "tipo": "PRE_CONDICAO",
+      "resultadoEsperado": "O JSON da obrigação respeita o contrato de entrada v1 (campos obrigatórios, tipos, códigos, CNPJ com DV válido, período coerente, chave de acesso para documentos, recibo ou hash para escriturações) e o identificador é único no lote.",
+      "fontes": [
+        {
+          "emissor": "Projeto infis-agente-parecer-tributário",
+          "documento": "Constitution",
+          "versao": "2.0.0",
+          "localizacao": "P18",
+          "conferida": true
+        },
+        {
+          "emissor": "Projeto infis-agente-parecer-tributário",
+          "documento": "contracts/entrada/lote.v1.schema.json",
+          "versao": "1.0.0",
+          "localizacao": "$defs.obrigacao",
+          "conferida": true
+        }
+      ],
+      "vigenciaInicio": "2000-01-01",
+      "status": "APROVADA",
+      "aprovadoPor": "Constitution 2.0.0 (P18) – confirmar responsável",
+      "implementacao": "DETERMINISTICA",
+      "testes": [
+        "PreCondicoesTests.Pre001_EstruturaInvalida_NaoApta",
+        "PreCondicoesTests.Pre001_CnpjComDvInvalido_NaoApta",
+        "PreCondicoesTests.Pre001_IdRepetido_SegundaNaoApta",
+        "PreCondicoesTests.Pre001_DocumentoSemChave_NaoApta"
+      ]
+    },
+    {
+      "id": "PRE-002",
+      "titulo": "Layout já validado na origem — não impede o cruzamento",
+      "tipo": "PRE_CONDICAO",
+      "resultadoEsperado": "A versão de layout não é critério de aptidão neste agente. Agentes de origem e orquestrador validam o leiaute; aqui só há cruzamento, parecer e ações de revisão.",
+      "fontes": [
+        {
+          "emissor": "Projeto infis-agente-parecer-tributário",
+          "documento": "Constitution",
+          "versao": "2.0.0",
+          "localizacao": "P6",
+          "conferida": true
+        },
+        {
+          "emissor": "Projeto infis-agente-parecer-tributário",
+          "documento": "docs/02-regras-intra-obrigacao.md",
+          "versao": "2026-10-29",
+          "localizacao": "INT-COM-002",
+          "conferida": true
+        }
+      ],
+      "vigenciaInicio": "2000-01-01",
+      "status": "APROVADA",
+      "aprovadoPor": "Constitution 2.0.0 (P6) – confirmar responsável",
+      "implementacao": "DETERMINISTICA",
+      "testes": [
+        "PreCondicoesTests.Pre002_SemVersao_AindaApta",
+        "PreCondicoesTests.Pre002_VersaoNaoSuportada_AindaApta",
+        "PreCondicoesTests.Pre002_VersaoForaDeVigencia_AindaApta",
+        "PreCondicoesTests.ObrigacoesConsistentes_Aptas"
+      ]
+    },
+    {
+      "id": "PRE-003",
+      "titulo": "Validação de origem presente e aprovada",
+      "tipo": "PRE_CONDICAO",
+      "resultadoEsperado": "Há relatório de validação de origem com status APROVADO e sem ocorrências do tipo ERRO. Advertências são repassadas como alerta, com texto e origem preservados.",
+      "fontes": [
+        {
+          "emissor": "Projeto infis-agente-parecer-tributário",
+          "documento": "Constitution",
+          "versao": "2.0.0",
+          "localizacao": "P18",
+          "conferida": true
+        },
+        {
+          "emissor": "Projeto infis-agente-parecer-tributário",
+          "documento": "specs/001-cruzamento-obrigacoes/plan.md",
+          "versao": "incremento 1",
+          "localizacao": "D25",
+          "conferida": true
+        }
+      ],
+      "vigenciaInicio": "2000-01-01",
+      "status": "APROVADA",
+      "aprovadoPor": "Constitution 2.0.0 (P18) – critério D25 proposto, confirmar responsável",
+      "implementacao": "DETERMINISTICA",
+      "testes": [
+        "PreCondicoesTests.Pre003_SemRelatorio_NaoApta",
+        "PreCondicoesTests.Pre003_Reprovada_NaoApta",
+        "PreCondicoesTests.Pre003_AprovadaComErro_NaoApta",
+        "PreCondicoesTests.Pre003_AprovadaComAdvertencia_AptaComAlerta"
+      ]
+    },
+    {
+      "id": "PRE-004",
+      "titulo": "Somente a escrituração vigente é cruzada",
+      "tipo": "PRE_CONDICAO",
+      "resultadoEsperado": "Para o mesmo tipo, CNPJ e período, apenas a escrituração não substituída por outra do lote (cadeia reciboAnterior → recibo) é usada; cadeia ambígua torna todas não aptas. Documento repetido pela chave de acesso é descartado.",
+      "fontes": [
+        {
+          "emissor": "Projeto infis-agente-parecer-tributário",
+          "documento": "docs/02-regras-intra-obrigacao.md",
+          "versao": "2026-10-29",
+          "localizacao": "INT-COM-003",
+          "conferida": true
+        },
+        {
+          "emissor": "Projeto infis-agente-parecer-tributário",
+          "documento": "specs/001-cruzamento-obrigacoes/plan.md",
+          "versao": "incremento 1",
+          "localizacao": "§2.1",
+          "conferida": true
+        }
+      ],
+      "vigenciaInicio": "2000-01-01",
+      "status": "APROVADA",
+      "aprovadoPor": "Constitution 2.0.0 (P18) – confirmar responsável",
+      "implementacao": "DETERMINISTICA",
+      "testes": [
+        "PreCondicoesTests.Pre004_OriginalESubstituta_UsaSubstituta",
+        "PreCondicoesTests.Pre004_CadeiaAmbigua_NenhumaApta",
+        "PreCondicoesTests.Pre004_DocumentoRepetido_DescartaSegundo"
+      ]
+    },
+    {
+      "id": "PRE-005",
+      "titulo": "Obrigação do contribuinte e do período do lote",
+      "tipo": "PRE_CONDICAO",
+      "resultadoEsperado": "A raiz do CNPJ da obrigação é a do contribuinte do lote e o período da obrigação se sobrepõe ao período do lote; divergências são reportadas e não cruzadas.",
+      "fontes": [
+        {
+          "emissor": "Projeto infis-agente-parecer-tributário",
+          "documento": "Constitution",
+          "versao": "2.0.0",
+          "localizacao": "P5",
+          "conferida": true
+        },
+        {
+          "emissor": "Projeto infis-agente-parecer-tributário",
+          "documento": "docs/02-regras-intra-obrigacao.md",
+          "versao": "2026-10-29",
+          "localizacao": "INT-COM-004",
+          "conferida": true
+        }
+      ],
+      "vigenciaInicio": "2000-01-01",
+      "status": "APROVADA",
+      "aprovadoPor": "Constitution 2.0.0 (P5) – confirmar responsável",
+      "implementacao": "DETERMINISTICA",
+      "testes": [
+        "PreCondicoesTests.Pre005_OutroContribuinte_NaoApta",
+        "PreCondicoesTests.Pre005_PeriodoSemSobreposicao_NaoApta"
+      ]
+    }
+  ]
+}
