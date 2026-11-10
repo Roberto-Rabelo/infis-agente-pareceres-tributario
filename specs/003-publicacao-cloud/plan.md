@@ -7,7 +7,7 @@
 | Serviço | csproj | DLL | Dockerfile |
 |---|---|---|---|
 | Agente (A2A/REST) | `src/Api.Agente/Api.Agente.csproj` | `Api.Agente.dll` | `Dockerfile.vercel` (raiz) |
-| RAG (MCP/pgvector) | `src/Api.RAG/Api.RAG.csproj` | `Api.RAG.dll` | `deploy/Dockerfile.vercel.rag` (service `rag`, prefixo `/rag`) |
+| RAG (MCP/pgvector) | `src/Api.RAG/Api.RAG.csproj` | `Api.RAG.dll` | `Dockerfile.vercel.rag` (service `rag`, prefixo `/rag`) |
 
 Não há `.sln` na raiz. Compose local (`docker-compose.rag.yml`, `docker-compose.agente.yml`) permanece.
 

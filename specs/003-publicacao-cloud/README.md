@@ -5,7 +5,7 @@ Um projeto Vercel com **dois services** de container (`vercel.json`):
 | Service | Dockerfile | Rotas públicas |
 |---|---|---|
 | `agente` | `Dockerfile.vercel` | `/health`, `/.well-known/agent-card.json`, `/a2a`, `/api/v1/analises` |
-| `rag` | `deploy/Dockerfile.vercel.rag` | `/rag/health`, `/rag/mcp`, `/rag/api/v1/documentos` |
+| `rag` | `Dockerfile.vercel.rag` | `/rag/health`, `/rag/mcp`, `/rag/api/v1/documentos` |
 
 A Vercel entrega ao service o caminho original (`/rag/...`); a imagem da RAG liga `Hospedagem__PathBase=/rag`.
 Os containers escutam na porta 80 (padrão da Vercel, que não injeta `PORT`). Duração por requisição: padrão de 300 s da plataforma; o `vercel.json` não define `maxDuration`.
@@ -17,7 +17,7 @@ As variáveis do projeto são compartilhadas pelos dois services (os nomes não 
 
 ## 1. Pré-requisitos locais
 
-- `dotnet test` verde e build das imagens: `docker build --platform linux/amd64 -f Dockerfile.vercel .` e `-f deploy/Dockerfile.vercel.rag .`
+- `dotnet test` verde e build das imagens: `docker build --platform linux/amd64 -f Dockerfile.vercel .` e `-f Dockerfile.vercel.rag .`
 - Vercel CLI: `npm i -g vercel` e `vercel login`.
 
 ## 2. Neon

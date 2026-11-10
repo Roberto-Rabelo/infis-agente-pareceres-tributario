@@ -1,4 +1,4 @@
-# Service "rag" do vercel.json (Api.RAG + MCP em /rag/*). O service "agente" usa o Dockerfile.vercel da raiz.
+# Service "rag" do vercel.json (Api.RAG + MCP em /rag/*). Fica na raiz: a Vercel usa a pasta do Dockerfile como contexto de build.
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 COPY . .

@@ -9,7 +9,7 @@
     "rag": {
       "root": ".",
       "runtime": "container",
-      "entrypoint": "deploy/Dockerfile.vercel.rag"
+      "entrypoint": "Dockerfile.vercel.rag"
     }
   },
   "rewrites": [
