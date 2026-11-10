@@ -13,6 +13,7 @@ services:
       ASPNETCORE_URLS: "http://+:8080"
       ASPNETCORE_ENVIRONMENT: "Development"
       A2A__Url: "http://agente-parecer:8080/a2a"
+      A2A__ChaveIntegracao: "${A2A_CHAVE_INTEGRACAO:-}"
       Cors__AllowedOrigins__0: "http://localhost:4200"
       Parecer__Habilitado: "${PARECER_HABILITADO:-true}"
       OpenAI__ApiKey: "${OPENAI_API_KEY:-}"

@@ -100,7 +100,12 @@ builder.Services.AddControllers().AddJsonOptions(o => OpcoesJsonSaida.Configurar
 builder.Services.AdicionarDocumentacaoApi();
 builder.Services.AddHealthChecks();
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
+builder.Services.AddAuthentication(AutenticacaoChaveIntegracao.EsquemaPadrao)
+    .AddPolicyScheme(AutenticacaoChaveIntegracao.EsquemaPadrao, "JWT ou chave de integração A2A",
+        o => o.ForwardDefaultSelector = AutenticacaoChaveIntegracao.Selecionar)
+    .AddJwtBearer()
+    .AddScheme<Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions, AutenticacaoChaveIntegracao>(
+        AutenticacaoChaveIntegracao.Esquema, _ => { });
 builder.Services.AddOptions<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme)
     .Configure<IConfiguration, IHostEnvironment>(AutenticacaoJwt.Configurar);
 builder.Services.AddAuthorization();
@@ -112,7 +117,7 @@ if (origensCors.Length > 0)
     builder.Services.AddCors(opcoes => opcoes.AddPolicy(A2AEndpoints.PoliticaCors, politica =>
         politica.WithOrigins(origensCors)
             .WithMethods("GET", "POST", "OPTIONS")
-            .WithHeaders("Content-Type", "Authorization")));
+            .WithHeaders("Content-Type", "Authorization", AutenticacaoChaveIntegracao.CabecalhoApiKey)));
 }
 
 var app = builder.Build();
