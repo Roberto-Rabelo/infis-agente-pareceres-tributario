@@ -11,10 +11,12 @@ services:
   api-rag:
     build:
       context: .
-      dockerfile: deploy/Dockerfile.vercel.rag
+      dockerfile: Dockerfile.vercel.rag
     environment:
       PORT: "8080"
       ASPNETCORE_ENVIRONMENT: "Development"
+      # A imagem da Vercel liga /rag; localmente a RAG fica na raiz (http://api-rag:8080/mcp).
+      Hospedagem__PathBase: ""
       ConnectionStrings__Rag: "Host=rag-postgres;Port=5432;Database=rag;Username=rag;Password=${RAG_POSTGRES_PASSWORD}"
       OpenAI__ApiKey: "${OPENAI_API_KEY:-}"
     # Chaves do `dotnet user-jwts` (só valem em Development); somente leitura.
