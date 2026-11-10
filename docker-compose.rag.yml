@@ -5,7 +5,32 @@
 # Connection strings para as APIs:
 #   ConnectionStrings__Rag=Host=localhost;Port=5433;Database=rag;Username=rag;Password=...
 #   ConnectionStrings__Agente=Host=localhost;Port=5434;Database=agente;Username=agente;Password=...
+# Api.RAG: http://localhost:8086 (Swagger em /swagger). Cria o schema pgvector no boot.
+# Na agentes-network a Api.Agente alcança o MCP em http://api-rag:8080/mcp.
 services:
+  api-rag:
+    build:
+      context: .
+      dockerfile: Dockerfile.vercel.rag
+    environment:
+      PORT: "8080"
+      ASPNETCORE_ENVIRONMENT: "Development"
+      # A imagem da Vercel liga /rag; localmente a RAG fica na raiz (http://api-rag:8080/mcp).
+      Hospedagem__PathBase: ""
+      ConnectionStrings__Rag: "Host=rag-postgres;Port=5432;Database=rag;Username=rag;Password=${RAG_POSTGRES_PASSWORD}"
+      OpenAI__ApiKey: "${OPENAI_API_KEY:-}"
+    # Chaves do `dotnet user-jwts` (só valem em Development); somente leitura.
+    volumes:
+      - ${HOME}/.microsoft/usersecrets:/root/.microsoft/usersecrets:ro
+    ports:
+      - "8086:8080"
+    networks:
+      - default
+      - agentes-network
+    depends_on:
+      rag-postgres:
+        condition: service_healthy
+
   rag-postgres:
     image: pgvector/pgvector:pg17
     environment:
@@ -61,3 +86,7 @@ volumes:
   rag-dados:
   agente-dados:
   pgadmin-dados:
+
+networks:
+  agentes-network:
+    external: true
