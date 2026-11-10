@@ -105,3 +105,7 @@ Pela relação e pelo operador, cerca de 118 regras caberiam em quatro executore
 - M2-I05 cita a obrigação `EXTERNO`, que não vem no lote.
 - M1-P01 depende de PAR-001 e ENT-003 no catálogo; a aprovação de 30/10/2026 rodava sem elas. A dispensa ficou registrada em `aprovacoes.json` com motivo, para rever em T437.
 - `PARAM:TOL_VALOR_DOCUMENTO` recebeu 0,00, que é a mesma tolerância provisória que o motor já usava (C5). Os outros 9 parâmetros continuam sem valor.
+
+## 9. Decisões
+
+- **10/11/2026 – Lote parcial (Roberto).** O lote pode trazer todas as obrigações ou só parte delas, e cada regra roda com o que estiver apto. Regra que não roda é sinalizada (`NaoAplicavel`, `AusenciaEvidencias`, `NaoConclusiva` ou `FalhaTecnica`) e nunca interrompe a análise. Quando falta um lado do cruzamento, seja porque a obrigação não foi enviada, seja porque não estava apta, a regra conta como pendente e a análise termina como `CONCLUIDA_PARCIAL`, com revisão humana (P4). Coberto por `CatalogoCompletoTests.LoteMisto_RodaOQueEstaAptoESinalizaORestanteSemQuebrar` e pelos testes `LoteParcial_*`.
