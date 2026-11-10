@@ -12,5 +12,5 @@ COPY --from=build /app/publish .
 ENV ASPNETCORE_ENVIRONMENT=Production
 ENV APP_DLL="Api.Agente.dll"
 # Parecer e demais recursos ligam por variáveis da Vercel (.env.example), não por padrão da imagem.
-# PORT é fornecida pela plataforma em runtime; usar valor local somente como fallback.
-CMD ["sh", "-c", "export ASPNETCORE_URLS=\"http://0.0.0.0:${PORT:-8080}\"; exec dotnet \"$APP_DLL\""]
+# A Vercel roteia para a porta 80 e não injeta PORT; PORT só muda a porta se cadastrada no projeto (ou em teste local).
+CMD ["sh", "-c", "export ASPNETCORE_URLS=\"http://0.0.0.0:${PORT:-80}\"; exec dotnet \"$APP_DLL\""]

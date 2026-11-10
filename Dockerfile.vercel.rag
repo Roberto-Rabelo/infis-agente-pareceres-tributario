@@ -1,0 +1,16 @@
+# Service "rag" do vercel.json (Api.RAG + MCP em /rag/*). Fica na raiz: a Vercel usa a pasta do Dockerfile como contexto de build.
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+WORKDIR /src
+COPY . .
+RUN dotnet restore "src/Api.RAG/Api.RAG.csproj"
+RUN dotnet publish "src/Api.RAG/Api.RAG.csproj" -c Release -o /app/publish --no-restore /p:UseAppHost=false
+
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
+WORKDIR /app
+COPY --from=build /app/publish .
+ENV ASPNETCORE_ENVIRONMENT=Production
+ENV APP_DLL="Api.RAG.dll"
+# Service "rag" do vercel.json: a Vercel entrega /rag/... com o caminho original.
+ENV Hospedagem__PathBase=/rag
+# A Vercel roteia para a porta 80 e não injeta PORT; PORT só muda a porta se cadastrada no projeto (ou em teste local).
+CMD ["sh", "-c", "export ASPNETCORE_URLS=\"http://0.0.0.0:${PORT:-80}\"; exec dotnet \"$APP_DLL\""]
