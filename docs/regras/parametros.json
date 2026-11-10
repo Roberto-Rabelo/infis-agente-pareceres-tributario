@@ -6,7 +6,8 @@
       "nome": "TOL_VALOR_DOCUMENTO",
       "descricao": "Tolerância absoluta (R$) para igualdade de valores entre documento e escrituração (arredondamento).",
       "tipo": "decimal",
-      "valor": null,
+      "valor": 0.00,
+      "decisao": "Provisória: igualdade exata (0,00), a mesma tolerância que o motor já usava (plan 001 §2, C5 – Cruzamento:Tolerancia). Confirmar com o contador responsável (T400).",
       "exemploSugerido": 0.01,
       "usadoEm": ["IDT por documento"]
     },

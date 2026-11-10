@@ -3,6 +3,7 @@ using System.Text.Json.Nodes;
 using Api.Agente.Application.Analise;
 using Api.Agente.Application.Contratos.Entrada;
 using Api.Agente.Application.PreCondicoes;
+using Api.Agente.Domain.Catalogo;
 using Api.Agente.Domain.Motor;
 using Api.Agente.Infrastructure.Catalogo;
 
@@ -97,16 +98,19 @@ public static class Lotes
 
     public static byte[] Bytes(JsonNode lote) => Encoding.UTF8.GetBytes(lote.ToJsonString());
 
-    /// <summary>Monta o serviço com o catálogo real (catalog/) e os validadores de produção, salvo se outros forem informados.</summary>
+    /// <summary>Catálogo real (docs/regras copiado para regras/), carregado uma vez.</summary>
+    public static readonly Lazy<CatalogoRegras> CatalogoReal = new(() => CarregadorCatalogo.CarregarRegras(CarregadorCatalogo.ResolverDiretorio("regras")));
+
+    /// <summary>Monta o serviço com o catálogo real (docs/regras) e os validadores de produção, salvo se outros forem informados.</summary>
     public static ServicoAnalise Servico(params IValidadorCruzamento[] validadores)
     {
-        var diretorio = CarregadorCatalogo.ResolverDiretorio("catalog");
+        var catalogo = CatalogoReal.Value;
         var leitor = new LeitorLote(new OpcoesEntrada());
         return new ServicoAnalise(
-            CarregadorCatalogo.CarregarRegras(diretorio),
-            new VerificadorPreCondicoes(CarregadorCatalogo.CarregarVersoes(diretorio)),
-            new MotorRegras(validadores.Length > 0 ? validadores : ValidadoresNfeEfd.Todos()),
-            ParametrosComparacao.Exata,
+            catalogo,
+            new VerificadorPreCondicoes(CarregadorCatalogo.CarregarVersoes(CarregadorCatalogo.ResolverDiretorio("catalog"))),
+            validadores.Length > 0 ? new MotorRegras(validadores) : MotorRegras.Montar(ValidadoresNfeEfd.Todos(), catalogo),
+            ParametrosComparacao.DoCatalogo(catalogo.Parametros),
             leitor);
     }
 

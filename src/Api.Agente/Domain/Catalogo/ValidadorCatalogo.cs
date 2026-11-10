@@ -19,9 +19,11 @@ public static partial class ValidadorCatalogo
         }
 
         var ids = catalogo.Regras.Select(r => r.Id).ToHashSet();
+        var aprovadas = catalogo.Regras.Where(r => r.Status == StatusRegra.Aprovada).Select(r => r.Id).ToHashSet(StringComparer.Ordinal);
+        bool aprovada(string id) => aprovadas.Contains(id);
         foreach (var regra in catalogo.Regras)
         {
-            erros.AddRange(ValidarRegra(regra, ids).Select(e => $"Regra {regra.Id}: {e}"));
+            erros.AddRange(ValidarRegra(regra, ids, catalogo.Parametros, aprovada).Select(e => $"Regra {regra.Id}: {e}"));
         }
 
         erros.AddRange(DetectarCiclos(catalogo));
@@ -29,11 +31,11 @@ public static partial class ValidadorCatalogo
         return erros;
     }
 
-    private static IEnumerable<string> ValidarRegra(Regra regra, HashSet<string> ids)
+    private static IEnumerable<string> ValidarRegra(Regra regra, HashSet<string> ids, CatalogoParametros parametros, Func<string, bool>? porIdAprovada)
     {
         if (!PadraoId().IsMatch(regra.Id))
         {
-            yield return "identificador fora do padrão (ex.: PRE-001, CRZ-NFE-EFD-001, ENT-001, M1-P01).";
+            yield return "identificador fora do padrão (ex.: PRE-001, PAR-001, CNT-001, CRZ-NFE-EFD-001, ENT-001, M1-P01).";
         }
 
         if (string.IsNullOrWhiteSpace(regra.Titulo))
@@ -49,15 +51,6 @@ public static partial class ValidadorCatalogo
         if (regra.Fontes.Count == 0)
         {
             yield return "sem fonte oficial (P1).";
-        }
-
-        foreach (var fonte in regra.Fontes)
-        {
-            if (string.IsNullOrWhiteSpace(fonte.Emissor) || string.IsNullOrWhiteSpace(fonte.Documento)
-                || string.IsNullOrWhiteSpace(fonte.Versao) || string.IsNullOrWhiteSpace(fonte.Localizacao))
-            {
-                yield return "fonte sem emissor, documento, versão ou localização.";
-            }
         }
 
         if (regra.VigenciaFim is { } fim && fim < regra.VigenciaInicio)
@@ -82,6 +75,21 @@ public static partial class ValidadorCatalogo
             }
         }
 
+        if (regra.Status != StatusRegra.Aprovada)
+        {
+            yield break;
+        }
+
+        // Daqui em diante: condições de aprovação. Regra proposta pode estar incompleta no catálogo, mas não executa (FR-402).
+        foreach (var fonte in regra.Fontes)
+        {
+            if (string.IsNullOrWhiteSpace(fonte.Emissor) || string.IsNullOrWhiteSpace(fonte.Documento)
+                || string.IsNullOrWhiteSpace(fonte.Versao) || string.IsNullOrWhiteSpace(fonte.Localizacao))
+            {
+                yield return "fonte sem emissor, documento, versão ou localização.";
+            }
+        }
+
         if (regra.Tipo == TipoRegra.Cruzamento)
         {
             if (regra.Relacao is null)
@@ -99,32 +107,54 @@ public static partial class ValidadorCatalogo
                 yield return "regra de cruzamento sem severidade padrão.";
             }
 
-            if (regra.Obrigacoes.Count < 2)
+            // Filtro de exclusividade e compatibilidade de regime podem olhar uma única obrigação.
+            var minimo = regra.Relacao is TipoRelacao.Exclusividade or TipoRelacao.Parametro ? 1 : 2;
+            if (regra.Obrigacoes.Count < minimo)
             {
-                yield return "regra de cruzamento deve envolver ao menos duas obrigações.";
+                yield return minimo == 2
+                    ? "regra de cruzamento deve envolver ao menos duas obrigações."
+                    : "regra deve envolver ao menos uma obrigação recebida no lote.";
             }
         }
 
-        if (regra.Status == StatusRegra.Aprovada)
+        if (string.IsNullOrWhiteSpace(regra.AprovadoPor))
         {
-            if (string.IsNullOrWhiteSpace(regra.AprovadoPor))
-            {
-                yield return "aprovada sem responsável pela aprovação.";
-            }
+            yield return "aprovada sem responsável pela aprovação.";
+        }
 
-            if (regra.Fontes.Any(f => !f.Conferida))
-            {
-                yield return "aprovada com fonte não conferida no documento oficial (FR-012).";
-            }
+        if (regra.Fontes.Any(f => !f.Conferida))
+        {
+            yield return "aprovada com fonte não conferida no documento oficial (FR-012).";
+        }
 
-            if (regra.Fontes.Any(ContemMarcaDeConferencia) || ContemMarca(regra.ResultadoEsperado))
-            {
-                yield return "aprovada com item marcado como '(conferir)' ou 'verificar' (FR-013).";
-            }
+        if (regra.Fontes.Any(ContemMarcaDeConferencia) || ContemMarca(regra.ResultadoEsperado))
+        {
+            yield return "aprovada com item marcado como '(conferir)' ou 'verificar' (FR-013).";
+        }
 
-            if (regra.Testes.Count == 0)
+        if (regra.Testes.Count == 0)
+        {
+            yield return "aprovada sem testes associados (P17).";
+        }
+
+        foreach (var pendencia in regra.Pendencias)
+        {
+            yield return $"aprovada com pendência no catálogo: {pendencia}";
+        }
+
+        foreach (var nome in regra.ParametrosUsados)
+        {
+            if (parametros.Obter(nome) is not { Definido: true })
             {
-                yield return "aprovada sem testes associados (P17).";
+                yield return $"aprovada usando PARAM:{nome} sem valor definido (FR-404).";
+            }
+        }
+
+        foreach (var dependencia in regra.DependeDe)
+        {
+            if (porIdAprovada is not null && !porIdAprovada(dependencia))
+            {
+                yield return $"aprovada dependendo de {dependencia}, que não está aprovada (dispensar com motivo em aprovacoes.json ou aprovar a dependência).";
             }
         }
     }
@@ -166,16 +196,18 @@ public static partial class ValidadorCatalogo
         return ciclos.Distinct();
     }
 
-    /// <summary>Uma regra não pode depender de outra de fase posterior na ordem PAR → EXC → PRE → IDT → AGR/LIM → CNT.</summary>
+    /// <summary>Uma regra não pode depender de outra de passo posterior (cadeias.json) nem, no mesmo passo, de relação posterior na ordem PAR → EXC → PRE → IDT → AGR/LIM → CNT.</summary>
     private static IEnumerable<string> ValidarOrdemDasDependencias(CatalogoRegras catalogo)
     {
         var porId = catalogo.Regras.GroupBy(r => r.Id).ToDictionary(g => g.Key, g => g.First());
-        foreach (var regra in catalogo.Regras.Where(r => r.Relacao is not null))
+        // Só bloqueia aprovação: o motor executa dependências antes (recursão), e a ordem errada é pendência de conteúdo do catálogo.
+        foreach (var regra in catalogo.Regras.Where(r => r.Relacao is not null && r.Status == StatusRegra.Aprovada))
         {
             foreach (var dependencia in regra.DependeDe)
             {
                 if (porId.TryGetValue(dependencia, out var outra) && outra.Relacao is { } relacaoOutra
-                    && OrdemExecucao.De(relacaoOutra) > OrdemExecucao.De(regra.Relacao!.Value))
+                    && (outra.Passo > regra.Passo
+                        || (outra.Passo == regra.Passo && OrdemExecucao.De(relacaoOutra) > OrdemExecucao.De(regra.Relacao!.Value))))
                 {
                     yield return $"Regra {regra.Id}: depende de {dependencia}, que executa em fase posterior.";
                 }
@@ -190,6 +222,6 @@ public static partial class ValidadorCatalogo
         texto.Contains("conferir", StringComparison.OrdinalIgnoreCase)
         || texto.Contains("verificar", StringComparison.OrdinalIgnoreCase);
 
-    [GeneratedRegex("^(?:(PRE|ENT|CRZ|EXC)(-[A-Z]{2,5})*-[0-9]{3}|M[0-9]{1,2}-[A-Z]?[0-9]{2})$")]
+    [GeneratedRegex("^(?:(PRE|ENT|CRZ|EXC|PAR|CNT)(-[A-Z]{2,5})*-[0-9]{3}|M[0-9]{1,2}-[A-Z]?[0-9]{2})$")]
     private static partial Regex PadraoId();
 }

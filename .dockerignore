@@ -9,7 +9,9 @@ TestResults/
 .env.*
 !.env.example
 skill/
-docs/
+# docs/ fica fora da imagem, exceto o catálogo de regras que o motor lê (spec 004).
+docs/*
+!docs/regras/
 specs/
 tests/
 **/.cursor

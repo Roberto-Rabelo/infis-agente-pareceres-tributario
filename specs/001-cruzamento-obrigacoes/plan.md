@@ -22,13 +22,13 @@
 | Decisão | Escolha | Alternativa mais simples descartada | Status |
 |---|---|---|---|
 | D20 – Camadas | Pastas `Endpoints/`, `Application/`, `Domain/`, `Infrastructure/` dentro de cada serviço; dependência verificada por teste de arquitetura | Projetos separados por camada: mais projetos sem ganho agora (P16) | Proposta |
-| D21 – Catálogo | Arquivo JSON versionado em `catalog/regras.json` + `catalog/versoes-layout.json`, copiados para a saída do `Api.Agente`; validadores determinísticos em código, ligados à regra pelo `id` | Regras em código: impede versionar regra como dado (doc 05 §1) | Proposta |
+| D21 – Catálogo | **Substituída pela spec 004 (D401/D402):** o motor lê `docs/regras/*.json` + `aprovacoes.json`; `catalog/versoes-layout.json` continua. Original: arquivo JSON versionado em `catalog/regras.json` + `catalog/versoes-layout.json`, copiados para a saída do `Api.Agente`; validadores determinísticos em código, ligados à regra pelo `id` | Regras em código: impede versionar regra como dado (doc 05 §1) | Proposta |
 | D22 – Testes | xUnit; `Microsoft.AspNetCore.Mvc.Testing` para testes de API; `JsonSchema.Net` (só no projeto de testes) para provar que as fixtures respeitam o schema publicado do contrato | Validar schema à mão: não prova a aderência ao contrato publicado | Proposta |
 | D24 – Contrato de entrada | `contracts/entrada/lote.v1.schema.json` (JSON Schema 2020-12). Valores de campos de registros como texto em formato canônico (datas ISO 8601, decimais com ponto) | Schema tipado por obrigação: depende de acordo com os agentes de origem | **Proposta – acordar com os agentes de origem (T004)** |
 | D25 – Aptidão | Apta = contrato válido + versão suportada e vigente + relatório presente com `status = APROVADO` e **sem** ocorrência do tipo `ERRO`. Advertências são repassadas no relatório de aptidão como alerta | Aceitar `APROVADO` com erros: contradiz P18 | **Proposta – confirmar (T004)** |
 | D15 – Autenticação | JWT Bearer configurado por `Autenticacao:Authority`/`Audience`; sem configuração, todos os endpoints de análise recusam (falha fechada) | API key: não identifica usuário/agente (P14, P15) | Provisória até o ADR D15 |
 | API REST (2026-10-30) | Controllers ASP.NET Core (`[ApiController]`, rotas por atributo) em `Endpoints/` de cada serviço; documentação OpenAPI com `Swashbuckle.AspNetCore` (gerador + Swagger UI), alimentada pelos comentários XML. As ações leem o corpo bruto: a desserialização estrita, o limite de tamanho e o erro padronizado continuam com o contrato de entrada, e o schema do corpo é declarado por `[CorpoJson]`. Swagger desligado por padrão (`Swagger:Habilitado`), ligado só em `appsettings.Development.json` e **nunca servido em Production**, porque o documento é anônimo (5.1). `/health` passa a usar `MapHealthChecks`. O `/mcp` da Api.RAG continua mapeado pelo SDK do MCP (não é REST) | Minimal API: dispersa rotas, metadados e documentação em `Program.cs`. `Microsoft.AspNetCore.OpenApi` sozinho: gera o documento, mas não tem interface para teste manual | Proposta |
-| C5 – Tolerância | Parâmetro `Cruzamento:Tolerancia`, padrão **0,00** (igualdade exata, pois nenhuma norma define tolerância) | — | Provisória até decisão C5 |
+| C5 – Tolerância | **Movida para `PARAM:TOL_VALOR_DOCUMENTO` em `docs/regras/parametros.json` (spec 004, D403), mesmo valor provisório.** Original: parâmetro `Cruzamento:Tolerancia`, padrão **0,00** (igualdade exata, pois nenhuma norma define tolerância) | — | Provisória até decisão C5 |
 | Pré-condições PRE-001 a PRE-005 | `aprovada` no catálogo com fonte = constitution 2.0.0 (P5, P6, P18), docs/02 `INT-COM-002/003/004` | — | **Confirmar com o responsável** (são regras de contrato, não fiscais) |
 
 ### 2.1 Regras de determinação de escrituração vigente (PRE-004)
@@ -72,8 +72,8 @@ O lote declara `contribuinte.cnpj` (raiz de 8 posições ou CNPJ completo) e `pe
 | `Entrada:TamanhoMaximoBytes` | 52 428 800 (50 MB) | FR-044 |
 | `Entrada:ProfundidadeMaximaJson` | 64 | FR-044 |
 | `Entrada:MaximoObrigacoesPorLote` | 500 | FR-044 |
-| `Cruzamento:Tolerancia` | 0.00 | FR-024 |
-| `Catalogo:Caminho` | `catalog` | D21 |
+| `PARAM:TOL_VALOR_DOCUMENTO` (`docs/regras/parametros.json`) | 0.00 (provisório) | FR-024; spec 004 D403 |
+| `Catalogo:Caminho` / `Catalogo:CaminhoRegras` | `catalog` / `regras` | D21; spec 004 D401 |
 | `Autenticacao:Authority` / `Audience` | vazio (falha fechada) | FR-043 |
 | `Swagger:Habilitado` | `false` (`true` em Development; ignorado em Production) | Documentação OpenAPI em `/swagger`, nos dois serviços |
 
@@ -149,7 +149,7 @@ O lote declara `contribuinte.cnpj` (raiz de 8 posições ou CNPJ completo) e `pe
 | Validadores | `Domain/Motor/ValidadoresNfeEfd.cs`, uma função por regra, sem acesso a infraestrutura |
 | Evento da NF-e | Grupo `evento` em `registros`, com `tpEvento` (110111 = cancelamento); a acordar com os agentes de origem (T004) |
 | Ausência parcial | Validador que devolve ausência de evidências deixa a regra em `AusenciaEvidencias`, mesmo com inconsistência (P4) |
-| Tolerância | `Cruzamento:Tolerancia` = 0,00: `PARAM:TOL_VALOR_DOCUMENTO` segue sem valor (C5) |
+| Tolerância | `PARAM:TOL_VALOR_DOCUMENTO` = 0,00 (provisório, C5), lido de `docs/regras/parametros.json` (spec 004) |
 | Fatos no parecer | Hipóteses, escopo e limitações vêm do `ConsolidadorParecer`, não do modelo. `HIPOTESE_OMITIDA` deixa de existir: a cópia literal fazia análises válidas terminarem em `FALHA_TECNICA` |
 | Validação do texto | `AFIRMACAO_PROIBIDA` (conformidade, cobertura total, consequência jurídica) e `ACHADO_SEM_REFERENCIA` provocam retentativa. A lista de termos não detecta toda afirmação errada: a revisão humana continua obrigatória |
 | Prompt | `prompts/parecer/v1.1.0.md`; a versão 1.0.0 fica no repositório para reprodutibilidade (P9) |

@@ -45,6 +45,21 @@ public sealed record Regra
 
     public IReadOnlyList<string> Testes { get; init; } = [];
 
+    /// <summary>Passo de <c>cadeias.json &gt; ordemExecucao</c> (0 = pré-condições). Ordena a execução antes do tipo de relação.</summary>
+    public int Passo { get; init; }
+
+    /// <summary>Campos declarativos do catálogo de coesão, interpretados pelos executores genéricos (spec 004, D405).</summary>
+    public DeclaracaoRegra? Declaracao { get; init; }
+
+    /// <summary>Nomes <c>PARAM:*</c> citados pela regra. Regra aprovada exige todos com valor (FR-403/404).</summary>
+    public IReadOnlyList<string> ParametrosUsados { get; init; } = [];
+
+    /// <summary>O que impede a aprovação da regra como está no catálogo (ex.: severidade sem correspondência). Regra aprovada não pode ter pendências.</summary>
+    public IReadOnlyList<string> Pendencias { get; init; } = [];
+
+    /// <summary>Dependências do catálogo dispensadas na aprovação, com o motivo registrado pelo aprovador.</summary>
+    public IReadOnlyDictionary<string, string> DependenciasDispensadas { get; init; } = new Dictionary<string, string>();
+
     public bool VigenteEm(Periodo periodo) =>
         VigenciaInicio <= periodo.Fim && (VigenciaFim is null || VigenciaFim >= periodo.Inicio);
 
@@ -88,8 +103,57 @@ public sealed record Regra
             && !h.Contains("Nenhuma hipótese legítima prevista nos leiautes", StringComparison.OrdinalIgnoreCase))];
 }
 
+/// <summary>Um lado da relação (origem ou destino), como escrito no catálogo.</summary>
+/// <param name="Tipo">Obrigação reconhecida; nulo quando o catálogo cita evidência externa (ex.: <c>EXTERNO</c>).</param>
+/// <param name="CodigoObrigacao">Código como está no catálogo.</param>
+/// <param name="Elemento">Registro/campo (SPED) ou grupo/campo (XML), em texto.</param>
+/// <param name="Filtro">Filtros separados por ponto e vírgula, em texto.</param>
+/// <param name="Agregacao">Nível de agregação (MES, ANO, CONTA...), quando houver.</param>
+public sealed record LadoRegra(TipoObrigacao? Tipo, string CodigoObrigacao, string? Elemento, string? Filtro, string? Agregacao);
+
+public sealed record DeclaracaoRegra
+{
+    public LadoRegra? Origem { get; init; }
+
+    public LadoRegra? Destino { get; init; }
+
+    public IReadOnlyList<string> ChaveJuncao { get; init; } = [];
+
+    public string? Operador { get; init; }
+
+    /// <summary>Referência <c>PARAM:NOME</c> ou nulo (igualdade exata).</summary>
+    public string? Tolerancia { get; init; }
+
+    public string? AplicavelSe { get; init; }
+
+    public string? CondicaoDescritiva { get; init; }
+
+    public IReadOnlyList<string> FiltrosExclusao { get; init; } = [];
+
+    public IReadOnlyList<string> Cadeias { get; init; } = [];
+}
+
+public sealed record ParametroRegra(string Nome, string Tipo, bool Definido, decimal? Numero, string? Decisao);
+
+/// <summary>Parâmetros <c>PARAM:*</c> do projeto (docs/regras/parametros.json). Nenhum é definido em norma: são decisões do projeto.</summary>
+public sealed record CatalogoParametros(IReadOnlyDictionary<string, ParametroRegra> Itens)
+{
+    public const string Prefixo = "PARAM:";
+
+    public static CatalogoParametros Vazio { get; } = new(new Dictionary<string, ParametroRegra>());
+
+    public static string Nome(string referencia) =>
+        referencia.StartsWith(Prefixo, StringComparison.Ordinal) ? referencia[Prefixo.Length..] : referencia;
+
+    public ParametroRegra? Obter(string referencia) => Itens.GetValueOrDefault(Nome(referencia));
+
+    public decimal? Numero(string referencia) => Obter(referencia)?.Numero;
+}
+
 public sealed record CatalogoRegras(string Versao, IReadOnlyList<Regra> Regras)
 {
+    public CatalogoParametros Parametros { get; init; } = CatalogoParametros.Vazio;
+
     public Regra? Obter(string id) => Regras.FirstOrDefault(r => r.Id == id);
 
     public Regra ObterObrigatoria(string id) =>

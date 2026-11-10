@@ -111,7 +111,9 @@ Detalhamento oficial dos campos: [`01-panorama-obrigacoes.md`](01-panorama-obrig
 
 ## 7. O que o motor faz hoje
 
-Só regras **M1** (NF-e × EFD ICMS/IPI) em `catalog/regras.json` + `ValidadoresNfeEfd`. M2–M12, DIMP, ECD×ECF e NFS-e ainda são catálogo de estudo (`docs/regras/`), não validador.
+O motor carrega o catálogo completo de `docs/regras/` (158 regras de coesão + 5 pré-condições), mas **só executa as regras APROVADAS** em `docs/regras/aprovacoes.json`. Hoje são 10, todas M1 (NF-e × EFD ICMS/IPI). As demais estão `PROPOSTA` e aguardam parâmetros, curadoria de fontes e aprovação (spec 004). Cada resposta informa essa cobertura em `limitacoes`/`observacoes`.
+
+O lote pode trazer **todas as obrigações ou só parte delas**. Regra sem nenhuma de suas obrigações no lote fica `NAO_APLICAVEL`; com só um lado do cruzamento, fica sem evidência e aponta a obrigação que faltou, sem presumir conformidade.
 
 O LLM **não** monta o lote nem decide o cruzamento. Ele só redige o parecer se `Parecer:Habilitado` estiver ligado, a partir dos achados do motor.
 
