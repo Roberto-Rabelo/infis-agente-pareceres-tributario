@@ -57,4 +57,19 @@ public class DocumentacaoApiTests(FabricaRag fabrica) : IClassFixture<FabricaRag
         Assert.True(documentos.TryGetProperty("get", out _));
         Assert.False(caminhos.TryGetProperty("/mcp", out _));
     }
+
+    [Fact]
+    public async Task Swagger_ComPathBase_ServidorERotaComPrefixo()
+    {
+        using var habilitada = fabrica.WithWebHostBuilder(b => b
+            .UseSetting(DocumentacaoApi.ChaveHabilitado, "true")
+            .UseSetting("Hospedagem:PathBase", "/rag"));
+        using var cliente = habilitada.CreateClient();
+
+        using var resposta = await cliente.GetAsync("/rag" + Rota);
+        using var documento = await JsonDocument.ParseAsync(await resposta.Content.ReadAsStreamAsync());
+
+        Assert.Equal(HttpStatusCode.OK, resposta.StatusCode);
+        Assert.Equal("/rag", documento.RootElement.GetProperty("servers")[0].GetProperty("url").GetString());
+    }
 }

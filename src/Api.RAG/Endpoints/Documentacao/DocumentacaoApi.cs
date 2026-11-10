@@ -48,10 +48,18 @@ public static class DocumentacaoApi
             return app;
         }
 
-        app.UseSwagger();
+        // Atrás de /rag (Vercel) o documento e o "Try it out" precisam do prefixo: servidor relativo ao PathBase
+        // e endpoint da UI relativo à própria página.
+        app.UseSwagger(o => o.PreSerializeFilters.Add((documento, requisicao) =>
+        {
+            if (requisicao.PathBase.HasValue)
+            {
+                documento.Servers = [new OpenApiServer { Url = requisicao.PathBase.Value }];
+            }
+        }));
         app.UseSwaggerUI(o =>
         {
-            o.SwaggerEndpoint($"/swagger/{Documento}/swagger.json", $"Api.RAG {Documento}");
+            o.SwaggerEndpoint($"{Documento}/swagger.json", $"Api.RAG {Documento}");
             o.DocumentTitle = "Api.RAG – Swagger";
             o.EnablePersistAuthorization();
             o.DisplayRequestDuration();
