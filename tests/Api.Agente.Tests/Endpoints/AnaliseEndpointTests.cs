@@ -27,6 +27,7 @@ public sealed class FabricaApi : WebApplicationFactory<Program>
         builder.UseSetting("Cors:AllowedOrigins:0", "http://localhost:4200");
         builder.UseSetting("Cors:AllowedOrigins:1", "http://localhost:5173");
         builder.UseSetting("A2A:Url", "http://localhost/a2a");
+        builder.UseSetting("SOFIA_A2A_TOKEN", "chave-sintetica-da-fabrica-de-testes");
         builder.ConfigureTestServices(servicos => servicos
             .AddAuthentication(o =>
             {

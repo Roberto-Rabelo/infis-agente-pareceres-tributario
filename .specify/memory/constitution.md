@@ -423,7 +423,7 @@ Regras do fluxo:
 
 - MCP é o único meio de comunicação funcional entre Api.Agente e Api.RAG (P12).
 - A2A é a interface para outros agentes e orquestradores. Este agente é **servidor** A2A (não cliente/orquestrador).
-- Perfil A2A: **v0.3.x JSON-RPC 2.0**, método `message/send`. Descoberta em `GET /.well-known/agent-card.json`. O campo `url` do card é o endpoint RPC (não o caminho do card).
+- Perfil A2A: **v0.3.x JSON-RPC 2.0**, método `message/send`. Descoberta em `GET /.well-known/agent-card.json`, protegida pela chave Bearer da SOFIA (`SOFIA_A2A_TOKEN`). O campo `url` do card é o endpoint RPC (não o caminho do card).
 - Mensagens A2A DEVEM passar pelas mesmas autorizações JWT, validações e contrato de lote (`lote.v1`) da API REST. O TextPart PODE ser o JSON do lote ou o envelope SOFIA v1 (`SolicitacaoAnaliseSofia`) com o lote em `documentos[].texto`.
 - CORS aplica-se somente a origens de navegador configuradas; chamadas backend-backend da SOFIA NÃO dependem de CORS.
 
@@ -512,7 +512,7 @@ Regras:
 
 ### 5.1 Segurança e privacidade
 
-- Endpoints REST, MCP e o RPC A2A DEVEM exigir autenticação e autorização, exceto endpoints de saúde explicitamente declarados e o Agent Card `GET /.well-known/agent-card.json` (descoberta A2A v0.3.x).
+- Endpoints REST, MCP e o RPC A2A DEVEM exigir autenticação e autorização, exceto endpoints de saúde explicitamente declarados. O Agent Card e o RPC A2A aceitam a chave Bearer compartilhada da SOFIA (skill `sofia-a2a-autenticacao`), além do JWT.
 - Segredos (chaves da OpenAI, strings de conexão) NÃO DEVEM estar no código-fonte nem em arquivos versionados.
 - Obrigações recebidas contêm dados fiscais e pessoais. O tratamento DEVE seguir a LGPD, com política de retenção e exclusão definida na especificação.
 - Dados sensíveis NÃO DEVEM ser registrados em logs sem mascaramento.
@@ -618,7 +618,7 @@ Nenhum item abaixo é requisito aprovado. Cada um DEVE ser resolvido na etapa in
 | D11 | Modelo de embeddings, dimensão, métrica de distância e estratégia de busca (vetorial ou híbrida) | Plano técnico | ADR |
 | D12 | Tamanho de chunk, sobreposição, topK, limiares e conjunto de avaliação de recuperação | Plano técnico | Plano + avaliação |
 | D13 | Transporte e autenticação do MCP entre Api.Agente e Api.RAG | Plano técnico | ADR |
-| D14 | Resolvido em `docs/adr/D14-a2a.md` (A2A v0.3.x JSON-RPC, Agent Card anônimo, JWT no RPC) | — | ADR |
+| D14 | Resolvido em `docs/adr/D14-a2a.md` (A2A v0.3.x JSON-RPC, card e RPC com chave Bearer da SOFIA ou JWT) | — | ADR |
 | D15 | Provedor de identidade, modelo de autorização e suporte a múltiplas organizações | Plano técnico | ADR |
 | D16 | Ferramentas externas permitidas e suas políticas | Especificação | Especificação + catálogo de ferramentas |
 | D17 | Política de retentativas (quantidade, intervalo) para LLM e ferramentas | Plano técnico | Plano |
