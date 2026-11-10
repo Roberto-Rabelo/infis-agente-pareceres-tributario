@@ -270,13 +270,18 @@ public sealed partial class ServicoParecer(
         return new ResultadoParecer(final, parecer, citados, consumo);
     }
 
-    /// <summary>US7 cenário 3: esgotadas as tentativas, falha técnica sem aproveitar conteúdo inválido (P9).</summary>
+    /// <summary>
+    /// US7 cenário 3 (constitution 2.2.0): esgotadas as tentativas, o <b>parecer</b> é falha técnica e nenhum conteúdo
+    /// do modelo é aproveitado (P9). Os cruzamentos determinísticos são etapa independente e o status do motor não vira
+    /// FALHA_TECNICA (§419); só CONCLUIDA desce para CONCLUIDA_PARCIAL, porque nenhum resultado com falha técnica é CONCLUIDA (SC-002).
+    /// A falha fica nas limitações e a revisão humana é indicada.
+    /// </summary>
     private static ResultadoParecer Falhar(ResultadoAnalise resultado, string limitacao, List<RegistroConsumoLlm> consumo)
     {
         var motivos = resultado.RevisaoHumana.Motivos.Append("Há falha técnica.").Distinct(StringComparer.Ordinal).ToList();
         var final = resultado with
         {
-            Status = StatusAnalise.FalhaTecnica,
+            Status = resultado.Status == StatusAnalise.Concluida ? StatusAnalise.ConcluidaParcial : resultado.Status,
             Limitacoes = [.. resultado.Limitacoes, limitacao],
             RevisaoHumana = new RevisaoHumana(true, motivos),
         };

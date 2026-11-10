@@ -1,5 +1,14 @@
 <!--
-Relatório de Impacto de Sincronização
+Relatório de Impacto de Sincronização (2.2.0, 2026-11-10)
+- Versão: 2.1.0 → 2.2.0
+- Tipo de alteração: MINOR – a regra de respostas inválidas do LLM passa a dizer que a falha técnica é do
+  PARECER: os cruzamentos determinísticos, etapa independente (Seção 4.x, "as etapas seguintes PODEM ser
+  executadas..."), mantêm o próprio status. Só CONCLUIDA desce para CONCLUIDA_PARCIAL (P4/SC-002).
+- Motivo: uma referência inventada pelo modelo transformava em FALHA_TECNICA (status "erro" na SOFIA)
+  análises cujos achados determinísticos estavam corretos.
+- Especificações impactadas: spec 001 US7 cenário 3 (atualizado); spec 004 §9 (decisão registrada).
+
+Relatório de Impacto de Sincronização (2.0.0)
 - Versão: 1.0.0 → 2.0.0
 - Tipo de alteração: MAJOR – redefinição do escopo. A validação de layout/estrutura de cada
   obrigação passa a ser responsabilidade dos agentes de origem. Este agente recebe as obrigações
@@ -22,9 +31,9 @@ Relatório de Impacto de Sincronização
 
 # Constitution — infis-agente-parecer-tributário
 
-**Versão:** 2.1.0
+**Versão:** 2.2.0
 **Data de ratificação:** 2026-10-29
-**Última alteração:** 2026-11-05
+**Última alteração:** 2026-11-10
 
 Termos normativos:
 
@@ -218,7 +227,7 @@ Regras adicionais:
 - A resposta do LLM DEVE seguir um contrato JSON explícito e versionado (Seção 4.3).
 - DEVE ser usado o mecanismo de saída estruturada compatível com o modelo configurado.
 - Toda resposta DEVE passar por validação estrutural (schema) e semântica (regras de coerência, como P3 e P4) antes de ser aceita.
-- Respostas inválidas DEVEM seguir política de retentativas limitada. Esgotadas as tentativas, o resultado DEVE ser retornado como falha técnica, sem aproveitar conteúdo inválido.
+- Respostas inválidas DEVEM seguir política de retentativas limitada. Esgotadas as tentativas, o **parecer** DEVE ser retornado como falha técnica, sem aproveitar conteúdo inválido. Os resultados determinísticos DEVEM ser retornados com o próprio status, que NÃO DEVE ser `CONCLUIDA` (passa a `CONCLUIDA_PARCIAL`), e a falha DEVE constar nas limitações, com revisão humana indicada.
 - O LLM NÃO DEVE fabricar evidências, resultados de ferramentas, achados de validadores ou referências. Toda referência citada DEVE corresponder a um chunk ou resultado efetivamente recuperado na execução.
 
 **Justificativa**: o parecer é consumido por pessoas e por outros sistemas. Uma resposta fora do contrato ou com referência inventada compromete ambos.

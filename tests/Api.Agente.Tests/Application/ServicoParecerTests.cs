@@ -154,7 +154,10 @@ public class ServicoParecerTests
         Assert.Contains("ACHADO_RECLASSIFICADO", correcao.Content, StringComparison.Ordinal);
     }
 
-    /// <summary>US7 cenário 3: referência inválida em todas as tentativas resulta em FALHA_TECNICA sem aproveitar conteúdo.</summary>
+    /// <summary>
+    /// US7 cenário 3: referência inválida em todas as tentativas é falha técnica do parecer, sem aproveitar conteúdo;
+    /// o status dos cruzamentos determinísticos não é rebaixado (constitution 2.2.0).
+    /// </summary>
     [Fact]
     public async Task ReferenciaInvalidaEmTodasAsTentativas_FalhaTecnicaSemConteudoDoModelo()
     {
@@ -168,7 +171,7 @@ public class ServicoParecerTests
 
         Assert.Null(resultado.Parecer);
         Assert.Empty(resultado.TrechosCitados);
-        Assert.Equal(StatusAnalise.FalhaTecnica, resultado.Resultado.Status);
+        Assert.Equal(analise.Status == StatusAnalise.Concluida ? StatusAnalise.ConcluidaParcial : analise.Status, resultado.Resultado.Status);
         Assert.Equal(3, chat.Historicos.Count);
         Assert.All(resultado.Consumo, c => Assert.Equal("RESPOSTA_INVALIDA", c.Resultado));
         var limitacao = resultado.Resultado.Limitacoes[^1];
@@ -180,18 +183,35 @@ public class ServicoParecerTests
     }
 
     [Fact]
-    public async Task FalhaTransitoriaEsgotada_FalhaTecnicaComUmRegistroPorTentativa()
+    public async Task FalhaTransitoriaEsgotada_FalhaTecnicaDoParecerComUmRegistroPorTentativa()
     {
         var chat = new ChatFalso().Falhar(new HttpOperationException(HttpStatusCode.ServiceUnavailable, null, "indisponível", null), vezes: 3);
 
         var resultado = await Gerar(Servico(chat));
 
         Assert.Null(resultado.Parecer);
-        Assert.Equal(StatusAnalise.FalhaTecnica, resultado.Resultado.Status);
+        Assert.Equal(StatusAnalise.ConcluidaParcial, resultado.Resultado.Status);
+        Assert.True(resultado.Resultado.RevisaoHumana.Requerida);
         Assert.Equal(3, resultado.Consumo.Count);
         Assert.All(resultado.Consumo, c => Assert.Equal(("FALHA", "HTTP_503"), (c.Status, c.CodigoErro)));
         Assert.All(resultado.Consumo, c => Assert.Null(c.TokensEntrada));
         Assert.Contains("provedor do modelo indisponível", resultado.Resultado.Limitacoes[^1], StringComparison.Ordinal);
+    }
+
+    /// <summary>A falha do parecer não rebaixa a análise parcial nem a inconclusiva: o status do motor é mantido.</summary>
+    [Theory]
+    [InlineData(StatusAnalise.ConcluidaParcial)]
+    [InlineData(StatusAnalise.Inconclusiva)]
+    public async Task FalhaDoParecer_MantemStatusNaoConcluidoDoMotor(StatusAnalise status)
+    {
+        var analise = Analise() with { Status = status };
+        var chat = new ChatFalso().Falhar(new HttpOperationException(HttpStatusCode.ServiceUnavailable, null, "indisponível", null), vezes: 3);
+
+        var resultado = await Servico(chat).GerarAsync(analise, Execucao, Correlacao, CancellationToken.None);
+
+        Assert.Null(resultado.Parecer);
+        Assert.Equal(status, resultado.Resultado.Status);
+        Assert.Contains("Há falha técnica.", resultado.Resultado.RevisaoHumana.Motivos);
     }
 
     [Fact]
@@ -216,7 +236,7 @@ public class ServicoParecerTests
 
         var resultado = await Gerar(Servico(chat));
 
-        Assert.Equal(StatusAnalise.FalhaTecnica, resultado.Resultado.Status);
+        Assert.Equal(StatusAnalise.ConcluidaParcial, resultado.Resultado.Status);
         Assert.Equal("HTTP_401", Assert.Single(resultado.Consumo).CodigoErro);
         Assert.Single(chat.Historicos);
     }
@@ -228,7 +248,7 @@ public class ServicoParecerTests
 
         var resultado = await Gerar(Servico(chat, configurar: o => { o.TimeoutSegundos = 1; o.RetentativasTransitorias = 0; }));
 
-        Assert.Equal(StatusAnalise.FalhaTecnica, resultado.Resultado.Status);
+        Assert.Equal(StatusAnalise.ConcluidaParcial, resultado.Resultado.Status);
         Assert.Equal("TIMEOUT", Assert.Single(resultado.Consumo).CodigoErro);
     }
 
