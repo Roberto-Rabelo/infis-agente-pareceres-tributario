@@ -1,4 +1,19 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "framework": null
+  "services": {
+    "agente": {
+      "root": ".",
+      "runtime": "container",
+      "entrypoint": "Dockerfile.vercel"
+    },
+    "rag": {
+      "root": ".",
+      "runtime": "container",
+      "entrypoint": "deploy/Dockerfile.vercel.rag"
+    }
+  },
+  "rewrites": [
+    { "source": "/rag/(.*)", "destination": { "service": "rag" } },
+    { "source": "/(.*)", "destination": { "service": "agente" } }
+  ]
 }

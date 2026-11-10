@@ -86,6 +86,14 @@ app.UseExceptionHandler(erro => erro.Run(async contexto =>
     contexto.Response.StatusCode = StatusCodes.Status500InternalServerError;
     await contexto.Response.WriteAsJsonAsync(new ErroPadronizado("ERRO_INTERNO", "Falha técnica no processamento.")).ConfigureAwait(false);
 }));
+// Na Vercel (services) a RAG fica atrás de /rag e recebe o caminho original; sem prefixo, segue na raiz.
+var caminhoBase = app.Configuration["Hospedagem:PathBase"];
+if (!string.IsNullOrWhiteSpace(caminhoBase))
+{
+    app.UsePathBase(caminhoBase);
+}
+
+app.UseRouting();
 app.UsarDocumentacaoApi();
 app.UseAuthentication();
 app.UseAuthorization();
