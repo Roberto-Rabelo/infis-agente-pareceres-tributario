@@ -45,7 +45,12 @@ public static class A2AEndpoints
                 ["inputModes"] = new JsonArray("application/json"),
                 ["outputModes"] = new JsonArray("application/json"),
             }),
-            ["authentication"] = new JsonObject { ["schemes"] = new JsonArray("bearer") },
+            ["preferredTransport"] = "JSONRPC",
+            ["securitySchemes"] = new JsonObject
+            {
+                ["bearer"] = new JsonObject { ["type"] = "http", ["scheme"] = "bearer", ["bearerFormat"] = "JWT" },
+            },
+            ["security"] = new JsonArray(new JsonObject { ["bearer"] = new JsonArray() }),
         };
         return Results.Json(card);
     }
@@ -93,6 +98,8 @@ public static class A2AEndpoints
                 return Results.Json(RpcErro(id, -32602, "params.message.parts deve conter um TextPart."));
             }
 
+            var contextIdCliente = ContextIdDaMensagem(raiz);
+
             var correlacao = Correlacao.DaRequisicao(http);
             var execucaoId = Correlacao.Execucao(http);
             var entrada = InterpretadorEntradaA2A.Interpretar(texto, execucaoId, correlacao);
@@ -117,12 +124,21 @@ public static class A2AEndpoints
                 var analise = await execucao
                     .ExecutarAsync(entrada.CorpoLote, entrada.IdExecucao, entrada.IdSolicitacao, cancelamento)
                     .ConfigureAwait(false);
-                resultado = InterpretadorEntradaA2A.Mapear(analise, agente, entrada.IdExecucao, entrada.IdSolicitacao);
+                resultado = InterpretadorEntradaA2A.Mapear(analise, agente, entrada.IdExecucao, entrada.IdSolicitacao, entrada.IdDocumento);
             }
 
-            return Results.Json(RpcTarefa(id, resultado));
+            return Results.Json(RpcTarefa(id, contextIdCliente ?? resultado.IdExecucao, resultado));
         }
     }
+
+    private static string? ContextIdDaMensagem(JsonElement raiz) =>
+        raiz.TryGetProperty("params", out var p)
+        && p.TryGetProperty("message", out var m)
+        && m.TryGetProperty("contextId", out var c)
+        && c.ValueKind == JsonValueKind.String
+        && !string.IsNullOrWhiteSpace(c.GetString())
+            ? c.GetString()
+            : null;
 
     private static bool TentarTexto(JsonElement raiz, out byte[] texto)
     {
@@ -164,7 +180,7 @@ public static class A2AEndpoints
         error = new { code = codigo, message = mensagem },
     };
 
-    private static object RpcTarefa(JsonNode? id, ResultadoAnaliseSofia resultado)
+    private static object RpcTarefa(JsonNode? id, string contextId, ResultadoAnaliseSofia resultado)
     {
         var payload = JsonSerializer.Serialize(resultado, JsonSofia);
         var taskId = Guid.NewGuid().ToString();
@@ -174,9 +190,10 @@ public static class A2AEndpoints
             id,
             result = new
             {
+                kind = "task",
                 id = taskId,
-                contextId = resultado.IdExecucao,
-                status = new { state = "completed" },
+                contextId,
+                status = new { state = "completed", timestamp = DateTimeOffset.UtcNow.ToString("O", System.Globalization.CultureInfo.InvariantCulture) },
                 artifacts = new[]
                 {
                     new

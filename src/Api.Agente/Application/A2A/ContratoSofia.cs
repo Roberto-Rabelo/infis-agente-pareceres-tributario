@@ -37,7 +37,8 @@ public sealed record EntradaA2AInterpretada(
     byte[]? CorpoLote,
     string IdExecucao,
     string IdSolicitacao,
-    ErroSofia? Erro);
+    ErroSofia? Erro,
+    string? IdDocumento = null);
 
 public static class InterpretadorEntradaA2A
 {
@@ -122,7 +123,7 @@ public static class InterpretadorEntradaA2A
                 using var lote = JsonDocument.Parse(bytes);
                 if (lote.RootElement.TryGetProperty("obrigacoes", out _))
                 {
-                    return new EntradaA2AInterpretada(bytes, idExecucao, idSolicitacao, null);
+                    return new EntradaA2AInterpretada(bytes, idExecucao, idSolicitacao, null, id);
                 }
             }
             catch (JsonException)
@@ -138,7 +139,8 @@ public static class InterpretadorEntradaA2A
         ResultadoExecucaoAnalise execucao,
         IdentidadeAgenteSofia agente,
         string idExecucao,
-        string idSolicitacao)
+        string idSolicitacao,
+        string? idDocumento = null)
     {
         if (execucao.Erro is { } erro)
         {
@@ -158,7 +160,11 @@ public static class InterpretadorEntradaA2A
         var achados = resultado.Achados.Select((a, i) => new AchadoSofia(
             "ach-" + (i + 1).ToString("000", CultureInfo.InvariantCulture),
             a.Descricao,
-            a.Evidencias.Select(e => e.ObrigacaoId).Distinct(StringComparer.Ordinal).ToList(),
+            // No envelope SOFIA, idDocumentos deve referenciar documentos[].idDocumento da requisição
+            // (contrato v1); com lote direto no TextPart, os IDs das obrigações são a referência disponível.
+            idDocumento is not null
+                ? [idDocumento]
+                : a.Evidencias.Select(e => e.ObrigacaoId).Distinct(StringComparer.Ordinal).ToList(),
             Evidencias(a),
             SeveridadeSofia(a.Severidade))).ToList();
 
