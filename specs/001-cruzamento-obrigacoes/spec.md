@@ -128,7 +128,7 @@ Com os achados determinísticos, o agente consulta os manuais por RAG (MCP) e pr
 **Cenários de aceite**
 1. **Dado** achados determinísticos, **quando** o parecer é gerado, **então** natureza, severidade e regra de cada achado são idênticas às do validador (o LLM não reclassifica).
 2. **Dado** achado de regra [DERIVADA], **quando** redigido, **então** o parecer lista as hipóteses legítimas antes de qualquer conclusão.
-3. **Dado** uma referência citada pelo LLM que não está entre os chunks recuperados, **quando** a resposta é validada, **então** ela é rejeitada e reprocessada até o limite de retentativas; esgotado o limite, o resultado é "falha técnica".
+3. **Dado** uma referência citada pelo LLM que não está entre os chunks recuperados, **quando** a resposta é validada, **então** ela é rejeitada e reprocessada até o limite de retentativas; esgotado o limite, o **parecer** é "falha técnica" e nenhum conteúdo do modelo é aproveitado; os achados determinísticos são retornados com o status do motor (`CONCLUIDA` passa a `CONCLUIDA_PARCIAL`), a falha consta nas limitações e a revisão humana é indicada (constitution 2.2.0).
 4. **Dado** a Api.RAG indisponível, **quando** o parecer é solicitado, **então** os achados determinísticos são retornados, a fundamentação aparece como validação não realizada e o status não é de conformidade.
 5. **Dado** qualquer erro grave, pré-condição não atendida, ausência de evidências, indício da IA ou falha técnica, **quando** o resultado é montado, **então** a revisão humana é indicada com os motivos.
 
