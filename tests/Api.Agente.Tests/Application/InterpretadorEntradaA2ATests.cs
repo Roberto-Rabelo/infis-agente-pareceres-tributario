@@ -16,6 +16,28 @@ public class InterpretadorEntradaA2ATests
 
         Assert.Null(entrada.Erro);
         Assert.NotNull(entrada.CorpoLote);
+        Assert.Null(entrada.IdDocumento);
+    }
+
+    [Fact]
+    public void SofiaComLote_GuardaIdDocumentoDoLote()
+    {
+        var json = new JsonObject
+        {
+            ["versaoContrato"] = "1.0",
+            ["idExecucao"] = "8b2f0ad6-c2e4-4a68-8bdd-20f785bc798e",
+            ["idSolicitacao"] = "e1b3a4cb-d729-4bd4-b796-b9c94be07b46",
+            ["usuario"] = new JsonObject { ["nome"] = "Usuario Teste" },
+            ["pergunta"] = "Analisar",
+            ["documentos"] = new JsonArray(
+                new JsonObject { ["idDocumento"] = "doc-nota", ["nome"] = "nota.xml", ["texto"] = "<NFe/>" },
+                new JsonObject { ["idDocumento"] = "doc-lote", ["nome"] = "lote.json", ["texto"] = Lotes.Lote(Lotes.EfdIcmsIpi()).ToJsonString() }),
+        };
+
+        var entrada = InterpretadorEntradaA2A.Interpretar(Encoding.UTF8.GetBytes(json.ToJsonString()), "x", "y");
+
+        Assert.Null(entrada.Erro);
+        Assert.Equal("doc-lote", entrada.IdDocumento);
     }
 
     [Fact]

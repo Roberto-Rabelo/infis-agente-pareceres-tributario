@@ -23,6 +23,11 @@ public class A2AEndpointTests(FabricaApi fabrica) : IClassFixture<FabricaApi>
         Assert.Equal("http://localhost/a2a", raiz.GetProperty("url").GetString());
         Assert.DoesNotContain("agent-card", raiz.GetProperty("url").GetString(), StringComparison.Ordinal);
         Assert.Equal("analisar_documentos", raiz.GetProperty("skills")[0].GetProperty("id").GetString());
+        Assert.Equal("JSONRPC", raiz.GetProperty("preferredTransport").GetString());
+        var bearer = raiz.GetProperty("securitySchemes").GetProperty("bearer");
+        Assert.Equal("http", bearer.GetProperty("type").GetString());
+        Assert.Equal("bearer", bearer.GetProperty("scheme").GetString());
+        Assert.True(raiz.GetProperty("security")[0].TryGetProperty("bearer", out _));
     }
 
     [Fact]
@@ -115,6 +120,26 @@ public class A2AEndpointTests(FabricaApi fabrica) : IClassFixture<FabricaApi>
         Assert.Equal(idExecucao, artifact.RootElement.GetProperty("idExecucao").GetString());
         Assert.Equal(idSolicitacao, artifact.RootElement.GetProperty("idSolicitacao").GetString());
         Assert.Equal("agente-parecer-tributario", artifact.RootElement.GetProperty("agente").GetProperty("idAgente").GetString());
+        var tarefa = json.RootElement.GetProperty("result");
+        Assert.Equal("task", tarefa.GetProperty("kind").GetString());
+        Assert.Equal("completed", tarefa.GetProperty("status").GetProperty("state").GetString());
+        Assert.Equal(idExecucao, tarefa.GetProperty("contextId").GetString());
+        foreach (var achado in artifact.RootElement.GetProperty("achados").EnumerateArray())
+        {
+            Assert.Equal(["doc-lote"], achado.GetProperty("idDocumentos").EnumerateArray().Select(e => e.GetString()));
+        }
+    }
+
+    [Fact]
+    public async Task MessageSend_ContextIdDoCliente_Ecoado()
+    {
+        var sofia = EnvelopeSofia("8b2f0ad6-c2e4-4a68-8bdd-20f785bc798e", "e1b3a4cb-d729-4bd4-b796-b9c94be07b46", Lote(EfdIcmsIpi(), NFe()));
+        using var cliente = Autenticado();
+
+        using var resposta = await cliente.PostAsync("/a2a", Rpc(sofia, contextId: "ctx-orquestrador-1"));
+        using var json = await Json(resposta);
+
+        Assert.Equal("ctx-orquestrador-1", json.RootElement.GetProperty("result").GetProperty("contextId").GetString());
     }
 
     [Fact]
@@ -152,22 +177,25 @@ public class A2AEndpointTests(FabricaApi fabrica) : IClassFixture<FabricaApi>
         return cliente;
     }
 
-    private static ByteArrayContent Rpc(JsonNode payload)
+    private static ByteArrayContent Rpc(JsonNode payload, string? contextId = null)
     {
+        var mensagem = new JsonObject
+        {
+            ["role"] = "user",
+            ["messageId"] = "msg-teste",
+            ["parts"] = new JsonArray(new JsonObject { ["kind"] = "text", ["text"] = payload.ToJsonString() }),
+        };
+        if (contextId is not null)
+        {
+            mensagem["contextId"] = contextId;
+        }
+
         var envelope = new JsonObject
         {
             ["jsonrpc"] = "2.0",
             ["id"] = 1,
             ["method"] = "message/send",
-            ["params"] = new JsonObject
-            {
-                ["message"] = new JsonObject
-                {
-                    ["role"] = "user",
-                    ["messageId"] = "msg-teste",
-                    ["parts"] = new JsonArray(new JsonObject { ["kind"] = "text", ["text"] = payload.ToJsonString() }),
-                },
-            },
+            ["params"] = new JsonObject { ["message"] = mensagem },
         };
         return Conteudo(System.Text.Encoding.UTF8.GetBytes(envelope.ToJsonString()));
     }
