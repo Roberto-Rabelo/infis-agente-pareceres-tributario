@@ -204,7 +204,7 @@
       <h1>Agente de parecer tributário</h1>
       <span class="pill info">correlação, não estrutura</span>
     </div>
-    <p class="muted small">infis-agente-pareceres-tributario · branch feat/regras-m1-nfe-efd · catálogo de estudo v1.0.0 (158 regras) · motor em produção v0.2.0 (15 regras)</p>
+    <p class="muted small">infis-agente-pareceres-tributario · branch main (PR #14) · catálogo único docs/regras v1.0.0 (158 regras + 5 PRE carregadas) · 15 aprovadas executam · publicado na Vercel com A2A para a SOFIA</p>
   </header>
 
   <div class="callout info">
@@ -212,16 +212,118 @@
     <p class="small" style="margin:0">Recebe ECD, ECF, NF-e/NFC-e, NFS-e, SPED Fiscal (EFD ICMS/IPI), SPED Contribuições e DIMP já validados em estrutura por agentes de origem. Cruza os fatos econômicos entre essas obrigações com um catálogo de regras e devolve um laudo técnico (achados determinísticos + parecer) para o time de tax compliance revisar. Não certifica regularidade e não aplica multa.</p>
   </div>
   <nav class="toc" aria-label="Perguntas deste mapeamento">
+    <a href="#regras-158"><strong>0. As 158 regras de negócio</strong></a>
     <a href="#lote-parcial">1. Lote parcial vs completo</a>
     <a href="#papel-llm">2. Papel do LLM e RAG</a>
     <a href="#acesso-bancos">3. Acesso aos bancos</a>
+    <a href="#catalogo-unico">4. Catálogo único (spec 004)</a>
+    <a href="#a2a">5. Integração A2A / SOFIA</a>
+    <a href="#publicacao">6. Publicação (Vercel + Neon)</a>
+    <a href="#novidades">7. O que mudou desde 05/11</a>
   </nav>
 
   <div class="stats">
-    <div class="stat"><div class="v">158</div><div class="l">Regras no catálogo de estudo</div></div>
-    <div class="stat info"><div class="v">15</div><div class="l">Regras no motor (.NET)</div></div>
-    <div class="stat ok"><div class="v">10</div><div class="l">Validadores M1 NF-e × EFD</div></div>
-    <div class="stat warn"><div class="v">~6%</div><div class="l">Cobertura do domínio no código</div></div>
+    <div class="stat"><div class="v">163</div><div class="l">Regras carregadas pelo motor (158 + 5 PRE)</div></div>
+    <div class="stat info"><div class="v">15</div><div class="l">Aprovadas e executando (10 M1 + 5 PRE)</div></div>
+    <div class="stat ok"><div class="v">7 + 3</div><div class="l">Executores M1: dedicados + genéricos</div></div>
+    <div class="stat warn"><div class="v">144</div><div class="l">Propostas ainda sem executor</div></div>
+  </div>
+
+  <h2 id="regras-158">As 158 regras de negócio</h2>
+  <p>As 158 regras de coesão estão escritas e versionadas em <code>docs/regras</code> (v1.0.0, PDF em <code>catalogo-regras.pdf</code>). Desde a spec 004 o motor <strong>carrega todas</strong>; executa só as que estão <code>APROVADA</code> em <code>aprovacoes.json</code> e têm executor. As demais aparecem na cobertura como “não executada: regra não aprovada”.</p>
+  <table>
+    <thead><tr><th>Bloco (ordem de execução)</th><th>Arquivo</th><th style="text-align:right">Regras</th><th style="text-align:right">Executam</th><th>Obrigações</th><th>Fase da spec 004</th></tr></thead>
+    <tbody>
+      <tr><td>1. PAR — compatibilidade de regime</td><td>01-parametros-…</td><td style="text-align:right">10</td><td style="text-align:right">0</td><td>ECF, EFD-Contrib., ECD, NF-e</td><td>Fase 2</td></tr>
+      <tr><td>2. EXC — exclusividades legítimas</td><td>01-parametros-…</td><td style="text-align:right">13</td><td style="text-align:right">0</td><td>NF-e, NFS-e, EFD-Contrib.</td><td>Fase 2</td></tr>
+      <tr><td>3. ENT — entidades compartilhadas</td><td>01-parametros-…</td><td style="text-align:right">16</td><td style="text-align:right">0</td><td>EFD, ECD, NF-e, ECF, DIMP</td><td>Fase 2</td></tr>
+      <tr><td>4. M1 — NF-e × EFD ICMS/IPI</td><td>02-documentos-x-escrituracoes</td><td style="text-align:right">29</td><td style="text-align:right"><strong>10</strong></td><td>NF-e, EFD ICMS/IPI</td><td>Fase 1 (10) / Fase 3 (19)</td></tr>
+      <tr><td>4. M2 — NF-e × EFD-Contribuições</td><td>02-documentos-x-escrituracoes</td><td style="text-align:right">12</td><td style="text-align:right">0</td><td>NF-e, EFD-Contrib.</td><td>Fase 3</td></tr>
+      <tr><td>4. M4 — NFS-e × EFD-Contribuições</td><td>02-documentos-x-escrituracoes</td><td style="text-align:right">7</td><td style="text-align:right">0</td><td>NFS-e, EFD-Contrib.</td><td>Fase 3</td></tr>
+      <tr><td>4. M5 — NFS-e × EFD ICMS/IPI</td><td>02-documentos-x-escrituracoes</td><td style="text-align:right">3</td><td style="text-align:right">0</td><td>NFS-e, EFD ICMS/IPI</td><td>Fase 3</td></tr>
+      <tr><td>5. M3, M7, M8, M10, M11 — escriturações entre si</td><td>03-escrituracoes-entre-si</td><td style="text-align:right">33</td><td style="text-align:right">0</td><td>EFD ICMS/IPI, EFD-Contrib., ECD, ECF</td><td>Fase 4</td></tr>
+      <tr><td>6. CNT — continuidade mensal</td><td>06-continuidade-mensal</td><td style="text-align:right">6</td><td style="text-align:right">0</td><td>EFD ICMS/IPI, EFD-Contrib.</td><td>Fase 5 (depende DP-4)</td></tr>
+      <tr><td>7. M9, M12 — contabilidade × ECF</td><td>04-contabilidade-x-ecf</td><td style="text-align:right">21</td><td style="text-align:right">0</td><td>ECD, ECF, NF-e, NFS-e</td><td>Fase 6 (depende DP-5)</td></tr>
+      <tr><td>8. M6 — DIMP</td><td>05-dimp</td><td style="text-align:right">8</td><td style="text-align:right">0</td><td>DIMP, NF-e, EFD ICMS/IPI, ECD</td><td>Fase 7</td></tr>
+      <tr><td><strong>Total</strong></td><td></td><td style="text-align:right"><strong>158</strong></td><td style="text-align:right"><strong>10</strong></td><td colspan="2">+ PRE-001 a 005 (precondicoes.json), aprovadas</td></tr>
+    </tbody>
+  </table>
+
+  <div class="cols">
+    <div>
+      <h3>Por relação × operador</h3>
+      <table>
+        <thead><tr><th>Relação e operador</th><th style="text-align:right">Regras</th></tr></thead>
+        <tbody>
+          <tr><td>IDT IGUAL</td><td style="text-align:right">44</td></tr>
+          <tr><td>PRE_DIRETA / PRE_REVERSA EXISTE</td><td style="text-align:right">40</td></tr>
+          <tr><td>AGR SOMA_IGUAL</td><td style="text-align:right">23</td></tr>
+          <tr><td>PAR (vários operadores)</td><td style="text-align:right">14</td></tr>
+          <tr><td>EXC FILTRA</td><td style="text-align:right">13</td></tr>
+          <tr><td>LIM MENOR/MAIOR_OU_IGUAL</td><td style="text-align:right">11</td></tr>
+          <tr><td>CNT</td><td style="text-align:right">9</td></tr>
+          <tr><td>IDT COMPATIVEL</td><td style="text-align:right">3</td></tr>
+          <tr><td>AGR MENOR_OU_IGUAL</td><td style="text-align:right">1</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <h3>Por que 144 ainda não têm executor</h3>
+      <table>
+        <thead><tr><th>Motivo</th><th style="text-align:right">Regras</th></tr></thead>
+        <tbody>
+          <tr><td>Chave composta (CNPJ+ANO, COD_CTA+ANO, CNPJ+MÊS) — T424</td><td style="text-align:right">~40</td></tr>
+          <tr><td>Agregação SOMA_IGUAL sem executor (Fase 4)</td><td style="text-align:right">23</td></tr>
+          <tr><td>Elemento descrito em texto livre (T425)</td><td style="text-align:right">21</td></tr>
+          <tr><td>PAR exige validador dedicado (Fase 2)</td><td style="text-align:right">14</td></tr>
+          <tr><td>EXC com condição em texto (T425)</td><td style="text-align:right">13</td></tr>
+          <tr><td>Continuidade mensal (Fase 5)</td><td style="text-align:right">8</td></tr>
+          <tr><td>Aplicabilidade ou presença em texto</td><td style="text-align:right">8</td></tr>
+        </tbody>
+      </table>
+      <p class="faint">Cada regra registra o motivo; o motor expõe em <code>MotorRegras.Executores</code>.</p>
+    </div>
+  </div>
+
+  <h3>As 29 regras M1 (NF-e × EFD ICMS/IPI), uma a uma</h3>
+  <table>
+    <thead><tr><th>Regra</th><th>Relação</th><th>O que verifica</th><th>Situação</th></tr></thead>
+    <tbody>
+      <tr><td>M1-P01</td><td>PRE_DIRETA</td><td>NF-e própria autorizada escriturada na EFD</td><td><span class="pill ok">aprovada · dedicada</span></td></tr>
+      <tr><td>M1-P02</td><td>PRE_DIRETA</td><td>NF-e própria cancelada escriturada com COD_SIT 02/03</td><td><span class="pill ok">aprovada · dedicada</span></td></tr>
+      <tr><td>M1-P03</td><td>PRE_DIRETA</td><td>NF-e denegada escriturada com COD_SIT 04</td><td><span class="pill">proposta</span></td></tr>
+      <tr><td>M1-P04</td><td>PRE_DIRETA</td><td>Numeração inutilizada escriturada com COD_SIT 05</td><td><span class="pill">proposta</span></td></tr>
+      <tr><td>M1-P05</td><td>PRE_DIRETA</td><td>NF-e destinada escriturada como entrada</td><td><span class="pill">proposta</span></td></tr>
+      <tr><td>M1-P06</td><td>PRE_DIRETA</td><td>NF-e com Confirmação da Operação escriturada como entrada</td><td><span class="pill">proposta</span></td></tr>
+      <tr><td>M1-R01</td><td>PRE_REVERSA</td><td>C100 regular tem XML autorizado e não cancelado</td><td><span class="pill ok">aprovada · dedicada</span></td></tr>
+      <tr><td>M1-R02</td><td>PRE_REVERSA</td><td>C100 cancelado tem evento de cancelamento homologado</td><td><span class="pill ok">aprovada · dedicada</span></td></tr>
+      <tr><td>M1-R03</td><td>IDT</td><td>C100 de emissão própria pertence ao estabelecimento</td><td><span class="pill ok">aprovada · dedicada</span></td></tr>
+      <tr><td>M1-R04</td><td>IDT</td><td>C100 de entrada de terceiros destinado ao estabelecimento</td><td><span class="pill ok">aprovada · dedicada</span></td></tr>
+      <tr><td>M1-R05</td><td>IDT</td><td>Documento referenciado (C113) coerente com NFref</td><td><span class="pill">proposta</span></td></tr>
+      <tr><td>M1-R06</td><td>PRE_REVERSA</td><td>Bem do CIAP com NF-e de aquisição válida</td><td><span class="pill">proposta</span></td></tr>
+      <tr><td>M1-I01</td><td>IDT</td><td>Identificação do documento igual (modelo/série/número/data)</td><td><span class="pill ok">aprovada · dedicada</span></td></tr>
+      <tr><td>M1-I02</td><td>LIM</td><td>Data de entrada não anterior à emissão</td><td><span class="pill warn">proposta · executor pronto</span></td></tr>
+      <tr><td>M1-I03</td><td>IDT</td><td>Valor total do documento igual</td><td><span class="pill ok">aprovada · genérica</span></td></tr>
+      <tr><td>M1-I04</td><td>IDT</td><td>Componentes do valor (mercadorias, desconto, frete…) iguais</td><td><span class="pill">proposta</span></td></tr>
+      <tr><td>M1-I05</td><td>IDT</td><td>ICMS próprio da saída igual ao destacado</td><td><span class="pill ok">aprovada · genérica</span></td></tr>
+      <tr><td>M1-I06</td><td>LIM</td><td>Crédito de ICMS na entrada não excede o destacado</td><td><span class="pill ok">aprovada · genérica</span></td></tr>
+      <tr><td>M1-I07</td><td>IDT</td><td>ICMS-ST da saída própria igual ao retido</td><td><span class="pill warn">proposta · executor pronto</span></td></tr>
+      <tr><td>M1-I08</td><td>PRE_DIRETA</td><td>ICMS-ST retido apurado no E200/E210 da UF de destino</td><td><span class="pill">proposta</span></td></tr>
+      <tr><td>M1-I09</td><td>IDT</td><td>IPI escriturado igual ao destacado / limitado</td><td><span class="pill warn">proposta · executor pronto</span></td></tr>
+      <tr><td>M1-I10</td><td>IDT</td><td>PIS/COFINS do C100 iguais ao XML</td><td><span class="pill warn">proposta · executor pronto</span></td></tr>
+      <tr><td>M1-I11</td><td>IDT</td><td>DIFAL/FCP refletidos no C101 e no E300/E310</td><td><span class="pill">proposta</span></td></tr>
+      <tr><td>M1-I12</td><td>IDT COMPATIVEL</td><td>COD_SIT coerente com situação e finalidade da NF-e</td><td><span class="pill">proposta</span></td></tr>
+      <tr><td>M1-I13</td><td>IDT</td><td>Itens do C170 coerentes com os itens do XML</td><td><span class="pill">proposta</span></td></tr>
+      <tr><td>M1-I14</td><td>IDT COMPATIVEL</td><td>CFOP e CST de ICMS dos itens coerentes</td><td><span class="pill">proposta</span></td></tr>
+      <tr><td>M1-I15</td><td>AGR</td><td>C190 = agregação dos itens do XML</td><td><span class="pill">proposta</span></td></tr>
+      <tr><td>M1-I16</td><td>PRE_DIRETA</td><td>cBenef com ajuste correspondente na escrituração</td><td><span class="pill">proposta</span></td></tr>
+      <tr><td>M1-I17</td><td>PRE_DIRETA</td><td>Devolução com documento referenciado e CFOP de devolução</td><td><span class="pill">proposta</span></td></tr>
+    </tbody>
+  </table>
+  <p class="small muted">Dedicada = validador escrito à mão (condições em texto livre: mês de alocação, cancelamento, papel do estabelecimento, normalização de série/número). Genérica = executor que interpreta a regra do JSON. As 4 com “executor pronto” rodariam assim que aprovadas em <code>aprovacoes.json</code>.</p>
+  <div class="callout warn">
+    <strong>O que falta para as 158 executarem</strong>
+    <p class="small" style="margin:0">Decisões humanas (não do agente): DP-1 parâmetros (9 de 10 sem valor), DP-2 curadoria de 19 fontes, DP-3 aprovação regra a regra (110 de evidência DERIVADA), DP-4/DP-5 períodos de CNT e ECD/ECF, DP-6 equivalência CRZ-*. Pendências de conteúdo: 17 regras com severidade INFO, ordem ENT-032/M9-16, obrigação EXTERNO em M2-I05.</p>
   </div>
 
   <h2>Papel no ecossistema</h2>
@@ -257,16 +359,16 @@
   </div>
 
   <h2>Pipeline de uma análise</h2>
-  <p class="muted small">POST /api/v1/analises · JWT · contrato lote.v1 · envelope 1.1.0</p>
+  <p class="muted small">Duas portas de entrada, mesmo pipeline: POST /api/v1/analises (JWT, contrato lote.v1, envelope 1.1.0) e POST /a2a <code>message/send</code> (chave SOFIA, lote.v1 em <code>documentos[].texto</code>, saída ResultadoAnaliseSofia).</p>
   <table>
     <thead><tr><th>Etapa</th><th>Onde</th><th>O que decide</th></tr></thead>
     <tbody>
-      <tr><td>1. Leitura do lote</td><td>LeitorLote</td><td>JSON estrito; rejeita extra properties e contrato inválido</td></tr>
-      <tr><td>2. Pré-condições</td><td>VerificadorPreCondicoes</td><td>PRE-001 a 005: contrato, leiaute, PVA origem, CNPJ/período, aptidão</td></tr>
-      <tr><td>3. Motor</td><td>MotorRegras + ValidadoresNfeEfd</td><td>Só regras APROVADAS de CRUZAMENTO; ordem PAR → EXC → PRE → IDT → AGR/LIM → CNT</td></tr>
+      <tr><td>1. Leitura do lote</td><td>LeitorLote / InterpretadorEntradaA2A</td><td>JSON estrito; rejeita extra properties e contrato inválido. No A2A, sem lote → <code>LOTE_AUSENTE</code></td></tr>
+      <tr><td>2. Pré-condições</td><td>VerificadorPreCondicoes</td><td>PRE-001 a 005 (agora em <code>docs/regras/precondicoes.json</code>): contrato, leiaute, PVA origem, CNPJ/período, aptidão</td></tr>
+      <tr><td>3. Motor</td><td>MotorRegras + executores genéricos / dedicados</td><td>Só regras APROVADAS em <code>aprovacoes.json</code>; ordem por <code>cadeias.json &gt; ordemExecucao</code>; dependência que falhou → NAO_CONCLUSIVA</td></tr>
       <tr><td>4. Fundamentação</td><td>ServicoFundamentacao → MCP</td><td>Busca trechos no Api.RAG por regraId de cada achado</td></tr>
-      <tr><td>5. Parecer (opcional)</td><td>ServicoParecer + SK</td><td>Desligado por padrão. Explica; não cria regra nem muda achado</td></tr>
-      <tr><td>6. Envelope</td><td>AnalisesController</td><td>resultado + parecer + consumo + trechos citados</td></tr>
+      <tr><td>5. Parecer (opcional)</td><td>ServicoParecer + SK</td><td>Desligado por padrão. Explica; não cria regra nem muda achado. Se falhar, só o parecer falha (não rebaixa o motor)</td></tr>
+      <tr><td>6. Envelope</td><td>AnalisesController / A2AEndpoints</td><td>resultado + cobertura por bloco + parecer + consumo + trechos citados</td></tr>
     </tbody>
   </table>
 
@@ -281,7 +383,11 @@
       <tr><td>Executada / ComInconsistencia</td><td>Os dois lados aptos existem e o validador rodou</td><td>CONCLUIDA se não houver pendência obrigatória</td></tr>
     </tbody>
   </table>
-  <p class="small muted">Comportamento prático hoje (catálogo runtime só tem PRE-* + M1 NF-e × EFD):</p>
+  <div class="callout info">
+    <strong>Decisão de 10/11/2026 (Roberto) — lote parcial</strong>
+    <p class="small" style="margin:0">O lote pode trazer todas as obrigações ou só parte delas; cada regra roda com o que estiver apto. Regra que não roda é sinalizada (<code>NaoAplicavel</code>, <code>AusenciaEvidencias</code>, <code>NaoConclusiva</code>, <code>FalhaTecnica</code>) e nunca interrompe a análise. Regra PROPOSTA aparece na cobertura como “não executada: regra não aprovada”. Teste: <code>CatalogoCompletoTests.LoteMisto_RodaOQueEstaAptoESinalizaORestanteSemQuebrar</code>.</p>
+  </div>
+  <p class="small muted">Comportamento prático hoje (o motor carrega as 163 regras, mas só PRE-* + 10 M1 NF-e × EFD estão aprovadas):</p>
   <table>
     <thead><tr><th>O que chega no POST /api/v1/analises</th><th>O que acontece</th></tr></thead>
     <tbody>
@@ -333,14 +439,21 @@
   <h2>Cobertura: estudo vs motor</h2>
   <div class="bar-wrap">
     <div class="bar-labels">
-      <span>10 regras M1 no código + 5 PRE · 148 ainda só no catálogo docs/regras</span>
-      <span>15 / 158 no runtime catalog/regras.json</span>
+      <span>5 PRE + 10 M1 aprovadas · 4 propostas com executor pronto · 144 propostas sem executor</span>
+      <span>15 / 163 executam · todas carregadas de docs/regras</span>
     </div>
-    <div class="bar" title="5 PRE, 10 M1, 143 restantes no catálogo de estudo">
-      <span style="width:3.16%;background:#2563eb" title="PRE: 5"></span>
-      <span style="width:6.33%;background:#16a34a" title="M1: 10"></span>
-      <span style="width:90.51%;background:#c4c4bc" title="Catálogo apenas: 143"></span>
+    <div class="bar" title="5 PRE, 10 M1 aprovadas, 4 com executor pronto, 144 sem executor">
+      <span style="width:3.07%;background:#2563eb" title="PRE aprovadas: 5"></span>
+      <span style="width:6.13%;background:#16a34a" title="M1 aprovadas: 10"></span>
+      <span style="width:2.45%;background:#ca8a04" title="Propostas com executor pronto: 4 (M1-I02, I07, I09, I10)"></span>
+      <span style="width:88.35%;background:#c4c4bc" title="Propostas sem executor: 144"></span>
     </div>
+    <ul class="legend" style="display:flex;flex-wrap:wrap;gap:4px 16px;margin-top:8px">
+      <li><span><i class="sw" style="background:#2563eb"></i>PRE aprovadas (5)</span></li>
+      <li><span><i class="sw" style="background:#16a34a"></i>M1 aprovadas (10)</span></li>
+      <li><span><i class="sw" style="background:#ca8a04"></i>Executor pronto, aguarda aprovação (4)</span></li>
+      <li><span><i class="sw" style="background:#c4c4bc"></i>Sem executor (144)</span></li>
+    </ul>
   </div>
 
   <div class="charts">
@@ -408,7 +521,7 @@
   <table>
     <thead><tr><th>Mapa</th><th>De</th><th>Para</th><th>Estado no código</th></tr></thead>
     <tbody>
-      <tr><td><span class="dot ok"></span>M1</td><td>NF-e / NFC-e</td><td>EFD ICMS/IPI</td><td>Implementado (10 regras)</td></tr>
+      <tr><td><span class="dot ok"></span>M1</td><td>NF-e / NFC-e</td><td>EFD ICMS/IPI</td><td>10 de 29 aprovadas (7 dedicadas + 3 genéricas); 4 com executor pronto</td></tr>
       <tr><td><span class="dot"></span>M2</td><td>NF-e / NFC-e</td><td>EFD-Contribuições</td><td>Catálogo apenas</td></tr>
       <tr><td><span class="dot"></span>M3</td><td>EFD ICMS/IPI</td><td>EFD-Contribuições</td><td>Catálogo apenas</td></tr>
       <tr><td><span class="dot"></span>M4</td><td>NFS-e</td><td>EFD-Contribuições</td><td>Catálogo apenas</td></tr>
@@ -442,7 +555,7 @@
   </table>
 
   <h2>O que o laudo entrega ao tax compliance</h2>
-  <p>Saída em duas camadas: resultado determinístico (sempre) e parecer LLM (se habilitado). Status possíveis: CONCLUIDA, CONCLUIDA_PARCIAL, INCONCLUSIVA, FALHA_TECNICA — nenhum significa “empresa regular”.</p>
+  <p>Saída em duas camadas: resultado determinístico (sempre) e parecer LLM (se habilitado). Status possíveis: CONCLUIDA, CONCLUIDA_PARCIAL, INCONCLUSIVA, FALHA_TECNICA — nenhum significa “empresa regular”. Desde a constitution 2.2.0, falha do parecer LLM não vira FALHA_TECNICA: CONCLUIDA desce para CONCLUIDA_PARCIAL, a falha entra nas limitações e a revisão humana é indicada.</p>
   <div class="cols">
     <div>
       <h3>O sistema decide</h3>
@@ -480,27 +593,28 @@
   <h2>Arquitetura de software</h2>
   <div class="cols">
     <div class="card">
-      <div class="card-h">Api.Agente <span class="pill info">5117</span></div>
+      <div class="card-h">Api.Agente <span class="pill info">5117 · compose 8085</span></div>
       <div class="card-b">
-        <p class="small" style="margin:0">Motor, PRE, parecer Semantic Kernel, cliente MCP. Sem referência de projeto a Api.RAG (P12). Catálogo em catalog/regras.json.</p>
+        <p class="small" style="margin:0">Motor, PRE, executores genéricos, parecer Semantic Kernel, cliente MCP, Agent Card + RPC A2A. Sem referência de projeto a Api.RAG (P12). Catálogo lido direto de docs/regras (catalog/regras.json foi removido; catalog/ guarda só versoes-layout.json).</p>
       </div>
     </div>
     <div class="card">
-      <div class="card-h">Api.RAG <span class="pill info">5203</span></div>
+      <div class="card-h">Api.RAG <span class="pill info">5203 · compose 8086</span></div>
       <div class="card-b">
-        <p class="small" style="margin:0">Ingestão de manuais/base interna, PgVector, ferramenta MCP consultar_base_conhecimento. Postgres local na 5433.</p>
+        <p class="small" style="margin:0">Ingestão de manuais/base interna, PgVector, ferramenta MCP consultar_base_conhecimento. Postgres local na 5433. Na Vercel roda atrás de <code>/rag</code> (<code>Hospedagem__PathBase</code>), com Swagger funcionando nesse prefixo.</p>
       </div>
     </div>
   </div>
   <p class="small muted">Contratos: contracts/entrada/lote.v1.schema.json e contracts/saida/parecer.v1.schema.json. Prompt atual: prompts/parecer/v1.1.0.md.</p>
 
   <h2 id="acesso-bancos">Acesso aos bancos</h2>
-  <p>São dois Postgres. Nenhum tem connection string versionada (senha via ambiente). Não há banco de obrigações: o lote entra no POST e não é persistido.</p>
+  <p>São dois Postgres. Nenhum tem connection string versionada (senha via ambiente). Não há banco de obrigações: o lote entra no POST e não é persistido. Localmente ambos sobem no compose; na nuvem ficam no Neon (databases <code>agente</code> e <code>rag</code>, endpoint direto sem <code>-pooler</code>).</p>
   <table>
     <thead><tr><th>Banco</th><th>Quem usa</th><th>Como subir</th><th>Connection string</th></tr></thead>
     <tbody>
-      <tr><td>rag (PgVector, porta 5433)</td><td>Api.RAG — trechos, embeddings, MCP</td><td>docker-compose.rag.yml</td><td>ConnectionStrings:Rag / ConnectionStrings__Rag</td></tr>
-      <tr><td>agente (consumo LLM)</td><td>Api.Agente — tabela agente_consumo_llm</td><td>não há compose próprio no repositório</td><td>ConnectionStrings:Agente</td></tr>
+      <tr><td>rag (PgVector, porta 5433)</td><td>Api.RAG — trechos, embeddings, MCP</td><td>docker-compose.rag.yml (<code>rag-postgres</code>) · Neon</td><td>ConnectionStrings:Rag / ConnectionStrings__Rag</td></tr>
+      <tr><td>agente (consumo LLM, porta 5434)</td><td>Api.Agente — tabela agente_consumo_llm</td><td>docker-compose.rag.yml (<code>agente-postgres</code>) · Neon</td><td>ConnectionStrings:Agente</td></tr>
+      <tr><td>pgAdmin (porta 5055)</td><td>Inspeção manual da RAG e do consumo</td><td>docker-compose.rag.yml (<code>pgadmin</code>, servidores em deploy/pgadmin/servers.json)</td><td>—</td></tr>
     </tbody>
   </table>
   <h3>Passos para ter RAG local</h3>
@@ -509,28 +623,93 @@ docker compose -f docker-compose.rag.yml up -d
 $env:ConnectionStrings__Rag = "Host=localhost;Port=5433;Database=rag;Username=rag;Password=$env:RAG_POSTGRES_PASSWORD"</pre>
   <ol class="small">
     <li>Subir a Api.RAG (Development: http://localhost:5203).</li>
-    <li>Ingerir a base de estudo: definir <code>RAG_TOKEN_ADMIN</code> (papel <code>rag.admin</code>) e executar <code>scripts/ingerir-base-regras.ps1 -ApiRag http://localhost:5203</code>.</li>
+    <li>Ingerir a base de estudo: definir <code>RAG_TOKEN_ADMIN</code> (papel <code>rag.admin</code>) e executar <code>scripts/ingerir-base-regras.ps1 -ApiRag http://localhost:5203</code> (ou <code>python3 scripts/ingerir-base-regras.py &lt;url-da-rag&gt;</code>).</li>
     <li>No Agente, apontar <code>BaseConhecimento:Endpoint</code> para a URL do <code>/mcp</code> da RAG e <code>BaseConhecimento:TokenAcesso</code> com JWT de papel <code>rag.consulta</code>.</li>
     <li>Só então a fundamentação (e o LLM, se ligado) enxergam as regras na base.</li>
   </ol>
-  <p class="small muted">Para ligar o parecer em Development, além da RAG: <code>Parecer:Habilitado=true</code>, <code>OpenAI:ApiKey</code> e <code>ConnectionStrings:Agente</code> (Postgres de consumo). Sem isso o chat nem é registrado.</p>
+  <p class="small muted">Para ligar o parecer em Development, além da RAG: <code>Parecer:Habilitado=true</code>, <code>OpenAI:ApiKey</code> e <code>ConnectionStrings:Agente</code> (Postgres de consumo). Sem isso o chat nem é registrado. O <code>docker-compose.agente.yml</code> já liga a Api.Agente ao parecer, ao MCP da RAG e ao banco de consumo.</p>
+
+  <h2 id="catalogo-unico">Catálogo único e executores genéricos (spec 004, Fase 1)</h2>
+  <p>Antes havia dois catálogos: o de estudo (158 regras em <code>docs/regras</code>) e o de runtime (<code>catalog/regras.json</code>, 15 regras, formato D21). Agora o <code>CarregadorCatalogo</code> lê <code>docs/regras</code> direto e o motor carrega tudo; a governança decide o que executa.</p>
+  <table>
+    <thead><tr><th>Arquivo</th><th>Papel</th></tr></thead>
+    <tbody>
+      <tr><td>docs/regras/*.json (blocos)</td><td>As 158 regras de coesão: origem, destino, chaveJuncao, operador, tolerância, filtrosExclusao, aplicavelSe, cadeias, mensagemParecer</td></tr>
+      <tr><td>docs/regras/precondicoes.json</td><td>PRE-001 a PRE-005 (saíram de catalog/regras.json)</td></tr>
+      <tr><td>docs/regras/aprovacoes.json</td><td>Status por regra (PROPOSTA / APROVADA / SUSPENSA) com <code>aprovadoPor</code>; hoje 10 M1 + 5 PRE aprovadas, 148 propostas</td></tr>
+      <tr><td>docs/regras/parametros.json</td><td>Valores de <code>PARAM:*</code>; substituiu <code>Cruzamento:Tolerancia/Materialidade</code> do appsettings. Só <code>TOL_VALOR_DOCUMENTO</code> = 0,00 preenchido</td></tr>
+      <tr><td>docs/regras/cadeias.json</td><td><code>ordemExecucao</code> do motor e cadeias C1–C10</td></tr>
+    </tbody>
+  </table>
+  <div class="cols">
+    <div>
+      <h3>Executores</h3>
+      <p class="small">Quatro genéricos — Presença, Identidade, Limite e Exclusão (<code>ExecutoresGenericos.cs</code> + acessor de elementos em <code>Interpretacao.cs</code>: SPED <code>REGISTRO.CAMPO</code>, XML <code>grupo/campo</code>). Validador à mão tem precedência. M1-I03, I05 e I06 migraram para o genérico com regressão achado a achado sem diferença nos 10 cenários.</p>
+    </div>
+    <div>
+      <h3>Governança no boot (FR-404)</h3>
+      <p class="small"><code>ValidadorCatalogo</code> impede o motor de iniciar se uma regra APROVADA usa parâmetro sem valor, não tem executor ou não tem testes. Cada regra sem executor registra o motivo, exposto em <code>MotorRegras.Executores</code>.</p>
+    </div>
+  </div>
+  <p class="small muted">Por que 144 ainda sem executor: SOMA_IGUAL sem executor (23), chave composta CNPJ+ANO/COD_CTA+ANO (~40, maior ganho — T424), elemento em texto livre (21), EXC com condição em texto (13), PAR com validador dedicado (14), continuidade (8), aplicabilidade em texto (8).</p>
+
+  <h2 id="a2a">Integração A2A com a SOFIA</h2>
+  <p>O agente agora conversa com o orquestrador pelo protocolo A2A v0.3, conforme a skill <code>sofia-a2a-autenticacao</code> (versionada em <code>skill/</code>).</p>
+  <table>
+    <thead><tr><th>Rota</th><th>O que faz</th><th>Autenticação</th></tr></thead>
+    <tbody>
+      <tr><td>GET /.well-known/agent-card.json</td><td>Agent Card: <code>protocolVersion 0.3.0</code>, <code>preferredTransport JSONRPC</code>, capacidade <code>analisar_documentos</code></td><td>Bearer <code>SOFIA_A2A_TOKEN</code></td></tr>
+      <tr><td>POST /a2a</td><td>JSON-RPC: <code>message/send</code>, <code>tasks/get</code>, <code>tasks/cancel</code>; tarefas em memória com expiração (<code>RepositorioTarefasA2A</code>)</td><td>Bearer <code>SOFIA_A2A_TOKEN</code> ou JWT</td></tr>
+      <tr><td>POST /api/v1/analises</td><td>REST de análise (inalterado)</td><td>Somente JWT</td></tr>
+    </tbody>
+  </table>
+  <p class="small muted">A chave é um Bearer opaco, comparado em tempo constante e aceito só nas rotas A2A (<code>AutenticacaoChaveIntegracao</code>). Sem chave ou com menos de 16 caracteres, card e /a2a respondem 503 — a integração fica indisponível, nunca aberta. <code>idDocumentos</code> e a Task foram alinhados ao contrato SOFIA. Cadastro em <code>A2A:Agents</code> da SOFIA ainda <strong>pendente</strong> (ver <code>docs/cadastro-sofia.md</code>; IP fixo da Vercel em aberto).</p>
+
+  <h2 id="publicacao">Publicação: Vercel + Neon</h2>
+  <p>Um único projeto Vercel com dois services de container (<code>vercel.json</code>), escutando na porta 80, com bancos no Neon.</p>
+  <table>
+    <thead><tr><th>Service</th><th>Dockerfile</th><th>Rotas públicas</th></tr></thead>
+    <tbody>
+      <tr><td>agente</td><td>Dockerfile.vercel</td><td>/health, /.well-known/agent-card.json, /a2a, /api/v1/analises</td></tr>
+      <tr><td>rag</td><td>Dockerfile.vercel.rag (na raiz)</td><td>/rag/health, /rag/mcp, /rag/api/v1/documentos</td></tr>
+    </tbody>
+  </table>
+  <p class="small muted">JWT de teste por chave simétrica HS256 (<code>Autenticacao__ChaveSimetrica</code>), sem IdP: serve só para teste; em produção trocar por <code>Autenticacao__Authority</code> (OIDC). <code>scripts/preparar-vercel.sh</code> gera o <code>.env.vercel</code>; <code>scripts/emitir-token.cs</code> emite tokens locais; <code>neon.ts</code> versiona a config do <code>neon init</code>. Roteiro completo em <code>specs/003-publicacao-cloud/README.md</code>.</p>
+
+  <h2 id="novidades">O que mudou desde 05/11</h2>
+  <table>
+    <thead><tr><th>Data</th><th>PR</th><th>Mudança</th></tr></thead>
+    <tbody>
+      <tr><td>09/11</td><td>#5, #6</td><td>Compose local: Postgres do agente, pgAdmin, Api.RAG e Api.Agente ligada a parecer, MCP e consumo</td></tr>
+      <tr><td>09/11</td><td>#7, #8</td><td>Vercel: projeto único com services agente e rag, JWT simétrico, porta 80, Swagger atrás de /rag, config Neon</td></tr>
+      <tr><td>10/11</td><td>#9</td><td>A2A: Task e Agent Card no padrão v0.3; <code>idDocumentos</code> conforme o contrato SOFIA</td></tr>
+      <tr><td>10/11</td><td>#10, #11</td><td>A2A: chave de integração do orquestrador no /a2a e conformidade à skill sofia-a2a-autenticacao</td></tr>
+      <tr><td>10/11</td><td>#12</td><td>Spec 004 Fase 1: catálogo completo de docs/regras, aprovações, executores genéricos, governança no boot, cobertura por bloco</td></tr>
+      <tr><td>10/11</td><td>#13</td><td>Teste do lote misto: roda o que está apto e sinaliza o restante</td></tr>
+      <tr><td>10/11</td><td>#14</td><td>Falha do parecer não rebaixa a análise a FALHA_TECNICA (constitution 2.2.0)</td></tr>
+    </tbody>
+  </table>
 
   <h2>Já entregue vs pendente</h2>
   <details open>
     <summary>Incremento 1 — feito <span class="cnt">8</span></summary>
     <p class="small muted">Solution .NET 10, domínio, motor, PRE-001–005, REST de análise, JWT, envelope, 10 validadores NF-e × EFD, 10 cenários em exemplos/cenarios, RAG + MCP, validador de parecer, prompt 1.1.0. Parecer LLM desligado por padrão.</p>
   </details>
-  <details>
-    <summary>Ainda não no motor <span class="cnt">7</span></summary>
-    <p class="small muted">PAR/ENT/EXC, M2–M12, NFS-e, EFD-Contribuições, ECD×ECF, DIMP, continuidade mensal, A2A, LGPD/observabilidade, CI (T015), ingestão dos manuais oficiais (T011).</p>
+  <details open>
+    <summary>Incremento 2 (09–10/11) — feito <span class="cnt">6</span></summary>
+    <p class="small muted">Catálogo único com 163 regras carregadas e governança de aprovação; executores genéricos (Presença, Identidade, Limite, Exclusão); ordem por cadeias.json e NAO_CONCLUSIVA por dependência; cobertura por bloco no resultado e no ResultadoAnaliseSofia; A2A v0.3 com chave SOFIA; deploy Vercel + Neon e compose local completo. ~306 testes xUnit.</p>
   </details>
   <details>
-    <summary>Bloqueios de produção do catálogo <span class="cnt">4</span></summary>
-    <p class="small muted">parametros.json todo nulo (tolerâncias, materialidade, tabela CFOP, contas por função) — motor deve recusar produção até preencher. 34 regras com conferirCampo. Fontes sem verificação em primária. Reforma IBS/CBS 2026 ainda como ALERTA.</p>
+    <summary>Ainda não no motor <span class="cnt">7</span></summary>
+    <p class="small muted">Chave de junção composta (T424), agregação SOMA_IGUAL (Fase 4), PAR/ENT/EXC (Fase 2), M1 restante + M2/M4/M5 (Fase 3), continuidade mensal (Fase 5), M9/M12 ECD×ECF (Fase 6), DIMP (Fase 7), pontos de controle C1–C10 e leitura de INT-* (Fase 8). Fora do motor: LGPD/observabilidade, CI (T015), ingestão dos manuais oficiais (T011), memória MongoDB.</p>
+  </details>
+  <details>
+    <summary>Decisões humanas que bloqueiam aprovação <span class="cnt">6</span></summary>
+    <p class="small muted">DP-1: 9 dos 10 parâmetros ainda sem valor (só TOL_VALOR_DOCUMENTO = 0,00) e combinação das tolerâncias. DP-2: 19 de 32 fontes sem verificação na primária. DP-3: aprovação regra a regra (110 DERIVADA). DP-4: CNT com lote de um só período. DP-5: ECD/ECF anuais × lotes mensais. DP-6: equivalência CRZ-* × IDs novos. Pendências de conteúdo: 17 regras INFO, ordem ENT-032/M9-16, obrigação EXTERNO em M2-I05, dispensa de dependências em M1-P01. Reforma IBS/CBS 2026 ainda como ALERTA.</p>
   </details>
 
   <hr>
-  <p class="faint">Levantamento a partir do repositório local em 05/11/2026: docs/, catalog/regras.json, specs/001-cruzamento-obrigacoes, src/Api.Agente, src/Api.RAG, prompts/parecer/v1.1.0.md.</p>
+  <p class="faint">Levantamento a partir do repositório local em 12/11/2026 (main, até o PR #14): docs/regras, docs/cadastro-sofia.md, specs/001, 003 e 004, src/Api.Agente, src/Api.RAG, vercel.json, docker-compose.*.yml, prompts/parecer/v1.1.0.md.</p>
   <p class="faint">Artefato de entendimento — não altera o código da aplicação.</p>
 </main>
 </body>
