@@ -163,7 +163,7 @@ public class ContratoRespostaMcpTests
         """;
 
     private static ResultadoBaseConhecimento Interpretar(string json) =>
-        ClienteMcpBaseConhecimento.Interpretar(JsonDocument.Parse(json).RootElement);
+        ClienteMcpBaseConhecimento.Interpretar(JsonElement.Parse(json));
 
     [Fact]
     public void RespostaValida_ViraReferenciasELimitacoes()
